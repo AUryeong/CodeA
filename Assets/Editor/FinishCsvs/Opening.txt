@@ -1,0 +1,17 @@
+제목	안녕, 세계										
+이름	대화문	배경	BGM	SFX	효과	캐릭터 / 옷 / 표정	위치 / 크기	캐릭터 / 옷 / 표정	위치 / 크기	캐릭터 / 옷 / 표정	위치 / 크기
+에이	이 신박한 텍스트를 보시라~	Class_Morning				A_Default_Default	L2_S	Loli_Default_Default	R2_S		
+에이	이렇게 뒤에도 뭔가 뜨고~					A_Default_Default	C_S				
+에이	또 다른 엄청난 기능~					A_Default_Default	C_S				
+에이	이렇게 움직일 수도 있고~					A_Default_Default	L2_S				
+에이	이렇게 커질 수도 있고!					A_Default_Default	R3_M_B				
+에이	웃을 수도 있지!					A_Default_SmileFlush	C_XL				
+에이	그리고 그리고! 연출도!					A_Default_Smile	C_S				
+	 				Black_FadeIn	A_Default_Smile	C_S				
+	 				Black_FadeOut	A_Default_Smile	C_S				
+에이	신기하지! 그리고!					A_Default_SmileFlush	C_M				
+에이	필살!				Black_FadeIn	A_Default_SmileFlush	C_M				
+에이	CG 나오기 술!	CG_A_Winter			Black_FadeOut						
+에이	아방가르드하지										
+		Way_Afternoon									
+에이	우하하	Way_Afternoon				A_Default_SmileFlush	C_M				

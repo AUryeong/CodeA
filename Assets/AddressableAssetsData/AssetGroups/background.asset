@@ -1,0 +1,60 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: background
+  m_EditorClassIdentifier: 
+  m_GroupName: background
+  m_Data:
+    m_SerializedData: []
+  m_GUID: 6ca06ac582ba3e140bea150252a650d8
+  m_SerializeEntries:
+  - m_GUID: 4a44adaee1c58e843bc7bcbcd68a2c06
+    m_Address: Assets/Resources_moved/Background/Class_Morning.jpg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - background
+  - m_GUID: 7608e953b3e1d154fb030380296bee17
+    m_Address: Assets/Resources_moved/Background/Way_Afternoon.jpg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - background
+  - m_GUID: 0ed49fd2b9fdf294392c5e97cab9d69b
+    m_Address: Assets/Resources_moved/Background/Teacher_Morning.jpg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - background
+  - m_GUID: 74bb2a472e0e38943b128cd416064d8c
+    m_Address: Assets/Resources_moved/Background/DownTeacher_Morning.jpg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - background
+  - m_GUID: 56bb3ccb796227144860fb178c37d2d3
+    m_Address: Assets/Resources_moved/Background/Room_Morning.jpg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - background
+  - m_GUID: e676b4c9f7635e24e8c8f46366a2ff53
+    m_Address: Assets/Resources_moved/Background/Room_Afternoon.jpg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - background
+  - m_GUID: ae46fe861a2afbe42b71760f37c29048
+    m_Address: Assets/Resources_moved/Background/CG_A_Winter.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - background
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 09f2a6625245fee47a2f1a97f32f2b44, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 565d270d4ca859a49bdb621503842a32, type: 2}
+    - {fileID: 11400000, guid: 0e3fd13aa21c50a4689970e0984d6a94, type: 2}

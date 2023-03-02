@@ -1,0 +1,247 @@
+{
+    "m_SelectedDeviceId": "RFCT70CWD5V",
+    "m_SelectedPackage": {
+        "deviceId": "RFCT70CWD5V",
+        "name": "com.AUryeong.CodeA",
+        "processId": 29824,
+        "exited": false
+    },
+    "m_SelectedPriority": 0,
+    "m_KnownPackagesForSerialization": [
+        {
+            "deviceId": "RFCT70CWD5V",
+            "name": "com.AUryeong.CodeA",
+            "processId": 24114,
+            "exited": true
+        },
+        {
+            "deviceId": "RFCT70CWD5V",
+            "name": "com.AUryeong.CodeA",
+            "processId": 24775,
+            "exited": true
+        },
+        {
+            "deviceId": "RFCT70CWD5V",
+            "name": "com.AUryeong.CodeA",
+            "processId": 25409,
+            "exited": true
+        },
+        {
+            "deviceId": "RFCT70CWD5V",
+            "name": "com.AUryeong.CodeA",
+            "processId": 16585,
+            "exited": true
+        },
+        {
+            "deviceId": "RFCT70CWD5V",
+            "name": "com.AUryeong.CodeA",
+            "processId": 24733,
+            "exited": false
+        },
+        {
+            "deviceId": "RFCT70CWD5V",
+            "name": "com.AUryeong.CodeA",
+            "processId": 25410,
+            "exited": false
+        },
+        {
+            "deviceId": "RFCT70CWD5V",
+            "name": "com.AUryeong.CodeA",
+            "processId": 25970,
+            "exited": false
+        },
+        {
+            "deviceId": "RFCT70CWD5V",
+            "name": "com.AUryeong.CodeA",
+            "processId": 27649,
+            "exited": false
+        },
+        {
+            "deviceId": "RFCT70CWD5V",
+            "name": "com.AUryeong.CodeA",
+            "processId": 28623,
+            "exited": false
+        },
+        {
+            "deviceId": "RFCT70CWD5V",
+            "name": "com.AUryeong.CodeA",
+            "processId": 30745,
+            "exited": false
+        },
+        {
+            "deviceId": "RFCT70CWD5V",
+            "name": "com.AUryeong.CodeA",
+            "processId": 800,
+            "exited": false
+        },
+        {
+            "deviceId": "RFCT70CWD5V",
+            "name": "com.AUryeong.CodeA",
+            "processId": 10251,
+            "exited": false
+        },
+        {
+            "deviceId": "RFCT70CWD5V",
+            "name": "com.AUryeong.CodeA",
+            "processId": 11498,
+            "exited": false
+        },
+        {
+            "deviceId": "RFCT70CWD5V",
+            "name": "com.AUryeong.CodeA",
+            "processId": 12176,
+            "exited": false
+        },
+        {
+            "deviceId": "RFCT70CWD5V",
+            "name": "com.AUryeong.CodeA",
+            "processId": 21482,
+            "exited": false
+        },
+        {
+            "deviceId": "RFCT70CWD5V",
+            "name": "com.AUryeong.CodeA",
+            "processId": 22427,
+            "exited": false
+        },
+        {
+            "deviceId": "RFCT70CWD5V",
+            "name": "com.AUryeong.CodeA",
+            "processId": 23142,
+            "exited": false
+        },
+        {
+            "deviceId": "RFCT70CWD5V",
+            "name": "com.AUryeong.CodeA",
+            "processId": 22541,
+            "exited": false
+        },
+        {
+            "deviceId": "RFCT70CWD5V",
+            "name": "com.AUryeong.CodeA",
+            "processId": 24769,
+            "exited": false
+        },
+        {
+            "deviceId": "RFCT70CWD5V",
+            "name": "com.AUryeong.CodeA",
+            "processId": 25979,
+            "exited": false
+        },
+        {
+            "deviceId": "RFCT70CWD5V",
+            "name": "com.AUryeong.CodeA",
+            "processId": 27789,
+            "exited": false
+        },
+        {
+            "deviceId": "RFCT70CWD5V",
+            "name": "com.AUryeong.CodeA",
+            "processId": 15547,
+            "exited": false
+        },
+        {
+            "deviceId": "RFCT70CWD5V",
+            "name": "com.AUryeong.CodeA",
+            "processId": 17885,
+            "exited": false
+        },
+        {
+            "deviceId": "RFCT70CWD5V",
+            "name": "com.AUryeong.CodeA",
+            "processId": 22107,
+            "exited": false
+        },
+        {
+            "deviceId": "RFCT70CWD5V",
+            "name": "com.AUryeong.CodeA",
+            "processId": 22833,
+            "exited": false
+        },
+        {
+            "deviceId": "RFCT70CWD5V",
+            "name": "com.AUryeong.CodeA",
+            "processId": 24187,
+            "exited": false
+        },
+        {
+            "deviceId": "RFCT70CWD5V",
+            "name": "com.AUryeong.CodeA",
+            "processId": 25243,
+            "exited": false
+        },
+        {
+            "deviceId": "RFCT70CWD5V",
+            "name": "com.AUryeong.CodeA",
+            "processId": 29824,
+            "exited": false
+        }
+    ],
+    "m_Tags": {
+        "m_Entries": [
+            {
+                "m_Name": "Filter by all listed tags",
+                "m_Selected": false
+            },
+            {
+                "m_Name": "No Filter",
+                "m_Selected": true
+            },
+            {
+                "m_Name": "",
+                "m_Selected": false
+            },
+            {
+                "m_Name": "Tag Control...",
+                "m_Selected": false
+            },
+            {
+                "m_Name": "",
+                "m_Selected": false
+            },
+            {
+                "m_Name": "Unity",
+                "m_Selected": false
+            },
+            {
+                "m_Name": "CRASH",
+                "m_Selected": false
+            }
+        ]
+    },
+    "m_MemoryViewerState": {
+        "MemoryWindowHeight": 300.0,
+        "MemoryWindowWidth": 170.0,
+        "MemoryTypeEnabled": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+        ],
+        "MemoryGroup": 2,
+        "Behavior": 0
+    },
+    "m_FilterOptions": {
+        "m_Filter": "",
+        "m_UseRegularExpressions": false,
+        "m_MatchCase": false
+    },
+    "m_SymbolPaths": [],
+    "m_CaptureVideoSettings": {
+        "TimeLimitEnabled": false,
+        "TimeLimit": 180,
+        "VideoSizeEnabled": false,
+        "VideoSizeX": 1280,
+        "VideoSizeY": 720,
+        "BitRateEnabled": false,
+        "BitRateK": 20000,
+        "DisplayIdEnabled": false,
+        "DisplayId": ""
+    }
+}

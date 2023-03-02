@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Talk
+  m_EditorClassIdentifier: 
+  m_GroupName: Talk
+  m_Data:
+    m_SerializedData: []
+  m_GUID: 5dc993f9af76f094785e8ee32156f0fa
+  m_SerializeEntries:
+  - m_GUID: 4056a649b10555d42afd215a1b2b1c25
+    m_Address: Assets/ScriptableObjects/Talks/Opening.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - talk
+  - m_GUID: 01b50535ad8479e4ea6af9651409a1c9
+    m_Address: Assets/ScriptableObjects/Talks/new.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - talk
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 09f2a6625245fee47a2f1a97f32f2b44, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: e0fdca9d05a5fe2429a41a9d186ba551, type: 2}
+    - {fileID: 11400000, guid: 36f322a08ddb2eb4bbdad0842c29a047, type: 2}

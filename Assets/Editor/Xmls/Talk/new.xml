@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<XMLTalks xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<Title>안녕 세계!</Title>
+	<Talk>
+		<Bgm>School</Bgm> 
+		<BG Name="Class_Morning"/>
+		<Dialogue Active="false">
+			<Talker>에이</Talker>
+			<Text>와하! 새로운 {앨리스} 방식!</Text>
+		</Dialogue>
+		<Characters>
+			<Character Name="A" Clothes="Default" Face="Default" Pos="R2" Size="M" Dark="false" />
+			<Character Name="Loli" Face="DefaultLight" Pos="L2" Size="M" />
+		</Characters>
+		<Animations>
+			<Animation Type="UTIL" Effect="Wait" Duration="1" />
+			<Animation Type="CHAR" Name="A" Effect="Move" Parameter="C" Duration="1" />
+			<Animation Type="UTIL" Effect="Wait" Duration="1.1" />
+			<Animation Type="CHAR" Name="A" Effect="Bounce" Parameter="2" Duration="0.2" />
+			<Animation Type="CHAR" Name="A" Effect="Face" Parameter="Smile" />
+			<Animation Type="DIAL" Effect="On" />
+		</Animations>
+	</Talk>
+	<Talk>
+		<Dialogue Active="false">
+			<Talker>에이</Talker>
+			<Text>이런 것도 가능하고...</Text>
+		</Dialogue>
+		<Characters>
+			<Character Name="A" Face="Smile" Pos="C" Size="M" Dark="false" />
+			<Character Name="Loli" Pos="L2" Size="M" Dark="false" />
+		</Characters>
+		<Animations>
+			<Animation Type="CHAR" Name="Loli" Effect="Emotion" Parameter="Thinking" Duration="2" />
+			<Animation Type="UTIL" Effect="Wait" Duration="2" />
+			<Animation Type="CHAR" Name="A" Effect="Move" Parameter="R1" Duration="0.5" />
+			<Animation Type="CHAR" Name="A" Effect="Bounce" Parameter="1" Duration="0.5"/>
+			<Animation Type="CHAR" Name="A" Effect="Face" Parameter="SmileFlush" />
+			<Animation Type="CHAR" Name="Loli" Effect="Move" Parameter="L1" Duration="0.5" />
+			<Animation Type="CHAR" Name="Loli" Effect="Bounce" Parameter="1" Duration="0.5" />
+			<Animation Type="UTIL" Effect="Wait" Duration="2" />
+			<Animation Type="CHAR" Name="A" Effect="Move" Parameter="R3" Duration="0.5" />
+			<Animation Type="CHAR" Name="A" Effect="Bounce" Parameter="1" Duration="0.5"/>
+			<Animation Type="CHAR" Name="Loli" Effect="Move" Parameter="R1" Duration="0.5" />
+			<Animation Type="CHAR" Name="Loli" Effect="Bounce" Parameter="1" Duration="0.5" />
+			<Animation Type="UTIL" Effect="Wait" Duration="2" />
+			<Animation Type="CHAR" Name="A" Effect="Emotion" Parameter="Thinking" Duration="2" />
+			<Animation Type="CHAR" Name="A" Effect="Face" Parameter="SideFlush" />
+			<Animation Type="CHAR" Name="A" Effect="Shake" Parameter="-1" Duration="0.2" />
+			<Animation Type="DIAL" Effect="On" />
+		</Animations>
+	</Talk>
+	<Talk>
+		<Dialogue>
+			<Talker>에이</Talker>
+			<Text>원래 하던거도 당연히 되지!</Text>
+		</Dialogue>
+		<Characters>
+			<Character Name="A" Face="SideFlush" Pos="R3" Size="M" Dark="false" />
+			<Character Name="Loli" Pos="R1" Size="M" />
+		</Characters>
+		<Animations>
+			<Animation Type="CHAR" Name="Loli" Effect="Move" Parameter="LEND" Duration="1" />
+			<Animation Type="UTIL" Effect="Wait" Duration="2" />
+			<Animation Type="CAM" Effect="Black_FadeIn" Duration="1" />
+		</Animations>
+	</Talk>
+</XMLTalks>

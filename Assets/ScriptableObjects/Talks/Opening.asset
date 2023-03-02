@@ -1,0 +1,199 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ea4cc8aacb5484389845b651f03202d, type: 3}
+  m_Name: Opening
+  m_EditorClassIdentifier: 
+  cgTitle: "\uC548\uB155, \uC138\uACC4"
+  talks:
+  - talker: "\uC5D0\uC774"
+    descreption: "\uC774 \uC2E0\uBC15\uD55C \uD14D\uC2A4\uD2B8\uB97C \uBCF4\uC2DC\uB77C~"
+    background: Class_Morning
+    effect: 
+    bgm: 
+    sfx: 
+    standings:
+    - name: A
+      standing: Default
+      face: Default
+      pos: 5
+      size: 0
+      animation: 0
+    - name: Loli
+      standing: Default
+      face: Default
+      pos: 1
+      size: 0
+      animation: 0
+  - talker: "\uC5D0\uC774"
+    descreption: "\uC774\uB807\uAC8C \uB4A4\uC5D0\uB3C4 \uBB54\uAC00 \uB728\uACE0~"
+    background: Class_Morning
+    effect: 
+    bgm: 
+    sfx: 
+    standings:
+    - name: A
+      standing: Default
+      face: Default
+      pos: 3
+      size: 0
+      animation: 0
+  - talker: "\uC5D0\uC774"
+    descreption: "\uB610 \uB2E4\uB978 \uC5C4\uCCAD\uB09C \uAE30\uB2A5~"
+    background: Class_Morning
+    effect: 
+    bgm: 
+    sfx: 
+    standings:
+    - name: A
+      standing: Default
+      face: Default
+      pos: 3
+      size: 0
+      animation: 0
+  - talker: "\uC5D0\uC774"
+    descreption: "\uC774\uB807\uAC8C \uC6C0\uC9C1\uC77C \uC218\uB3C4 \uC788\uACE0~"
+    background: Class_Morning
+    effect: 
+    bgm: 
+    sfx: 
+    standings:
+    - name: A
+      standing: Default
+      face: Default
+      pos: 5
+      size: 0
+      animation: 0
+  - talker: "\uC5D0\uC774"
+    descreption: "\uC774\uB807\uAC8C \uCEE4\uC9C8 \uC218\uB3C4 \uC788\uACE0!"
+    background: Class_Morning
+    effect: 
+    bgm: 
+    sfx: 
+    standings:
+    - name: A
+      standing: Default
+      face: Default
+      pos: 0
+      size: 1
+      animation: 1
+  - talker: "\uC5D0\uC774"
+    descreption: "\uC6C3\uC744 \uC218\uB3C4 \uC788\uC9C0!"
+    background: Class_Morning
+    effect: 
+    bgm: 
+    sfx: 
+    standings:
+    - name: A
+      standing: Default
+      face: SmileFlush
+      pos: 3
+      size: 3
+      animation: 0
+  - talker: "\uC5D0\uC774"
+    descreption: "\uADF8\uB9AC\uACE0 \uADF8\uB9AC\uACE0! \uC5F0\uCD9C\uB3C4!"
+    background: Class_Morning
+    effect: 
+    bgm: 
+    sfx: 
+    standings:
+    - name: A
+      standing: Default
+      face: Smile
+      pos: 3
+      size: 0
+      animation: 0
+  - talker: 
+    descreption: ' '
+    background: Class_Morning
+    effect: Black_FadeIn
+    bgm: 
+    sfx: 
+    standings:
+    - name: A
+      standing: Default
+      face: Smile
+      pos: 3
+      size: 0
+      animation: 0
+  - talker: 
+    descreption: ' '
+    background: Class_Morning
+    effect: Black_FadeOut
+    bgm: 
+    sfx: 
+    standings:
+    - name: A
+      standing: Default
+      face: Smile
+      pos: 3
+      size: 0
+      animation: 0
+  - talker: "\uC5D0\uC774"
+    descreption: "\uC2E0\uAE30\uD558\uC9C0! \uADF8\uB9AC\uACE0!"
+    background: Class_Morning
+    effect: 
+    bgm: 
+    sfx: 
+    standings:
+    - name: A
+      standing: Default
+      face: SmileFlush
+      pos: 3
+      size: 1
+      animation: 0
+  - talker: "\uC5D0\uC774"
+    descreption: "\uD544\uC0B4!"
+    background: Class_Morning
+    effect: Black_FadeIn
+    bgm: 
+    sfx: 
+    standings:
+    - name: A
+      standing: Default
+      face: SmileFlush
+      pos: 3
+      size: 1
+      animation: 0
+  - talker: "\uC5D0\uC774"
+    descreption: "CG \uB098\uC624\uAE30 \uC220!"
+    background: CG_A_Winter
+    effect: Black_FadeOut
+    bgm: 
+    sfx: 
+    standings: []
+  - talker: "\uC5D0\uC774"
+    descreption: "\uC544\uBC29\uAC00\uB974\uB4DC\uD558\uC9C0"
+    background: CG_A_Winter
+    effect: 
+    bgm: 
+    sfx: 
+    standings: []
+  - talker: 
+    descreption: 
+    background: Way_Afternoon
+    effect: 
+    bgm: 
+    sfx: 
+    standings: []
+  - talker: "\uC5D0\uC774"
+    descreption: "\uC6B0\uD558\uD558"
+    background: Way_Afternoon
+    effect: 
+    bgm: 
+    sfx: 
+    standings:
+    - name: A
+      standing: Default
+      face: SmileFlush
+      pos: 3
+      size: 1
+      animation: 0

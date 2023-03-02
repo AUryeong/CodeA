@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Tips
+  m_EditorClassIdentifier: 
+  m_GroupName: Tips
+  m_Data:
+    m_SerializedData: []
+  m_GUID: 823d74f8af817a840afae7243fef3961
+  m_SerializeEntries:
+  - m_GUID: 71377d4234724424b8f1b072eadf9f8c
+    m_Address: Assets/ScriptableObjects/Tips/alice.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - tip
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 09f2a6625245fee47a2f1a97f32f2b44, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 11084cbf27f9ec749b4c7bb2f51e34d2, type: 2}
+    - {fileID: 11400000, guid: 653148ceaa44bac42a298374fafbf668, type: 2}
