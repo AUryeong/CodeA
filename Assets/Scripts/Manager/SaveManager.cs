@@ -101,6 +101,8 @@ public class SubGameData
 
     public List<Item> hasItems = new List<Item>();
 
+    public List<string> getTips = new List<string>();
+
     public List<Talk> leftTalks = new List<Talk>();
 
     public string saveTime;

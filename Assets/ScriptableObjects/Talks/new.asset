@@ -18,11 +18,15 @@ MonoBehaviour:
     background:
       name: Class_Morning
       effect: 0
+      scale: 1
     dialogue:
       talker: "\uC5D0\uC774"
-      text: "\uC640\uD558! \uC0C8\uB85C\uC6B4 <#FFEE00><bounce><link=\uC568\uB9AC\uC2A4>\uC568\uB9AC\uC2A4</color></bounce></link>
-        \uBC29\uC2DD!"
+      text: "\uD639\uC2DC <#FFEE00><bounce><link=\uC568\uB9AC\uC2A4>\uC6D0\uB354\uB79C\uB4DC</color></bounce></link>\uB97C
+        \uC544\uC2ED\uB2C8\uAE4C?"
       active: 0
+      tipEvent:
+        eventName: "\uC568\uB9AC\uC2A4"
+        talkName: alice
     characters:
     - name: A
       clothes: Default
@@ -37,11 +41,6 @@ MonoBehaviour:
       size: 1
       dark: 1
     animations:
-    - type: 1
-      effect: Wait
-      name: 
-      parameter: 
-      duration: 1
     - type: 0
       effect: Move
       name: A
@@ -62,6 +61,11 @@ MonoBehaviour:
       name: A
       parameter: Smile
       duration: -1
+    - type: 0
+      effect: Emotion
+      name: A
+      parameter: Funny
+      duration: 0.4
     - type: 2
       effect: On
       name: 
@@ -71,10 +75,14 @@ MonoBehaviour:
     background:
       name: Class_Morning
       effect: 0
+      scale: 1
     dialogue:
       talker: "\uC5D0\uC774"
-      text: "\uC774\uB7F0 \uAC83\uB3C4 \uAC00\uB2A5\uD558\uACE0..."
+      text: "\uC774\uAC78 \uBAA8\uB974\uB124..."
       active: 0
+      tipEvent:
+        eventName: 
+        talkName: 
     characters:
     - name: A
       clothes: Default
@@ -84,7 +92,7 @@ MonoBehaviour:
       dark: 0
     - name: Loli
       clothes: Default
-      face: DefaultLight
+      face: Default
       pos: 6
       size: 1
       dark: 0
@@ -92,122 +100,20 @@ MonoBehaviour:
     - type: 0
       effect: Emotion
       name: Loli
-      parameter: Thinking
-      duration: 2
-    - type: 1
-      effect: Wait
-      name: 
-      parameter: 
-      duration: 2
-    - type: 0
-      effect: Move
-      name: A
-      parameter: R1
-      duration: 0.5
-    - type: 0
-      effect: Bounce
-      name: A
-      parameter: 1
-      duration: 0.5
-    - type: 0
-      effect: Face
-      name: A
-      parameter: SmileFlush
-      duration: -1
-    - type: 0
-      effect: Move
-      name: Loli
-      parameter: L1
-      duration: 0.5
-    - type: 0
-      effect: Bounce
-      name: Loli
-      parameter: 1
+      parameter: Worry
       duration: 0.5
     - type: 1
       effect: Wait
       name: 
       parameter: 
-      duration: 2
-    - type: 0
-      effect: Move
-      name: A
-      parameter: R3
-      duration: 0.5
-    - type: 0
-      effect: Bounce
-      name: A
-      parameter: 1
-      duration: 0.5
-    - type: 0
-      effect: Move
-      name: Loli
-      parameter: R1
-      duration: 0.5
-    - type: 0
-      effect: Bounce
-      name: Loli
-      parameter: 1
-      duration: 0.5
-    - type: 1
-      effect: Wait
-      name: 
-      parameter: 
-      duration: 2
-    - type: 0
-      effect: Emotion
-      name: A
-      parameter: Thinking
       duration: 2
     - type: 0
       effect: Face
       name: A
-      parameter: SideFlush
+      parameter: SideSmile
       duration: -1
-    - type: 0
-      effect: Shake
-      name: A
-      parameter: -1
-      duration: 0.2
     - type: 2
       effect: On
       name: 
       parameter: 
       duration: -1
-  - bgm: School
-    background:
-      name: Class_Morning
-      effect: 0
-    dialogue:
-      talker: "\uC5D0\uC774"
-      text: "\uC6D0\uB798 \uD558\uB358\uAC70\uB3C4 \uB2F9\uC5F0\uD788 \uB418\uC9C0!"
-      active: 1
-    characters:
-    - name: A
-      clothes: Default
-      face: SideFlush
-      pos: 0
-      size: 1
-      dark: 0
-    - name: Loli
-      clothes: Default
-      face: DefaultLight
-      pos: 2
-      size: 1
-      dark: 1
-    animations:
-    - type: 0
-      effect: Move
-      name: Loli
-      parameter: LEND
-      duration: 1
-    - type: 1
-      effect: Wait
-      name: 
-      parameter: 
-      duration: 2
-    - type: 3
-      effect: Black_FadeIn
-      name: 
-      parameter: 
-      duration: 1

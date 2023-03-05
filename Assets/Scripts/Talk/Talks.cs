@@ -32,6 +32,15 @@ public class Dialogue
     [XmlElement("Text")] public string text;
 
     [XmlAttribute("Active")] public bool active = true;
+    
+    [XmlElement("Event")] public Event tipEvent = null;
+}
+
+[System.Serializable]
+public class Event
+{
+    [XmlAttribute("Name")] public string eventName;
+    [XmlAttribute("Talk")] public string talkName;
 }
 
 [System.Serializable]
@@ -40,6 +49,7 @@ public class Background
     [XmlAttribute("Name")] public string name;
 
     [XmlAttribute("Effect")] public BackgroundEffect effect = BackgroundEffect.NONE;
+    [XmlAttribute("Scale")] public float scale = 1;
 }
 
 [System.Serializable]

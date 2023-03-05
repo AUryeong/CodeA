@@ -5,7 +5,7 @@ using System.Xml.Serialization;
 using UnityEditor;
 using UnityEngine;
 
-namespace Editor
+namespace EditorUtil
 {
     [System.Serializable]
     public class XMLTalks
@@ -45,17 +45,23 @@ namespace Editor
 
                 newTalks.talks = talks.talks;
                 string background = string.Empty;
+                float backgroundScale = 1;
                 string bgm = string.Empty;
 
                 Dictionary<string, string> characterDictionary = new Dictionary<string, string>();
                 Dictionary<string, string> faceDictionary = new Dictionary<string, string>();
                 foreach (var talk in newTalks.talks)
                 {
-                    Debug.Log(talk.background.name);
                     if (string.IsNullOrEmpty(talk.background.name))
+                    {
                         talk.background.name = background;
+                        talk.background.scale = backgroundScale;
+                    }
                     else
+                    {
                         background = talk.background.name;
+                        backgroundScale = talk.background.scale;
+                    }
 
                     if (string.IsNullOrEmpty(talk.bgm))
                         talk.bgm = bgm;
@@ -68,12 +74,14 @@ namespace Editor
                         {
                             string command = match.Groups["command"].Value;
 
-                            string s = "<#FFEE00><bounce><link=" + command + ">" + command +"</color></bounce></link>";
+                            string s = "<#FFEE00><bounce><link=" + talk.dialogue.tipEvent.eventName + ">" + command + "</color></bounce></link>";
                             talk.dialogue.text = talk.dialogue.text.Insert(match.Index, s);
                             break;
                         }
+
                         talk.dialogue.text = Regex.Replace(talk.dialogue.text, PAUSE_REGEX_STRING, "");
                     }
+
                     foreach (var character in talk.characters)
                     {
                         if (string.IsNullOrEmpty(character.clothes))

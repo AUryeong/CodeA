@@ -44,10 +44,31 @@ public class TalkManager : Singleton<TalkManager>
 
     private float autoDuration;
     private const float autoWaitTime = 2f;
+    
+    [Header("이벤트")]
+    [SerializeField] private Image eventWindow;
+    [SerializeField] private TextMeshProUGUI eventTitleText;
+    [SerializeField] private TextMeshProUGUI eventDescriptionText;
+    [SerializeField] private Button eventOkayButton;
+    [SerializeField] private Button eventExitButton;
+    private TextMeshProUGUI eventOkayButtonText;
+
+    private Vector2 nowPos;
+    private Vector2 defaultPos;
 
     protected override void OnCreated()
     {
         subBackgroundEffect = subBackgroundImage.GetComponent<UITransitionEffect>();
+        
+        eventOkayButtonText = eventOkayButton.GetComponent<TextMeshProUGUI>();
+        defaultPos = eventWindow.rectTransform.anchoredPosition;
+        eventWindow.gameObject.SetActive(false);
+        
+        eventExitButton.onClick.RemoveAllListeners();
+        eventExitButton.onClick.AddListener(EventExit);
+        
+        eventOkayButton.onClick.RemoveAllListeners();
+        eventOkayButton.onClick.AddListener(EventOkay);
     }
 
     protected override void OnReset()
@@ -59,6 +80,8 @@ public class TalkManager : Singleton<TalkManager>
         autoDuration = 0;
 
         talkWindow.gameObject.SetActive(false);
+        eventWindow.gameObject.SetActive(false);
+
         nowTalk = null;
         prevTalk = null;
 
@@ -72,6 +95,48 @@ public class TalkManager : Singleton<TalkManager>
         }
     }
 
+    #region Event
+    
+    private void EventOpen(string eventName, Vector2 pos)
+    {
+        nowPos = pos;
+
+        eventTitleText.text = eventName +"에 대해";
+        eventDescriptionText.text = ResourcesManager.Instance.GetTip(eventName);
+        
+        eventWindow.gameObject.SetActive(true);
+        eventWindow.rectTransform.DOKill();
+        
+        eventWindow.rectTransform.anchoredPosition = pos;
+        eventWindow.rectTransform.localScale = Vector3.zero;
+
+        eventWindow.rectTransform.DOScale(Vector3.one, 0.2f);
+        eventWindow.rectTransform.DOAnchorPos(defaultPos, 0.2f);
+        
+        eventOkayButtonText.gameObject.SetActive(true);
+        eventOkayButtonText.DOKill();
+        eventOkayButtonText.color = new Color(105 / 255f, 1, 126 / 255f, 1);
+        eventOkayButtonText.DOFade(0, 0.8f).SetLoops(-1, LoopType.Yoyo);
+    }
+    
+
+    private void EventOkay()
+    {
+        EventExit();
+        talkQueue.Clear();
+        AddTalk(nowTalk.dialogue.tipEvent.talkName);
+    }
+
+    private void EventExit()
+    {
+        eventWindow.rectTransform.DOKill();
+        eventWindow.rectTransform.localScale = Vector3.one;
+
+        eventWindow.rectTransform.DOScale(Vector3.zero, 0.2f).OnComplete(() => eventWindow.gameObject.SetActive(false));
+        eventWindow.rectTransform.DOAnchorPos(nowPos, 0.2f);
+    }
+
+    #endregion
     public List<Talk> GetLeftTalks()
     {
         var talkList = new List<Talk>() { nowTalk };
@@ -120,14 +185,14 @@ public class TalkManager : Singleton<TalkManager>
 
     private void AnimationWait()
     {
-        if (animationWaitTime > 0)
+        if (animationWaitTime > 0 && !eventWindow.gameObject.activeSelf)
         {
             animationWaitTime -= Time.deltaTime;
             if (animationWaitTime <= 0)
                 AnimationUpdate();
         }
     }
-
+    
     private void AnimationUpdate()
     {
         if (!talkWindow.gameObject.activeSelf) return;
@@ -233,7 +298,7 @@ public class TalkManager : Singleton<TalkManager>
                     var linkInfo = descriptionText.textInfo.linkInfo[linkIndex];
                     if (!string.IsNullOrEmpty(ResourcesManager.Instance.GetTip(linkInfo.GetLinkID())))
                     {
-                        EventManager.Instance.EventOpen(linkInfo.GetLinkID(), data.position);
+                        EventOpen(linkInfo.GetLinkID(), data.position);
                     }
                 }
                 else
@@ -248,16 +313,16 @@ public class TalkManager : Singleton<TalkManager>
     {
         if (!talkWindow.gameObject.activeSelf) return;
         if (!dialogueImage.gameObject.activeSelf) return;
+        if (eventWindow.gameObject.activeSelf) return;
         if (nowTalk.dialogue == null)
         {
-            if (animations.Count <= 0)
+            if (animations.Count > 0) return;
+            
+            autoDuration += Time.deltaTime;
+            if (autoDuration >= autoWaitTime)
             {
-                autoDuration += Time.deltaTime;
-                if (autoDuration >= autoWaitTime)
-                {
-                    autoDuration -= autoWaitTime;
-                    NewTalk();
-                }
+                autoDuration -= autoWaitTime;
+                NewTalk();
             }
 
             return;
@@ -280,7 +345,7 @@ public class TalkManager : Singleton<TalkManager>
                 endTextEffect.gameObject.SetActive(true);
                 endTextEffect.DOKill();
                 endTextEffect.color = new Color(105 / 255f, 1, 126 / 255f, 1);
-                endTextEffect.DOFade(0, 1).SetLoops(-1, LoopType.Yoyo);
+                endTextEffect.DOFade(0, 0.8f).SetLoops(-1, LoopType.Yoyo);
 
             }
             var characterPos = new Vector3(-824.4f, 32.39394f);
@@ -295,7 +360,7 @@ public class TalkManager : Singleton<TalkManager>
 
             endTextEffect.rectTransform.anchoredPosition = new Vector2(characterPos.x + 40, characterPos.y - 20);
 
-            if (SaveManager.Instance.GameData.textAuto)
+            if (SaveManager.Instance.GameData.textAuto && nowTalk.dialogue is { tipEvent: null })
             {
                 autoDuration += Time.deltaTime;
                 if (autoDuration >= autoWaitTime)
@@ -312,6 +377,7 @@ public class TalkManager : Singleton<TalkManager>
             if (subBackgroundEffect.effectFactor >= 1)
             {
                 backgroundImage.sprite = subBackgroundImage.sprite;
+                backgroundImage.rectTransform.localScale = subBackgroundImage.rectTransform.localScale;
                 subBackgroundEffect.gameObject.SetActive(false);
             }
         }
@@ -370,8 +436,6 @@ public class TalkManager : Singleton<TalkManager>
         else
             dialogueImage.gameObject.SetActive(false);
 
-        descriptionText.maxVisibleCharacters = 0;
-
         if (!string.IsNullOrEmpty(nowTalk.bgm))
         {
             if (prevTalk == null || !nowTalk.bgm.Equals(prevTalk.bgm))
@@ -392,17 +456,20 @@ public class TalkManager : Singleton<TalkManager>
                     default:
                     case BackgroundEffect.NONE:
                         backgroundImage.sprite = background;
+                        backgroundImage.rectTransform.localScale = Vector3.one * nowTalk.background.scale;
                         subBackgroundImage.gameObject.SetActive(false);
                         break;
                     case BackgroundEffect.TRANS:
                         subBackgroundImage.gameObject.SetActive(true);
                         subBackgroundImage.sprite = background;
+                        subBackgroundImage.rectTransform.localScale = Vector3.one * nowTalk.background.scale;
                         subBackgroundEffect.effectFactor = 0;
                         break;
                     case BackgroundEffect.FADE:
                         subBackgroundImage.gameObject.SetActive(true);
                         subBackgroundImage.sprite = background;
                         subBackgroundImage.color = Utility.fadeWhite;
+                        subBackgroundImage.rectTransform.localScale = Vector3.one * nowTalk.background.scale;
                         subBackgroundImage.DOFade(1, 1).SetEase(Ease.Linear).OnComplete(() =>
                         {
                             backgroundImage.sprite = subBackgroundImage.sprite;

@@ -50,9 +50,7 @@ public class UIStanding : MonoBehaviour, IPoolObject
 
     public void ShowCharacter(Character talkStanding)
     {
-        if (talkStanding.dark)
-            rectTransform.SetAsFirstSibling();
-        else
+        if (!talkStanding.dark)
             rectTransform.SetAsLastSibling();
         if (NowStanding != null)
         {
@@ -148,23 +146,22 @@ public class UIStanding : MonoBehaviour, IPoolObject
         face.color = Utility.fadeWhite;
         face.sprite = ResourcesManager.Instance.GetCharacter(NowStanding.name).standings[NowStanding.clothes].faces[faceName];
         face.DOFade(1, duration).SetEase(Ease.Linear);
+        
+        if (!NowStanding.dark)
+            rectTransform.SetAsLastSibling();
     }
 
     public void Bounce(int repeat, float duration)
     {
         rectTransform.DOAnchorPosY(-50, duration).SetRelative().SetLoops(repeat * 2, LoopType.Yoyo).SetEase(Ease.InOutQuad);
-        if (NowStanding.dark)
-            rectTransform.SetAsFirstSibling();
-        else
+        if (!NowStanding.dark)
             rectTransform.SetAsLastSibling();
     }
 
     public void Scale(Vector3 scale, float duration)
     {
         rectTransform.DOScale(scale, duration);
-        if (NowStanding.dark)
-            rectTransform.SetAsFirstSibling();
-        else
+        if (!NowStanding.dark)
             rectTransform.SetAsLastSibling();
     }
 
@@ -173,17 +170,13 @@ public class UIStanding : MonoBehaviour, IPoolObject
         if (power < 0)
             power = 6;
         rectTransform.DOShakeAnchorPos(duration, power, 30, 90, false, false).SetRelative();
-        if (NowStanding.dark)
-            rectTransform.SetAsFirstSibling();
-        else
+        if (!NowStanding.dark)
             rectTransform.SetAsLastSibling();
     }
 
     public void Emotion(string emotionName, float duration)
     {
-        if (NowStanding.dark)
-            rectTransform.SetAsFirstSibling();
-        else
+        if (!NowStanding.dark)
             rectTransform.SetAsLastSibling();
         
         if (duration < 0)
@@ -274,7 +267,7 @@ public class UIStanding : MonoBehaviour, IPoolObject
                 worry.rectTransform.localScale = new Vector3(1, 1, 1);
                 worry.rectTransform.localRotation = Quaternion.identity;
 
-                worry.rectTransform.DOShakeScale(fadeOutDelay, 0.8f);
+                worry.rectTransform.DOShakeScale(fadeOutDelay, 0.4f);
                 worry.rectTransform.DOShakePosition(fadeOutDelay, 10, 10, 90F, false, false);
                 worry.rectTransform.DOLocalRotate(new Vector3(0, 0, Random.Range(35f, 15f)), duration).OnComplete(() =>
                 {

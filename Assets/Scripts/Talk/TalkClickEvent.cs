@@ -1,4 +1,7 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using System.Linq;
+using TMPro;
+using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class TalkClickEvent : MonoBehaviour, IPointerClickHandler
