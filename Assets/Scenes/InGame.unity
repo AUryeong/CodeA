@@ -800,7 +800,7 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
-  m_UseSpriteMesh: 0
+  m_UseSpriteMesh: 1
   m_PixelsPerUnitMultiplier: 1
 --- !u!222 &252474459
 CanvasRenderer:
@@ -1715,6 +1715,122 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 902746597947708693, guid: 77480689c3fc67d48976e88e28d35139, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 902746597947708693, guid: 77480689c3fc67d48976e88e28d35139, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 902746597947708693, guid: 77480689c3fc67d48976e88e28d35139, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 902746597947708693, guid: 77480689c3fc67d48976e88e28d35139, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2934584747104526480, guid: 77480689c3fc67d48976e88e28d35139, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2934584747104526480, guid: 77480689c3fc67d48976e88e28d35139, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2934584747104526480, guid: 77480689c3fc67d48976e88e28d35139, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2934584747104526480, guid: 77480689c3fc67d48976e88e28d35139, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3270015510789247061, guid: 77480689c3fc67d48976e88e28d35139, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3270015510789247061, guid: 77480689c3fc67d48976e88e28d35139, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3270015510789247061, guid: 77480689c3fc67d48976e88e28d35139, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3270015510789247061, guid: 77480689c3fc67d48976e88e28d35139, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3869414833797845030, guid: 77480689c3fc67d48976e88e28d35139, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3869414833797845030, guid: 77480689c3fc67d48976e88e28d35139, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3869414833797845030, guid: 77480689c3fc67d48976e88e28d35139, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3869414833797845030, guid: 77480689c3fc67d48976e88e28d35139, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4840923266238202149, guid: 77480689c3fc67d48976e88e28d35139, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4840923266238202149, guid: 77480689c3fc67d48976e88e28d35139, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4840923266238202149, guid: 77480689c3fc67d48976e88e28d35139, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4840923266238202149, guid: 77480689c3fc67d48976e88e28d35139, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5077586686769969817, guid: 77480689c3fc67d48976e88e28d35139, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5077586686769969817, guid: 77480689c3fc67d48976e88e28d35139, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5077586686769969817, guid: 77480689c3fc67d48976e88e28d35139, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5077586686769969817, guid: 77480689c3fc67d48976e88e28d35139, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6778437001187664832, guid: 77480689c3fc67d48976e88e28d35139, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6778437001187664832, guid: 77480689c3fc67d48976e88e28d35139, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6778437001187664832, guid: 77480689c3fc67d48976e88e28d35139, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6778437001187664832, guid: 77480689c3fc67d48976e88e28d35139, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8897159660436273902, guid: 77480689c3fc67d48976e88e28d35139, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 9126023065992542624, guid: 77480689c3fc67d48976e88e28d35139, type: 3}
       propertyPath: m_RootOrder
       value: 8
@@ -2346,6 +2462,8 @@ MonoBehaviour:
     m_LabelString: background
   talkLabel:
     m_LabelString: talk
+  tipLabel:
+    m_LabelString: 
   downloadWindow: {fileID: 127338326}
   downloadingText: {fileID: 826541056}
   downloadWarningWindow: {fileID: 1374563400}
@@ -4149,6 +4267,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   talkWindow: {fileID: 1752878462}
+  dialogueImage: {fileID: 0}
   talkerText: {fileID: 1797203706}
   descriptionText: {fileID: 2073317572}
   blackFadeIn: {fileID: 1221494596}
@@ -4158,6 +4277,11 @@ MonoBehaviour:
   subBackgroundImage: {fileID: 265625261}
   uiStanding: {fileID: 6459186007292944075, guid: 9e8265353da14a443b490d628d95f5e1, type: 3}
   standingParent: {fileID: 1962605095}
+  eventWindow: {fileID: 0}
+  eventTitleText: {fileID: 0}
+  eventDescriptionText: {fileID: 0}
+  eventOkayButton: {fileID: 0}
+  eventExitButton: {fileID: 0}
 --- !u!4 &1508900947
 Transform:
   m_ObjectHideFlags: 0
@@ -6119,6 +6243,7 @@ MonoBehaviour:
     statLevels: 
     hasSkills: 
     hasItems: 
+    getTips: []
     leftTalks: []
     saveTime: 
 --- !u!1 &2144832789
