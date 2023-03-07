@@ -92,7 +92,7 @@ public class WindowManager : Singleton<WindowManager>
         isScrolling = false;
         windowBlockDisabling = true;
 
-        scrollImage.rectTransform.DOAnchorPosX(-57, 0.4f).SetUpdate(true);
+        scrollImage.rectTransform.DOAnchorPosX(-85.5f, 0.4f).SetUpdate(true);
         scrollImage.sprite = scrollDeSelectSprite;
 
         windowBlock.DOFade(0f, 0.4f).SetUpdate(true).OnComplete(() =>
@@ -110,7 +110,7 @@ public class WindowManager : Singleton<WindowManager>
 
         Time.timeScale = 0;
 
-        scrollImage.rectTransform.DOAnchorPosX(-627, 0.4f).SetUpdate(true);
+        scrollImage.rectTransform.DOAnchorPosX(-940.5f, 0.4f).SetUpdate(true);
         scrollImage.sprite = scrollSelectSprite;
 
         windowBlock.gameObject.SetActive(true);
@@ -125,26 +125,27 @@ public class WindowManager : Singleton<WindowManager>
         {
             if (!windowBlockDisabling)
             {
-                Time.timeScale = 1;
-                windowBlockDisabling = true;
-
-                scrollImage.rectTransform.DOAnchorPosX(-57, 0.4f).SetUpdate(true);
+                scrollImage.rectTransform.DOAnchorPosX(-85.5f, 0.4f).SetUpdate(true);
                 scrollImage.sprite = scrollDeSelectSprite;
 
-                windowBlock.DOFade(0f, 0.4f).SetUpdate(true).OnComplete(() =>
+                if (selectType == WindowType.NONE)
                 {
-                    windowBlock.gameObject.SetActive(false);
-                    windowBlockDisabling = false;
-                });
+                    Time.timeScale = 1;
+                    windowBlockDisabling = true;
 
-                CloseAllWindow();
+                    windowBlock.DOFade(0f, 0.4f).SetUpdate(true).OnComplete(() =>
+                    {
+                        windowBlock.gameObject.SetActive(false);
+                        windowBlockDisabling = false;
+                    });
+                }
             }
         }
         else
         {
             Time.timeScale = 0;
 
-            scrollImage.rectTransform.DOAnchorPosX(-627, 0.4f).SetUpdate(true);
+            scrollImage.rectTransform.DOAnchorPosX(-940.5f, 0.4f).SetUpdate(true);
             scrollImage.sprite = scrollSelectSprite;
 
             windowBlock.gameObject.SetActive(true);
