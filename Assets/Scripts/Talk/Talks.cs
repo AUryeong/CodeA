@@ -31,9 +31,12 @@ public class Dialogue
 
     [XmlElement("Text")] public string text;
 
-    [XmlAttribute("Active")] public bool active = true;
-    
     [XmlElement("Event")] public Event tipEvent = null;
+
+    [XmlAttribute("Active")] public bool active = true;
+
+    [XmlAttribute("Owner")] public string owner;
+
 }
 
 [System.Serializable]

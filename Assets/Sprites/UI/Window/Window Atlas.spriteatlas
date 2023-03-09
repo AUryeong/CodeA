@@ -61,7 +61,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: d9a1e9f7a2f385e43aebfcf6a1594af1, type: 3}
   - {fileID: 21300000, guid: 41b58b1dd664d994db0798a3090b7055, type: 3}
   m_PackedSpriteNamesToIndex:
-  - Scroll DeSelect
+  - Scroll Deselect
   - WindowButton Select
   - Scroll Select
   - Toggle Off

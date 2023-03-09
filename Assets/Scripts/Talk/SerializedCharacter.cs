@@ -18,6 +18,9 @@ public class SerializedCharacterStanding
     [Space(20)]
     [Tooltip("기본 자세(얼굴 없는거)")]
     public Sprite baseStanding;
+
+    public Sprite logFace;
+
     [Space(10)]
     [Tooltip("표정들")]
     public List<Sprite> face;

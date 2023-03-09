@@ -85,8 +85,11 @@ public class WindowManager : Singleton<WindowManager>
 
     public void CloseScrollAndWindow()
     {
-        if (!isScrolling) return;
         if (windowBlockDisabling) return;
+
+        CloseAllWindow();
+
+        if (isScrolling) return;
 
         Time.timeScale = 1;
         isScrolling = false;
@@ -100,8 +103,6 @@ public class WindowManager : Singleton<WindowManager>
             windowBlock.gameObject.SetActive(false);
             windowBlockDisabling = false;
         });
-
-        CloseAllWindow();
     }
 
     public void WindowOpen()

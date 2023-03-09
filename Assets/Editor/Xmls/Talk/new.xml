@@ -4,7 +4,7 @@
     <Talk>
         <Bgm>School</Bgm>
         <BG Name="Class_Morning"/>
-        <Dialogue Active="false">
+        <Dialogue Active="false" Owner="A">
             <Talker>에이</Talker>
             <Text>혹시 {원더랜드}를 아십니까?</Text>
             <Event Name="앨리스" Talk="alice"/>

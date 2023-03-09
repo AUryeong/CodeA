@@ -432,6 +432,7 @@ public class TalkManager : Singleton<TalkManager>
             talkerText.text = "> " + Utility.GetTalkerName(nowTalk.dialogue.talker);
             descriptionText.text = Utility.GetTalkerName(nowTalk.dialogue.text);
             dialogueImage.gameObject.SetActive(nowTalk.dialogue.active);
+            LogManager.Instance.AddLog(nowTalk);
         }
         else
             dialogueImage.gameObject.SetActive(false);
