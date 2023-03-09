@@ -27,7 +27,7 @@ namespace UI
             base.OnCreated();
 
             exitButton.onClick.RemoveAllListeners();
-            exitButton.onClick.AddListener(WindowManager.Instance.CloseScrollAndWindow);
+            exitButton.onClick.AddListener(WindowManager.Instance.CloseAllWindow);
 
             foreach (var button in saves)
             {
@@ -65,7 +65,8 @@ namespace UI
                 var getSaveData = SaveManager.Instance.GameData.GetSaveData(idx);
                 if (getSaveData != null)
                 {
-                    if (getSaveData.leftTalks.Count <= 0 || string.IsNullOrEmpty(getSaveData.leftTalks[0].background.name))
+                    if (getSaveData.leftTalks == null || getSaveData.leftTalks.Count <= 0 || getSaveData.leftTalks[0]?.background == null ||
+                        string.IsNullOrEmpty(getSaveData.leftTalks[0].background.name))
                     {
                         //TODO 시간별 이미지 적용
                         saves[i].image.sprite = null;

@@ -255,6 +255,7 @@ public class ResourcesManager : Singleton<ResourcesManager>
                 }
 
                 standing.baseStanding = serializedStanding.baseStanding;
+                standing.logFace = serializedStanding.logFace;
                 standing.faces = faceDictionary;
                 character.standings.Add(serializedStanding.name, standing);
             }

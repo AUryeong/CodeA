@@ -7,8 +7,6 @@ namespace UI
 {
     public class UILogCell : MonoBehaviour, IScrollCell
     {
-
-        private LogCellData data;
         [SerializeField] TextMeshProUGUI talkerText;
         [SerializeField] TextMeshProUGUI descriptionText;
         [SerializeField] Image faceIcon;
@@ -16,16 +14,16 @@ namespace UI
 
         public void SetData(LogCellData data)
         {
-            bool flag = string.IsNullOrEmpty(data.name);
-            talkerText.gameObject.SetActive(!flag);
-            if (!flag)
-                talkerText.text = data.name;
-
-            descriptionText.color = flag ? new Color(0.7f, 0.7f, 0.7f) : Color.white;
-            descriptionText.rectTransform.sizeDelta = new Vector2(descriptionText.rectTransform.sizeDelta.x, flag ? 190 : 140);
+            talkerText.text = "> " + data.name;
             descriptionText.text = data.text;
-            if (string.IsNullOrEmpty(data.standingName)) return;
+            if (string.IsNullOrEmpty(data.standingName))
+            {
+                faceIcon.gameObject.SetActive(false);
+                return;
+            }
 
+            faceIcon.gameObject.SetActive(true);
+            faceSprite.sprite = ResourcesManager.Instance.GetCharacter(data.standingName).standings[data.clothesName].logFace;
         }
     }
 }

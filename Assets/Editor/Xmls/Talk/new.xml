@@ -23,7 +23,7 @@
         </Animations>
     </Talk>
     <Talk>
-        <Dialogue Active="false">
+        <Dialogue Active="false" Owner="A">
             <Talker>에이</Talker>
             <Text>이걸 모르네...</Text>
         </Dialogue>
@@ -35,6 +35,7 @@
             <Animation Type="CHAR" Name="Loli" Effect="Emotion" Parameter="Worry" Duration="0.5"/>
             <Animation Type="UTIL" Effect="Wait" Duration="2"/>
             <Animation Type="CHAR" Name="A" Effect="Face" Parameter="SideSmile" />
+            <Animation Type="EVENT" Effect="TIP_ADD"  Parameter="앨리스" />
             <Animation Type="DIAL" Effect="On"/>
         </Animations>
     </Talk>

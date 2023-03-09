@@ -23,10 +23,11 @@ MonoBehaviour:
       talker: "\uC5D0\uC774"
       text: "\uD639\uC2DC <#FFEE00><bounce><link=\uC568\uB9AC\uC2A4>\uC6D0\uB354\uB79C\uB4DC</color></bounce></link>\uB97C
         \uC544\uC2ED\uB2C8\uAE4C?"
-      active: 0
       tipEvent:
         eventName: "\uC568\uB9AC\uC2A4"
         talkName: alice
+      active: 0
+      owner: A
     characters:
     - name: A
       clothes: Default
@@ -79,10 +80,11 @@ MonoBehaviour:
     dialogue:
       talker: "\uC5D0\uC774"
       text: "\uC774\uAC78 \uBAA8\uB974\uB124..."
-      active: 0
       tipEvent:
         eventName: 
         talkName: 
+      active: 0
+      owner: A
     characters:
     - name: A
       clothes: Default
@@ -111,6 +113,11 @@ MonoBehaviour:
       effect: Face
       name: A
       parameter: SideSmile
+      duration: -1
+    - type: 4
+      effect: TIP_ADD
+      name: 
+      parameter: "\uC568\uB9AC\uC2A4"
       duration: -1
     - type: 2
       effect: On

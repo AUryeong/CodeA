@@ -34,5 +34,7 @@ public class CharacterStanding
 public class Standing
 {
     public Sprite baseStanding;
+
+    public Sprite logFace;
     public Dictionary<string, Sprite> faces;
 }

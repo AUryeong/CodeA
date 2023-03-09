@@ -9,25 +9,19 @@ namespace UI
     {
         [SerializeField] private Button exitButton;
         [SerializeField] private UILogVerticalScroll logScroll;
-        [SerializeField] private Image warningWindow;
 
         public override void OnCreated()
         {
             base.OnCreated();
 
             exitButton.onClick.RemoveAllListeners();
-            exitButton.onClick.AddListener(WindowManager.Instance.CloseScrollAndWindow);
+            exitButton.onClick.AddListener(WindowManager.Instance.CloseAllWindow);
         }
 
         public override void Init(Image button)
         {
             base.Init(button);
-            var logList = LogManager.Instance.GetDatas();
-            if(logList == null || logList.Count <= 0)
-            {
-                warningWindow.gameObject.SetActive(true);
-            }
-            logScroll.SetLog(logList);
+            logScroll.SetLog(LogManager.Instance.GetDatas());
         }
     }
 }

@@ -22,10 +22,11 @@ MonoBehaviour:
     dialogue:
       talker: "\uC5D0\uC774"
       text: "\uC640! \uC568\uB9AC\uC2A4 \uC544\uC2DC\uB294\uAD6C\uB098!!!!"
-      active: 0
       tipEvent:
         eventName: 
         talkName: 
+      active: 0
+      owner: A
     characters:
     - name: A
       clothes: Default
@@ -85,3 +86,57 @@ MonoBehaviour:
       name: A
       parameter: 3
       duration: 0.2
+  - bgm: School
+    background:
+      name: Class_Morning
+      effect: 0
+      scale: 1
+    dialogue:
+      talker: '{0}'
+      text: "\uC774\uAC74 \uBAA8\uB97C \uC218\uAC00 \uC5C6\uAE34\uD574"
+      tipEvent:
+        eventName: 
+        talkName: 
+      active: 1
+      owner: 
+    characters:
+    - name: Loli
+      clothes: Default
+      face: Default
+      pos: 6
+      size: 1
+      dark: 0
+    - name: A
+      clothes: Default
+      face: SmileFlush
+      pos: 5
+      size: 1
+      dark: 0
+    animations: []
+  - bgm: School
+    background:
+      name: Class_Morning
+      effect: 0
+      scale: 1
+    dialogue:
+      talker: "\uC774\uB85C\uB9AC"
+      text: "\uD788\uD788 \uC54C\uC544\uC11C \uB2E4\uD589\uC774\uB2E4"
+      tipEvent:
+        eventName: 
+        talkName: 
+      active: 1
+      owner: Loli
+    characters:
+    - name: A
+      clothes: Default
+      face: SmileFlush
+      pos: 5
+      size: 1
+      dark: 0
+    - name: Loli
+      clothes: Default
+      face: Default
+      pos: 6
+      size: 1
+      dark: 0
+    animations: []

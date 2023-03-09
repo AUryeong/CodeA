@@ -58,7 +58,7 @@ namespace UI
             talkUI.onClick.AddListener(CheckClick);
             
             exitButton.onClick.RemoveAllListeners();
-            exitButton.onClick.AddListener(WindowManager.Instance.CloseScrollAndWindow);
+            exitButton.onClick.AddListener(WindowManager.Instance.CloseAllWindow);
             
             namingInput.onEndEdit.AddListener((text) =>
             {

@@ -97,7 +97,8 @@ public enum AnimationType
     CHAR,
     UTIL,
     DIAL,
-    CAM
+    CAM,
+    EVENT
 }
 
 public enum CharacterPos

@@ -50,6 +50,8 @@ public class GameData
     public List<string> getCg = new List<string>(); // 얻은 CG
 
     public List<string> getVideo = new List<string>(); // 얻은 w
+    
+    public List<string> getTips = new List<string>();
 
 
     public SubGameData GetSaveData(int idx)
@@ -100,8 +102,6 @@ public class SubGameData
     public List<SkillType> hasSkills = new List<SkillType>();
 
     public List<Item> hasItems = new List<Item>();
-
-    public List<string> getTips = new List<string>();
 
     public List<Talk> leftTalks = new List<Talk>();
 

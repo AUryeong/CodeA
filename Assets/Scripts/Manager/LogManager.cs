@@ -27,13 +27,17 @@ public class LogManager : Singleton<LogManager>
 
         if (datas.Count >= 50)
             datas.Dequeue();
-        datas.Enqueue(new LogCellData
+        var logCellData = new LogCellData
         {
-            name = talk.dialogue.talker,
-            text = talk.dialogue.text,
-            standingName = talk.dialogue.owner,
-            clothesName = talk.characters.Find((x) => x.name == talk.dialogue.owner).clothes
-        });
+            name = Utility.GetTalkerName(talk.dialogue.talker),
+            text = Utility.GetTalkerName(talk.dialogue.text)
+        };
+        if (!string.IsNullOrEmpty(talk.dialogue.owner))
+        {
+            logCellData.standingName = talk.dialogue.owner;
+            logCellData.clothesName = talk.characters.Find((x) => x.name == talk.dialogue.owner).clothes;
+        }
+        datas.Enqueue(logCellData);
     }
 
     public List<LogCellData> GetDatas()

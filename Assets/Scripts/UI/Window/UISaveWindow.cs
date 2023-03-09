@@ -29,7 +29,7 @@ namespace UI
             base.OnCreated();
 
             exitButton.onClick.RemoveAllListeners();
-            exitButton.onClick.AddListener(WindowManager.Instance.CloseScrollAndWindow);
+            exitButton.onClick.AddListener(WindowManager.Instance.CloseAllWindow);
 
             foreach (var button in saves)
             {
@@ -47,14 +47,14 @@ namespace UI
         }
 
         public override void Init(Image button)
-        { 
+        {
             base.Init(button);
             warningWindow.gameObject.SetActive(GameManager.Instance.nowGameData == null);
             warningWindow2.gameObject.SetActive(false);
-            
+
             warningCancelButton.onClick.RemoveAllListeners();
             warningCancelButton.onClick.AddListener(() => warningWindow2.gameObject.SetActive(false));
-            
+
             ReloadSaves();
         }
 
@@ -68,7 +68,8 @@ namespace UI
                 var getSaveData = SaveManager.Instance.GameData.GetSaveData(idx);
                 if (getSaveData != null)
                 {
-                    if (getSaveData.leftTalks.Count <= 0 || string.IsNullOrEmpty(getSaveData.leftTalks[0].background.name))
+                    if (getSaveData.leftTalks == null || getSaveData.leftTalks.Count <= 0 || getSaveData.leftTalks[0]?.background == null ||
+                        string.IsNullOrEmpty(getSaveData.leftTalks[0].background.name))
                         saves[i].image.sprite = null;
                     else
                         saves[i].image.sprite = ResourcesManager.Instance.GetBackground(getSaveData.leftTalks[0].background.name);
@@ -78,7 +79,7 @@ namespace UI
 
                     saveDates[i].gameObject.SetActive(true);
                     saveDates[i].text = getSaveData.saveTime;
-                    
+
                     saves[i].onClick.AddListener(() => WarningSave(idx));
                 }
                 else
@@ -86,7 +87,7 @@ namespace UI
                     saves[i].image.sprite = null;
                     saveTitles[i].gameObject.SetActive(false);
                     saveDates[i].gameObject.SetActive(false);
-                    
+
                     saves[i].onClick.AddListener(() => Save(idx));
                 }
             }

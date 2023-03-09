@@ -16,7 +16,7 @@ namespace UI
             base.OnCreated();
 
             warningCancelButton.onClick.RemoveAllListeners();
-            warningCancelButton.onClick.AddListener(WindowManager.Instance.CloseScrollAndWindow);
+            warningCancelButton.onClick.AddListener(WindowManager.Instance.CloseAllWindow);
         }
 
         public override void Init(Image button)

@@ -37,6 +37,14 @@ public class GameManager : Singleton<GameManager>
         OnReset();
     }
 
+    public void AddTip(string tipName)
+    {
+        if (SaveManager.Instance.GameData.getTips.Contains(tipName)) return;
+        
+        SaveManager.Instance.GameData.getTips.Add(tipName);
+        SaveManager.Instance.GameData.getTips.Sort();
+    }
+
     public void ViewCG(string cgName)
     {
         SaveManager.Instance.GameData.saigoCg = cgName;

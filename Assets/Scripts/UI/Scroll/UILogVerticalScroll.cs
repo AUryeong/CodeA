@@ -10,7 +10,7 @@ namespace UI
     {
         [SerializeField] SuperScrollRect scrollRect;
         private List<LogCellData> datas;
-        private Dictionary<GameObject, UILogCell> cellDictionaries = new Dictionary<GameObject, UILogCell>();
+        private readonly Dictionary<GameObject, UILogCell> cellDictionaries = new Dictionary<GameObject, UILogCell>();
 
         public void SetLog( List<LogCellData> cellDatas)
         {

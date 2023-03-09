@@ -83,13 +83,11 @@ public class WindowManager : Singleton<WindowManager>
             window.OnCreated();
     }
 
-    public void CloseScrollAndWindow()
+    private void CloseScrollAndWindow()
     {
         if (windowBlockDisabling) return;
 
         CloseAllWindow();
-
-        if (isScrolling) return;
 
         Time.timeScale = 1;
         isScrolling = false;
