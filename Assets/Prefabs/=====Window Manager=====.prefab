@@ -4503,7 +4503,7 @@ RectTransform:
   - {fileID: 3792433476842983958}
   - {fileID: 8076487113329844490}
   m_Father: {fileID: 9126023065538368765}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -10460,7 +10460,7 @@ RectTransform:
   - {fileID: 646453137731807240}
   - {fileID: 8829180913610246888}
   m_Father: {fileID: 9126023065538368765}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -13252,7 +13252,7 @@ RectTransform:
   - {fileID: 5274093737598829687}
   - {fileID: 7774472103348194392}
   m_Father: {fileID: 9126023065538368765}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -16945,7 +16945,7 @@ RectTransform:
   - {fileID: 4015277639496434049}
   - {fileID: 5892063451063470806}
   m_Father: {fileID: 9126023065538368765}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -18850,7 +18850,7 @@ RectTransform:
   - {fileID: 9126023064585920982}
   - {fileID: 9126023064858828270}
   m_Father: {fileID: 9126023066118616452}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -18879,7 +18879,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 0
+  m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -19821,14 +19821,14 @@ GameObject:
   - component: {fileID: 9126023064976986302}
   - component: {fileID: 9126023064976986296}
   - component: {fileID: 9126023064976986303}
-  - component: {fileID: 1997231880654038714}
+  - component: {fileID: 5029399358907194646}
   m_Layer: 5
   m_Name: Window Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &9126023064976986302
 RectTransform:
   m_ObjectHideFlags: 0
@@ -19836,11 +19836,11 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9126023064976986301}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 9126023065538368765}
+  m_Father: {fileID: 9126023066118616452}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -19869,7 +19869,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 0.2627451}
+  m_Color: {r: 0, g: 0, b: 0, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -19886,7 +19886,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &1997231880654038714
+--- !u!114 &5029399358907194646
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -20222,7 +20222,7 @@ RectTransform:
   - {fileID: 9126023064780294326}
   - {fileID: 9126023064695383752}
   m_Father: {fileID: 9126023065538368765}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
@@ -20367,7 +20367,6 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_Children:
-  - {fileID: 9126023064976986302}
   - {fileID: 9126023066118616452}
   - {fileID: 3093253866077424526}
   - {fileID: 6249649723649281143}
@@ -20703,7 +20702,6 @@ MonoBehaviour:
   - {fileID: 1035942521410693915}
   - {fileID: 683907907765700671}
   - {fileID: 5825452459050791894}
-  windowBlock: {fileID: 9126023064976986303}
   buttonSelectSprite: {fileID: 21300000, guid: 77a4d081b3f11654ebbd0fed4f3c9724, type: 3}
   buttonDeSelectSprite: {fileID: 21300000, guid: 41b58b1dd664d994db0798a3090b7055, type: 3}
   scrollSelectSprite: {fileID: 21300000, guid: 53de663463fc57942aacae7f2c198f3c, type: 3}
@@ -20742,9 +20740,10 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
+  - {fileID: 9126023064976986302}
   - {fileID: 9126023064757958919}
   m_Father: {fileID: 9126023065538368765}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -20766,6 +20765,7 @@ MonoBehaviour:
   type: 1
   warningOkayButton: {fileID: 9126023064864438498}
   warningCancelButton: {fileID: 9126023064585920983}
+  blockButton: {fileID: 5029399358907194646}
   warningDescription: {fileID: 9126023065582410979}
   warningDescription2: {fileID: 9126023064858828271}
 --- !u!1 &9134199876578446085

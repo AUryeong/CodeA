@@ -180,7 +180,6 @@ MonoBehaviour:
     statLevels: 
     hasSkills: 
     hasItems: 
-    getTips: []
     leftTalks: []
     saveTime: 
 --- !u!1 &12445099
@@ -1314,6 +1313,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   prefsName: CodeA
+  gameData:
+    isDownloadFile: 0
+    name: 
+    sfxSound: 1
+    bgmSound: 1
+    textSpeed: 0.5
+    textAuto: 0
+    saigoCg: 
+    getCg: []
+    getVideo: []
+    getTips: []
+    savedGameDatas: []
 --- !u!4 &410175363
 Transform:
   m_ObjectHideFlags: 0
@@ -2134,11 +2145,11 @@ RectTransform:
   m_Father: {fileID: 1988770366}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0.5, y: 0}
+  m_AnchorMax: {x: 0.5, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 1920, y: 1080}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &779665414
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4310,7 +4321,7 @@ GameObject:
   - component: {fileID: 1749165427}
   - component: {fileID: 1749165426}
   m_Layer: 5
-  m_Name: SubTitle (1)
+  m_Name: Continue Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5201,6 +5212,7 @@ MonoBehaviour:
   eventDescriptionText: {fileID: 425755957}
   eventOkayButton: {fileID: 12445101}
   eventExitButton: {fileID: 1275147937}
+  eventContinueText: {fileID: 1749165426}
 --- !u!4 &2064348044
 Transform:
   m_ObjectHideFlags: 0

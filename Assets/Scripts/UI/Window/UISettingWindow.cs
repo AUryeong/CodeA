@@ -172,9 +172,9 @@ namespace UI
             textTypeImage.sprite = SaveManager.Instance.GameData.textAuto ? textTypeSpriteOn : textTypeSpriteOff;
         }
 
-        public override void Init(Image button)
+        public override void Init(Vector3 pos)
         {
-            base.Init(button);
+            base.Init(pos);
 
             NamingSetting();
             SoundSetting();

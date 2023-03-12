@@ -80,6 +80,16 @@ namespace EditorUtil
                         }
 
                         talk.dialogue.text = Regex.Replace(talk.dialogue.text, PAUSE_REGEX_STRING, "");
+
+                        if (talk.dialogue.active && talk.characters != null)
+                        {
+                            if (!string.IsNullOrEmpty(talk.dialogue.owner))
+                            {
+                                var findCharacter = talk.characters.Find((character) => character.dark && talk.dialogue.owner == character.name);
+                                if (findCharacter != null)
+                                    findCharacter.dark = false;
+                            }
+                        }
                     }
 
                     foreach (var character in talk.characters)

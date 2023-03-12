@@ -18,9 +18,9 @@ namespace UI
             exitButton.onClick.AddListener(WindowManager.Instance.CloseAllWindow);
         }
 
-        public override void Init(Image button)
+        public override void Init(Vector3 pos)
         {
-            base.Init(button);
+            base.Init(pos);
             logScroll.SetLog(LogManager.Instance.GetDatas());
         }
     }

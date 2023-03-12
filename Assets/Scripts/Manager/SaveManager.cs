@@ -130,7 +130,7 @@ public class SaveManager : Singleton<SaveManager>
 {
     public string prefsName = "CodeA";
 
-    private GameData gameData;
+    [SerializeField]private GameData gameData;
 
     public GameData GameData
     {

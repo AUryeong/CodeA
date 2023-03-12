@@ -59,7 +59,6 @@ public class UIStanding : MonoBehaviour, IPoolObject
                 var sprite = ResourcesManager.Instance.GetCharacter(talkStanding.name).standings[talkStanding.clothes].faces[talkStanding.face];
                 var toColor2 = talkStanding.dark ? Utility.darkColor : Color.white;
                 var toFadeColor = talkStanding.dark ? Utility.fadeDarkColor : Utility.fadeWhite;
-                ;
                 if (sprite != face.sprite)
                 {
                     var duration = 0.4f;
@@ -124,6 +123,19 @@ public class UIStanding : MonoBehaviour, IPoolObject
 
         sideFace.gameObject.SetActive(false);
         NowStanding = talkStanding;
+    }
+
+    public void SetDark(bool dark)
+    {
+        if(!dark)
+            transform.SetAsLastSibling();
+        var toColor = dark ? Utility.darkColor : Color.white;
+        
+        baseStanding.DOKill();
+        baseStanding.DOColor(toColor, 0.3f);
+        
+        face.DOKill();
+        face.DOColor(toColor, 0.3f);
     }
 
     public void Move(float posX, float duration)

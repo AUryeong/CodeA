@@ -8,6 +8,7 @@ namespace UI
     {
         [SerializeField] private Button warningOkayButton;
         [SerializeField] private Button warningCancelButton;
+        [SerializeField] private Button blockButton;
         [SerializeField] private TextMeshProUGUI warningDescription;
         [SerializeField] private TextMeshProUGUI warningDescription2;
 
@@ -17,11 +18,14 @@ namespace UI
 
             warningCancelButton.onClick.RemoveAllListeners();
             warningCancelButton.onClick.AddListener(WindowManager.Instance.CloseAllWindow);
+            
+            blockButton.onClick.RemoveAllListeners();
+            blockButton.onClick.AddListener(WindowManager.Instance.CloseAllWindow);
         }
 
-        public override void Init(Image button)
+        public override void Init(Vector3 pos)
         {
-            base.Init(button);
+            base.Init(pos);
 
             warningOkayButton.onClick.RemoveAllListeners();
 

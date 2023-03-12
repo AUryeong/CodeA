@@ -81,7 +81,6 @@ public class InGameManager : Singleton<InGameManager>
         }
 
         GameManager.Instance.nowGameData = new SubGameData();
-        Time.timeScale = 0;
         namingCanvas.gameObject.SetActive(true);
 
         enterButton.onClick.RemoveAllListeners();
@@ -105,7 +104,6 @@ public class InGameManager : Singleton<InGameManager>
 
     private void EnterName()
     {
-        Time.timeScale = 1;
         //TODO SOUND
         SaveManager.Instance.GameData.name = string.IsNullOrEmpty(namingInput.text) ? "김준우" : namingInput.text;
         namingCanvas.gameObject.SetActive(false);

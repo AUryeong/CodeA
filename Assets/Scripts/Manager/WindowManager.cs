@@ -15,29 +15,16 @@ public class WindowManager : Singleton<WindowManager>
     [SerializeField] private List<Button> windowButtons;
     private WindowType selectType;
 
-    [SerializeField] private Image windowBlock;
-    private Button windowBlockButton;
-    private bool windowBlockDisabling = false;
-
     [Header("스프라이트")] [SerializeField] private Sprite buttonSelectSprite;
     [SerializeField] private Sprite buttonDeSelectSprite;
     [SerializeField] private Sprite scrollSelectSprite;
     [SerializeField] private Sprite scrollDeSelectSprite;
 
     [Space(20)] [SerializeField] private List<UIWindow> windows;
-    
+
     protected override void OnReset()
     {
         CloseScrollAndWindow();
-    }
-
-    public void OpenWindow(WindowType type)
-    {
-        if (isScrolling) return;
-
-        selectType = WindowType.NONE;
-        WindowScroll();
-        ClickWindow(type);
     }
 
     private void Update()
@@ -62,14 +49,8 @@ public class WindowManager : Singleton<WindowManager>
 
     protected override void OnCreated()
     {
-        windowBlock.gameObject.SetActive(false);
-        windowBlockButton = windowBlock.GetComponent<Button>();
-
         scrollButton.onClick.RemoveAllListeners();
         scrollButton.onClick.AddListener(WindowScroll);
-
-        windowBlockButton.onClick.RemoveAllListeners();
-        windowBlockButton.onClick.AddListener(CloseScrollAndWindow);
 
         scrollImage = scrollButton.GetComponent<Image>();
         for (int i = 0; i < windowButtons.Count; i++)
@@ -85,35 +66,20 @@ public class WindowManager : Singleton<WindowManager>
 
     private void CloseScrollAndWindow()
     {
-        if (windowBlockDisabling) return;
-
         CloseAllWindow();
 
-        Time.timeScale = 1;
         isScrolling = false;
-        windowBlockDisabling = true;
 
         scrollImage.rectTransform.DOAnchorPosX(-85.5f, 0.4f).SetUpdate(true);
         scrollImage.sprite = scrollDeSelectSprite;
-
-        windowBlock.DOFade(0f, 0.4f).SetUpdate(true).OnComplete(() =>
-        {
-            windowBlock.gameObject.SetActive(false);
-            windowBlockDisabling = false;
-        });
     }
 
     public void WindowOpen()
     {
         if (isScrolling) return;
 
-        Time.timeScale = 0;
-
         scrollImage.rectTransform.DOAnchorPosX(-940.5f, 0.4f).SetUpdate(true);
         scrollImage.sprite = scrollSelectSprite;
-
-        windowBlock.gameObject.SetActive(true);
-        windowBlock.DOFade(0.4f, 0.4f).SetUpdate(true);
 
         isScrolling = !isScrolling;
     }
@@ -122,33 +88,13 @@ public class WindowManager : Singleton<WindowManager>
     {
         if (isScrolling)
         {
-            if (!windowBlockDisabling)
-            {
-                scrollImage.rectTransform.DOAnchorPosX(-85.5f, 0.4f).SetUpdate(true);
-                scrollImage.sprite = scrollDeSelectSprite;
-
-                if (selectType == WindowType.NONE)
-                {
-                    Time.timeScale = 1;
-                    windowBlockDisabling = true;
-
-                    windowBlock.DOFade(0f, 0.4f).SetUpdate(true).OnComplete(() =>
-                    {
-                        windowBlock.gameObject.SetActive(false);
-                        windowBlockDisabling = false;
-                    });
-                }
-            }
+            scrollImage.rectTransform.DOAnchorPosX(-85.5f, 0.4f).SetUpdate(true);
+            scrollImage.sprite = scrollDeSelectSprite;
         }
         else
         {
-            Time.timeScale = 0;
-
             scrollImage.rectTransform.DOAnchorPosX(-940.5f, 0.4f).SetUpdate(true);
             scrollImage.sprite = scrollSelectSprite;
-
-            windowBlock.gameObject.SetActive(true);
-            windowBlock.DOFade(0.4f, 0.4f).SetUpdate(true);
         }
 
         isScrolling = !isScrolling;
@@ -169,9 +115,8 @@ public class WindowManager : Singleton<WindowManager>
         selectType = WindowType.NONE;
     }
 
-    public void ClickWindow(WindowType type)
+    public void ClickWindow(WindowType type, Vector3 pos = default)
     {
-        if (!isScrolling) return;
         if (type.Equals(selectType))
         {
             CloseAllWindow();
@@ -195,7 +140,12 @@ public class WindowManager : Singleton<WindowManager>
         selectType = type;
 
         var uiWindow = windows.Find((window => window.type == selectType));
-        if (uiWindow != null)
-            uiWindow.Init(button.image);
+        if (uiWindow == null)
+        {
+            Debug.Log("not found window");
+            return;
+        }
+
+        uiWindow.Init(pos != default ? pos : button.transform.position);
     }
 }

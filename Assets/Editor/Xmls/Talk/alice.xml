@@ -29,8 +29,8 @@
             <Text>이건 모를 수가 없긴해</Text>
         </Dialogue>
         <Characters>
-            <Character Name="Loli" Face="Default" Pos="L2" Size="M" Dark="false"/>
-            <Character Name="A" Face="SmileFlush" Pos="L1" Size="M" Dark="false"/>
+            <Character Name="Loli" Face="DefaultLight" Pos="L2" Size="M"/>
+            <Character Name="A" Face="SmileFlush" Pos="L1" Size="M"/>
         </Characters>
     </Talk>
     <Talk>
@@ -39,8 +39,8 @@
             <Text>히히 알아서 다행이다</Text>
         </Dialogue>
         <Characters>
-            <Character Name="A" Face="SmileFlush" Pos="L1" Size="M" Dark="false"/>
-            <Character Name="Loli" Face="Default" Pos="L2" Size="M" Dark="false"/>
+            <Character Name="A" Face="SmileFlush" Pos="L1" Size="M"/>
+            <Character Name="Loli" Face="DefaultLight" Pos="L2" Size="M"/>
         </Characters>
     </Talk>
 </XMLTalks>

@@ -13,28 +13,26 @@ namespace UI
         SAVE,
         LOG
     }
+
     public class UIWindow : MonoBehaviour
     {
         public WindowType type;
         private RectTransform rectTransform;
-        private Image windowButton;
+        private Vector3 pos = Vector3.zero;
 
         public virtual void OnCreated()
         {
             rectTransform = GetComponent<RectTransform>();
         }
 
-        public virtual void Init(Image button)
+        public virtual void Init(Vector3 buttonPos)
         {
-            if (windowButton == null)
-                windowButton = button;
-            
+            pos = buttonPos;
+
             rectTransform.DOKill();
             gameObject.SetActive(true);
 
-            var position = button.rectTransform.position;
-
-            rectTransform.position = position;
+            rectTransform.position = buttonPos;
             rectTransform.localScale = Vector3.zero;
 
             rectTransform.DOScale(Vector3.one, 0.2f).SetUpdate(true);
@@ -43,13 +41,11 @@ namespace UI
 
         public virtual void Disable()
         {
-            if (windowButton == null) return;
-            
             rectTransform.DOKill();
             rectTransform.localScale = Vector3.one;
 
             rectTransform.DOScale(Vector3.zero, 0.2f).OnComplete(() => gameObject.SetActive(false)).SetUpdate(true);
-            rectTransform.DOMove(windowButton.rectTransform.position, 0.2f).SetUpdate(true);
+            rectTransform.DOMove(pos, 0.2f).SetUpdate(true);
         }
     }
 }

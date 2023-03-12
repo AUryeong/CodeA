@@ -20,8 +20,9 @@ namespace UI
             scrollRect.DoAwake(this);
             DoAwake();
         }
-        protected virtual void DoAwake()
+        private void DoAwake()
         {
+            scrollRect.content.anchoredPosition = new Vector2(scrollRect.content.anchoredPosition.x, Mathf.Max(0, scrollRect.content.sizeDelta.y - 730));
         }
 
         public int GetCellCount()

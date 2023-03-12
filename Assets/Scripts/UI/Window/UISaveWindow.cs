@@ -46,9 +46,9 @@ namespace UI
             savesIdx = 0;
         }
 
-        public override void Init(Image button)
+        public override void Init(Vector3 pos)
         {
-            base.Init(button);
+            base.Init(pos);
             warningWindow.gameObject.SetActive(GameManager.Instance.nowGameData == null);
             warningWindow2.gameObject.SetActive(false);
 

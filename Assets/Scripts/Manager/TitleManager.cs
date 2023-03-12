@@ -26,10 +26,10 @@ public class TitleManager : Singleton<TitleManager>
         gameStartButton.onClick.AddListener(GameStart);
 
         gameLoadButton.onClick.RemoveAllListeners();
-        gameLoadButton.onClick.AddListener(() => WindowManager.Instance.OpenWindow(WindowType.LOAD));
+        gameLoadButton.onClick.AddListener(() => WindowManager.Instance.ClickWindow(WindowType.LOAD, gameLoadButton.transform.position));
 
         settingButton.onClick.RemoveAllListeners();
-        settingButton.onClick.AddListener(() => WindowManager.Instance.OpenWindow(WindowType.SETTING));
+        settingButton.onClick.AddListener(() => WindowManager.Instance.ClickWindow(WindowType.SETTING, settingButton.transform.position));
 
         explorerButton.onClick.RemoveAllListeners();
         explorerButton.onClick.AddListener(() => extraWindow.Init(explorerButton.transform.position));

@@ -50,6 +50,7 @@ public class TalkManager : Singleton<TalkManager>
     [SerializeField] private TextMeshProUGUI eventDescriptionText;
     [SerializeField] private Button eventOkayButton;
     [SerializeField] private Button eventExitButton;
+    [SerializeField] private TextMeshProUGUI eventContinueText;
     private TextMeshProUGUI eventOkayButtonText;
 
     private Vector2 nowPos;
@@ -100,8 +101,10 @@ public class TalkManager : Singleton<TalkManager>
     {
         nowPos = pos;
 
+        bool isHaveTips = SaveManager.Instance.GameData.getTips.Contains(eventName);
+
         eventTitleText.text = eventName + "에 대해";
-        eventDescriptionText.text = ResourcesManager.Instance.GetTip(eventName);
+        eventDescriptionText.text = isHaveTips ? ResourcesManager.Instance.GetTip(eventName) : "정보가 없다...";
 
         eventWindow.gameObject.SetActive(true);
         eventWindow.rectTransform.DOKill();
@@ -112,10 +115,14 @@ public class TalkManager : Singleton<TalkManager>
         eventWindow.rectTransform.DOScale(Vector3.one, 0.2f);
         eventWindow.rectTransform.DOAnchorPos(defaultPos, 0.2f);
 
-        eventOkayButtonText.gameObject.SetActive(true);
-        eventOkayButtonText.DOKill();
-        eventOkayButtonText.color = new Color(105 / 255f, 1, 126 / 255f, 1);
-        eventOkayButtonText.DOFade(0, 0.8f).SetLoops(-1, LoopType.Yoyo);
+        eventContinueText.gameObject.SetActive(isHaveTips);
+        eventOkayButtonText.gameObject.SetActive(isHaveTips);
+        if (isHaveTips)
+        {
+            eventOkayButtonText.DOKill();
+            eventOkayButtonText.color = new Color(105 / 255f, 1, 126 / 255f, 1);
+            eventOkayButtonText.DOFade(0, 0.8f).SetLoops(-1, LoopType.Yoyo);
+        }
     }
 
 
@@ -227,6 +234,9 @@ public class TalkManager : Singleton<TalkManager>
                         case "Emotion":
                             findStanding.Emotion(anim.parameter, anim.duration);
                             break;
+                        case "Dark":
+                            findStanding.SetDark(bool.Parse(anim.parameter));
+                            break;
                     }
                 }
 
@@ -237,11 +247,23 @@ public class TalkManager : Singleton<TalkManager>
                 switch (anim.effect)
                 {
                     case "On":
+                        if (nowTalk.dialogue == null) break;
+
                         dialogueImage.DOKill();
                         dialogueImage.gameObject.SetActive(true);
                         dialogueImage.color = new Color(0.08627451F, 0.08627451F, 0.08627451F, 0);
                         dialogueImage.DOFade(0.9137255F, 0.2f);
-                        
+
+                        if (!string.IsNullOrEmpty(nowTalk.dialogue.owner))
+                        {
+                            foreach (var standing in uiStandings)
+                            {
+                                if (!standing.gameObject.activeSelf) continue;
+
+                                standing.SetDark(standing.NowStanding.name != nowTalk.dialogue.owner);
+                            }
+                        }
+
                         if (!nowTalk.dialogue.active)
                             LogManager.Instance.AddLog(nowTalk);
                         break;
@@ -310,10 +332,7 @@ public class TalkManager : Singleton<TalkManager>
                 if (linkIndex != -1)
                 {
                     var linkInfo = descriptionText.textInfo.linkInfo[linkIndex];
-                    if (SaveManager.Instance.GameData.getTips.Contains(linkInfo.GetLinkID()))
-                    {
-                        EventOpen(linkInfo.GetLinkID(), data.position);
-                    }
+                    EventOpen(linkInfo.GetLinkID(), data.position);
                 }
                 else
                 {
@@ -387,12 +406,15 @@ public class TalkManager : Singleton<TalkManager>
 
         if (subBackgroundImage.gameObject.activeSelf)
         {
-            subBackgroundEffect.effectFactor = Mathf.Min(1, subBackgroundEffect.effectFactor + Time.deltaTime);
-            if (subBackgroundEffect.effectFactor >= 1)
+            if (subBackgroundEffect.effectFactor < 1)
             {
-                backgroundImage.sprite = subBackgroundImage.sprite;
-                backgroundImage.rectTransform.localScale = subBackgroundImage.rectTransform.localScale;
-                subBackgroundEffect.gameObject.SetActive(false);
+                subBackgroundEffect.effectFactor = Mathf.Min(1, subBackgroundEffect.effectFactor + Time.deltaTime);
+                if (subBackgroundEffect.effectFactor >= 1)
+                {
+                    backgroundImage.sprite = subBackgroundImage.sprite;
+                    backgroundImage.rectTransform.localScale = subBackgroundImage.rectTransform.localScale;
+                    subBackgroundEffect.gameObject.SetActive(false);
+                }
             }
         }
 
@@ -460,53 +482,65 @@ public class TalkManager : Singleton<TalkManager>
             }
         }
 
-        if (prevTalk == null || prevTalk.background.name != nowTalk.background.name)
+        var background = ResourcesManager.Instance.GetBackground(nowTalk.background.name);
+        if (prevTalk != null)
         {
-            if (!string.IsNullOrEmpty(nowTalk.background.name))
+            if (prevTalk.background.name != nowTalk.background.name || Math.Abs(prevTalk.background.scale - nowTalk.background.scale) > 0.01f)
             {
-                var background = ResourcesManager.Instance.GetBackground(nowTalk.background.name);
-
-                subBackgroundImage.DOKill(true);
-                switch (nowTalk.background.effect)
+                if (!string.IsNullOrEmpty(nowTalk.background.name))
                 {
-                    default:
-                    case BackgroundEffect.NONE:
-                        backgroundImage.sprite = background;
-                        backgroundImage.rectTransform.localScale = Vector3.one * nowTalk.background.scale;
-                        subBackgroundImage.gameObject.SetActive(false);
-                        break;
-                    case BackgroundEffect.TRANS:
-                        subBackgroundImage.gameObject.SetActive(true);
-                        subBackgroundImage.sprite = background;
-                        subBackgroundImage.rectTransform.localScale = Vector3.one * nowTalk.background.scale;
-                        subBackgroundEffect.effectFactor = 0;
-                        break;
-                    case BackgroundEffect.FADE:
-                        subBackgroundImage.gameObject.SetActive(true);
-                        subBackgroundImage.sprite = background;
-                        subBackgroundImage.color = Utility.fadeWhite;
-                        subBackgroundImage.rectTransform.localScale = Vector3.one * nowTalk.background.scale;
-                        subBackgroundImage.DOFade(1, 1).SetEase(Ease.Linear).OnComplete(() =>
-                        {
-                            backgroundImage.sprite = subBackgroundImage.sprite;
-                            subBackgroundEffect.gameObject.SetActive(false);
-                        });
-                        break;
-                }
-
-                if (nowTalk.background.name.StartsWith("CG_"))
-                {
-                    foreach (var standing in uiStandings)
+                    subBackgroundImage.DOKill(true);
+                    switch (nowTalk.background.effect)
                     {
-                        standing.gameObject.SetActive(false);
-                        standing.Init();
+                        default:
+                        case BackgroundEffect.NONE:
+                            backgroundImage.sprite = background;
+                            backgroundImage.rectTransform.localScale = Vector3.one * nowTalk.background.scale;
+                            subBackgroundImage.gameObject.SetActive(false);
+                            break;
+                        case BackgroundEffect.TRANS:
+                            subBackgroundImage.gameObject.SetActive(true);
+                            subBackgroundImage.sprite = background;
+                            backgroundImage.rectTransform.localScale = Vector3.one * prevTalk.background.scale;
+                            subBackgroundImage.rectTransform.localScale = Vector3.one * nowTalk.background.scale;
+                            subBackgroundEffect.effectFactor = 0;
+                            break;
+                        case BackgroundEffect.FADE:
+                            subBackgroundImage.gameObject.SetActive(true);
+                            subBackgroundImage.sprite = background;
+                            subBackgroundImage.color = Utility.fadeWhite;
+                            backgroundImage.rectTransform.localScale = Vector3.one * prevTalk.background.scale;
+                            subBackgroundImage.rectTransform.localScale = Vector3.one * nowTalk.background.scale;
+                            subBackgroundImage.DOFade(1, 1).OnComplete(() =>
+                            {
+                                backgroundImage.sprite = subBackgroundImage.sprite;
+                                backgroundImage.rectTransform.localScale = subBackgroundImage.rectTransform.localScale;
+                                subBackgroundEffect.gameObject.SetActive(false);
+                            });
+                            break;
                     }
-
-                    GameManager.Instance.ViewCG(nowTalk.background.name);
-                    GetEffect();
-                    return;
                 }
             }
+        }
+        else
+        {
+            subBackgroundImage.DOKill(true);
+            backgroundImage.sprite = background;
+            backgroundImage.rectTransform.localScale = Vector3.one * nowTalk.background.scale;
+            subBackgroundImage.gameObject.SetActive(false);
+        }
+
+        if (nowTalk.background.name.StartsWith("CG_"))
+        {
+            foreach (var standing in uiStandings)
+            {
+                standing.gameObject.SetActive(false);
+                standing.Init();
+            }
+
+            GameManager.Instance.ViewCG(nowTalk.background.name);
+            GetEffect();
+            return;
         }
 
         if (uiStandings.Count < nowTalk.characters.Count)
