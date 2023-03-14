@@ -3,7 +3,7 @@ using System.Xml.Serialization;
 using UnityEngine;
 
 public class Talks : ScriptableObject
-{ 
+{
     public string cgTitle;
     public List<Talk> talks = new List<Talk>();
 }
@@ -17,10 +17,14 @@ public class Talk
 
     [XmlElement("Dialogue")] public Dialogue dialogue;
 
-    [XmlArray("Characters")] [XmlArrayItem("Character")]
+    [XmlElement("Event")] public List<Event> eventList = new List<Event>();
+
+    [XmlArray("Characters")]
+    [XmlArrayItem("Character")]
     public List<Character> characters = new List<Character>();
 
-    [XmlArray("Animations")] [XmlArrayItem("Animation")]
+    [XmlArray("Animations")]
+    [XmlArrayItem("Animation")]
     public List<Animation> animations = new List<Animation>();
 }
 
@@ -31,7 +35,7 @@ public class Dialogue
 
     [XmlElement("Text")] public string text;
 
-    [XmlElement("Event")] public Event tipEvent = null;
+    [XmlElement("Tip")] public TipEvent tipEvent = null;
 
     [XmlAttribute("Active")] public bool active = true;
 
@@ -40,18 +44,31 @@ public class Dialogue
 }
 
 [System.Serializable]
-public class Event
+public class TipEvent
 {
     [XmlAttribute("Name")] public string eventName;
-    [XmlAttribute("Talk")] public string talkName;
+    [XmlAttribute("Dialog")] public string talkName;
+    [XmlAttribute("Type")] public EventType eventType = EventType.CHANGE;
 }
+
+[System.Serializable]
+public class Event
+{
+    [XmlAttribute("Name")] public string name;
+    [XmlAttribute("Type")] public Type type;
+    public enum Type
+    {
+        ADD_TIP,
+    }
+}
+
 
 [System.Serializable]
 public class Background
 {
     [XmlAttribute("Name")] public string name;
-
     [XmlAttribute("Effect")] public BackgroundEffect effect = BackgroundEffect.NONE;
+
     [XmlAttribute("Scale")] public float scale = 1;
 }
 
@@ -73,7 +90,7 @@ public class Animation
 public class Character
 {
     [XmlAttribute("Name")] public string name;
-    
+
     [XmlAttribute("Clothes")] public string clothes;
 
     [XmlAttribute("Face")] public string face;
@@ -92,13 +109,19 @@ public enum BackgroundEffect
     FADE
 }
 
+public enum EventType
+{
+    BEFORE,
+    CHANGE,
+    AFTER
+}
+
 public enum AnimationType
 {
     CHAR,
     UTIL,
     DIAL,
-    CAM,
-    EVENT
+    CAM
 }
 
 public enum CharacterPos

@@ -7,7 +7,7 @@
         <Dialogue Active="false" Owner="A">
             <Talker>에이</Talker>
             <Text>혹시 {원더랜드}를 아십니까?</Text>
-            <Event Name="앨리스" Talk="alice"/>
+            <Tip Name="앨리스" Dialog="alice"/>
         </Dialogue>
         <Characters>
             <Character Name="A" Clothes="Default" Face="Default" Pos="R2" Size="M" Dark="false"/>
@@ -27,6 +27,7 @@
             <Talker>에이</Talker>
             <Text>이걸 모르네...</Text>
         </Dialogue>
+		<Event Type="TIP_ADD" name="앨리스" />
         <Characters>
             <Character Name="A" Face="Smile" Pos="C" Size="M" Dark="false"/>
             <Character Name="Loli" Face="Default" Pos="L2" Size="M" Dark="false"/>

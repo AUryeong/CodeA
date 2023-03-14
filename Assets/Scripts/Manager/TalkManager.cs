@@ -289,17 +289,6 @@ public class TalkManager : Singleton<TalkManager>
 
                 break;
             }
-            case AnimationType.EVENT:
-            {
-                switch (anim.effect)
-                {
-                    case "TIP_ADD":
-                        GameManager.Instance.AddTip(anim.parameter);
-                        break;
-                }
-
-                break;
-            }
             default:
             case AnimationType.UTIL:
             {

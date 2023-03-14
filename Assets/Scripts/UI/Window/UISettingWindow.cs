@@ -9,17 +9,18 @@ namespace UI
     public class UISettingWindow : UIWindow
     {
         [SerializeField] private Button exitButton;
-        [Header("사운드")] [SerializeField] private Slider sfxSlider;
+        [Header("사운드")][SerializeField] private Slider sfxSlider;
         [SerializeField] private Slider bgmSlider;
 
-        [Header("이름 설정")] [SerializeField] private TMP_InputField namingInput;
+        [Header("이름 설정")][SerializeField] private TMP_InputField namingInput;
 
         [SerializeField] private Image warningWindow;
         [SerializeField] private TextMeshProUGUI warningText;
         [SerializeField] private Button warningOkay;
         [SerializeField] private Button warningCancel;
 
-        [Header("텍스트 출력")] [SerializeField]
+        [Header("텍스트 출력")]
+        [SerializeField]
         private Slider textSpeedSlider;
 
         [SerializeField] private Button textTypeToggle;
@@ -27,10 +28,10 @@ namespace UI
         [SerializeField] private Sprite textTypeSpriteOn;
         [SerializeField] private Sprite textTypeSpriteOff;
 
-        [Space(20f)] [SerializeField] private Button talkUI;
-        [FormerlySerializedAs("descreptionText")] [SerializeField] private TextMeshProUGUI descriptionText;
+        [Space(20f)][SerializeField] private Button talkUI;
+        [FormerlySerializedAs("descreptionText")][SerializeField] private TextMeshProUGUI descriptionText;
         [SerializeField] private TextMeshProUGUI endTextEffect;
-        
+
         private float talkDuration;
         private const float defaultTalkCooltime = 0.05f;
 
@@ -56,12 +57,14 @@ namespace UI
 
             talkUI.onClick.RemoveAllListeners();
             talkUI.onClick.AddListener(CheckClick);
-            
+
             exitButton.onClick.RemoveAllListeners();
             exitButton.onClick.AddListener(WindowManager.Instance.CloseAllWindow);
-            
+
             namingInput.onEndEdit.AddListener((text) =>
             {
+                if (text == SaveManager.Instance.GameData.name) return;
+
                 warningWindow.gameObject.SetActive(true);
                 warningText.text = "당신의 이름을 " + (string.IsNullOrEmpty(text) ? "김준우" : text) + "(으)로 확정하시겠습니까?";
                 //TODO SOUND

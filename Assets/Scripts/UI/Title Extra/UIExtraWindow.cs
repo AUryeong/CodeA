@@ -47,6 +47,13 @@ namespace UI
         [Header("팁 관련")] [SerializeField] private Button tipsButton;
 
         [SerializeField] private RectTransform tipsWindow;
+        [SerializeField] private UITipCell tipCell;
+        [SerializeField] private UITipVerticalScroll verticalScroll;
+
+        [Header("이벤트")][SerializeField] private Image eventWindow;
+        [SerializeField] private TextMeshProUGUI eventTitleText;
+        [SerializeField] private TextMeshProUGUI eventDescriptionText;
+        [SerializeField] private Button eventExitButton;
 
         public void OnCreated()
         {
@@ -88,6 +95,11 @@ namespace UI
 
             tipsButton.onClick.RemoveAllListeners();
             tipsButton.onClick.AddListener(ClickTips);
+
+            tipCell.extraWindow = this;
+
+            eventExitButton.onClick.RemoveAllListeners();
+            eventExitButton.onClick.AddListener(EventExit);
         }
 
         private void Escape()
@@ -128,7 +140,7 @@ namespace UI
             selectExtra.gameObject.SetActive(false);
             picturesWindow.gameObject.SetActive(false);
             videosWindow.gameObject.SetActive(false);
-            //tipsWindow.gameObject.SetActive(false);
+            tipsWindow.gameObject.SetActive(false);
 
             buttonsParent.gameObject.SetActive(true);
             title.gameObject.SetActive(true);
@@ -265,7 +277,27 @@ namespace UI
 
         private void ClickTips()
         {
+            tipsWindow.gameObject.SetActive(true);
             ExtraSelectOn("Tips");
+            verticalScroll.SetLog(SaveManager.Instance.GameData.getTips);
+        }
+
+        public void EventOpen(string eventName)
+        {
+            eventTitleText.text = eventName + "에 대해";
+            eventDescriptionText.text = ResourcesManager.Instance.GetTip(eventName);
+
+            eventWindow.gameObject.SetActive(true);
+            eventWindow.rectTransform.DOKill();
+            eventWindow.rectTransform.localScale = Vector3.zero;
+            eventWindow.rectTransform.DOScale(Vector3.one, 0.2f);
+        }
+
+        private void EventExit()
+        {
+            eventWindow.rectTransform.DOKill();
+            eventWindow.rectTransform.localScale = Vector3.one;
+            eventWindow.rectTransform.DOScale(Vector3.zero, 0.2f).OnComplete(() => eventWindow.gameObject.SetActive(false));
         }
     }
 }

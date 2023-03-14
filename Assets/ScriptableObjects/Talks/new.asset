@@ -26,8 +26,10 @@ MonoBehaviour:
       tipEvent:
         eventName: "\uC568\uB9AC\uC2A4"
         talkName: alice
+        eventType: 1
       active: 0
       owner: A
+    eventList: []
     characters:
     - name: A
       clothes: Default
@@ -83,8 +85,10 @@ MonoBehaviour:
       tipEvent:
         eventName: 
         talkName: 
+        eventType: 1
       active: 0
       owner: A
+    eventList: []
     characters:
     - name: A
       clothes: Default
