@@ -18,7 +18,7 @@ namespace UI
 
         public void SetData(string data)
         {
-            tipNameText.text = data;
+            tipNameText.text = data + "에 대해";
 
             button.onClick.RemoveAllListeners();
             button.onClick.AddListener(() =>

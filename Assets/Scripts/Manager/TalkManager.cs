@@ -146,7 +146,9 @@ public class TalkManager : Singleton<TalkManager>
 
     public List<Talk> GetLeftTalks()
     {
-        var talkList = new List<Talk>() { nowTalk };
+        var talkList = new List<Talk>();
+        if(nowTalk != null)
+            talkList.Add(nowTalk);
         talkList.AddRange(talkQueue);
         return talkList;
     }

@@ -18,13 +18,7 @@ namespace UI
             cellDictionaries.Clear();
 
             scrollRect.DoAwake(this);
-            DoAwake();
         }
-        private void DoAwake()
-        {
-            scrollRect.content.anchoredPosition = new Vector2(scrollRect.content.anchoredPosition.x, Mathf.Max(0, scrollRect.content.sizeDelta.y - 730));
-        }
-
         public int GetCellCount()
         {
             return getTips.Count;

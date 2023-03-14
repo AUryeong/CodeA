@@ -29,7 +29,7 @@ namespace UI
 
             warningOkayButton.onClick.RemoveAllListeners();
 
-            if (GameManager.Instance.nowGameData == null)
+            if (GameManager.Instance.nowGameData == null && TalkManager.Instance.GetLeftTalks().Count <= 0)
             {
                 warningDescription.text = "정말로 종료 하시겠습니까?";
                 warningDescription2.gameObject.SetActive(false);
