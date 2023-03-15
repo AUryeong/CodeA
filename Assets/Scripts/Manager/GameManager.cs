@@ -12,8 +12,9 @@ public enum Scene
 public class GameManager : Singleton<GameManager>
 {
     protected override bool IsDontDestroying => true;
-    public Scene nowScene;
     [SerializeField] protected Camera uiCamera;
+    public Scene nowScene;
+    [SerializeField] private ParticleSystem clickEffect;
 
     public Camera UICamera
     {
@@ -23,7 +24,7 @@ public class GameManager : Singleton<GameManager>
         }
     }
     public SubGameData nowGameData;
-    
+
     public void SceneLoad(Scene scene)
     {
         nowScene = scene;
@@ -37,10 +38,26 @@ public class GameManager : Singleton<GameManager>
         OnReset();
     }
 
+    private void Update()
+    {
+        ClickEffect();
+    }
+
+    private void ClickEffect()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            GameObject obj = PoolManager.Instance.Init(clickEffect.gameObject);
+            var vector = uiCamera.ScreenToWorldPoint(Input.mousePosition);
+            vector.z = 0;
+            obj.transform.position = vector;
+        }
+    }
+
     public void AddTip(string tipName)
     {
         if (SaveManager.Instance.GameData.getTips.Contains(tipName)) return;
-        
+
         SaveManager.Instance.GameData.getTips.Add(tipName);
         SaveManager.Instance.GameData.getTips.Sort();
     }
@@ -50,7 +67,7 @@ public class GameManager : Singleton<GameManager>
         SaveManager.Instance.GameData.saigoCg = cgName;
 
         if (SaveManager.Instance.GameData.getCg.Contains(cgName)) return;
-        
+
         SaveManager.Instance.GameData.getCg.Add(cgName);
         SaveManager.Instance.GameData.getCg.Sort();
     }
@@ -64,7 +81,7 @@ public class GameManager : Singleton<GameManager>
 
     private void SetResolution(Camera changeCamera)
     {
-        if(changeCamera == null) return;
+        if (changeCamera == null) return;
         int setWidth = 1920;
         int setHeight = 1080;
 
@@ -91,7 +108,7 @@ public class GameManager : Singleton<GameManager>
     public void UpdateGameData()
     {
         if (nowGameData == null) return;
-        
+
         nowGameData.leftTalks = TalkManager.Instance.GetLeftTalks();
         nowGameData.saveTime = DateTime.Now.ToString("yyyy/MM/dd HH:mm");
 
