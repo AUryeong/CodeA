@@ -46,7 +46,9 @@ public class PoolManager : Singleton<PoolManager>
 
         copy = Instantiate(origin);
         copy.SetActive(true);
-            
+        if (IsDontDestroying)
+            DontDestroyOnLoad(copy);
+
         var poolObject2 = copy.GetComponent<IPoolObject>();
         poolObject2?.Init();
             
