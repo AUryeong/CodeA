@@ -51,6 +51,7 @@ SpriteAtlas:
     - {fileID: 2800000, guid: d3ac3d161d91b8e4cbac66b708425a96, type: 3}
     - {fileID: 2800000, guid: 64e4228845f474249b35f521046a852b, type: 3}
     - {fileID: 2800000, guid: 89e6145ce00006544bd712a7b2871db4, type: 3}
+    - {fileID: 2800000, guid: 6dad80579dccb8d49adce886bd717ce6, type: 3}
     bindAsDefault: 1
     isAtlasV2: 0
     cachedData: {fileID: 0}
@@ -60,6 +61,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 8d91f1236fb527747b82218db1c263a6, type: 3}
   - {fileID: 21300000, guid: d999682500678494a9920aa0032de056, type: 3}
   - {fileID: 21300000, guid: d3ac3d161d91b8e4cbac66b708425a96, type: 3}
+  - {fileID: 21300000, guid: 6dad80579dccb8d49adce886bd717ce6, type: 3}
   - {fileID: 21300000, guid: 64e4228845f474249b35f521046a852b, type: 3}
   - {fileID: 21300000, guid: 891e921adc7e61642aeb30226ca4c01c, type: 3}
   - {fileID: 21300000, guid: 89e6145ce00006544bd712a7b2871db4, type: 3}
@@ -69,6 +71,7 @@ SpriteAtlas:
   - Enter Button
   - Talk UI
   - Warning Icon
+  - Log Face Icon
   - Warning Window
   - No Button
   - Exit

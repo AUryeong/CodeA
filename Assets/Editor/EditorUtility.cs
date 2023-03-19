@@ -19,8 +19,8 @@ namespace EditorUtil
     public class EditorUtility
     {
         private const string REMAINDER_REGEX = "(.*?((?=})|(/|$)))";
-        private const string PAUSE_REGEX_STRING = "{(?<command>" + REMAINDER_REGEX + ")}";
-        private static readonly Regex pauseRegex = new Regex(PAUSE_REGEX_STRING);
+        private const string TIP_REGEX_STRING = "{(?<Tip>" + REMAINDER_REGEX + ")}";
+        private static readonly Regex pauseRegex = new Regex(TIP_REGEX_STRING);
 
         [MenuItem("Assets/Convert Xml To ScriptableObject/Talk")]
         public static void CreateTalkScriptableObject()
@@ -70,16 +70,23 @@ namespace EditorUtil
 
                     if (talk.dialogue != null)
                     {
-                        foreach (Match match in pauseRegex.Matches(talk.dialogue.text))
+                        if (talk.dialogue.tipEvent != null)
                         {
-                            string command = match.Groups["command"].Value;
+                            var matches = pauseRegex.Matches(talk.dialogue.text);
+                            int indexAdd = 0;
+                            for (var i = 0; i < matches.Count; i++)
+                            {
+                                var match = matches[i];
+                                string command = match.Groups["Tip"].Value;
+                                string eventName = talk.dialogue.tipEvent[i].eventName;
 
-                            string s = "<#FFEE00><bounce><link=" + talk.dialogue.tipEvent.eventName + ">" + command + "</color></bounce></link>";
-                            talk.dialogue.text = talk.dialogue.text.Insert(match.Index, s);
-                            break;
+                                string s = "<#FFEE00><bounce><link=" + eventName + ">" + command + "</color></bounce></link>";
+                                talk.dialogue.text = talk.dialogue.text.Insert(match.Index + indexAdd, s);
+                                indexAdd += s.Length - command.Length;
+                            }
+
+                            talk.dialogue.text = Regex.Replace(talk.dialogue.text, TIP_REGEX_STRING, "");
                         }
-
-                        talk.dialogue.text = Regex.Replace(talk.dialogue.text, PAUSE_REGEX_STRING, "");
 
                         if (talk.dialogue.active && talk.characters != null)
                         {

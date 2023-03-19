@@ -21,10 +21,13 @@ MonoBehaviour:
       scale: 1
     dialogue:
       talker: "\uC5D0\uC774"
-      text: "\uD639\uC2DC <#FFEE00><bounce><link=\uC568\uB9AC\uC2A4>\uC6D0\uB354\uB79C\uB4DC</color></bounce></link>\uB97C
-        \uC544\uC2ED\uB2C8\uAE4C?"
+      text: "\uD639\uC2DC <#FFEE00><bounce><link=\uC568\uB9AC\uC2A4>\uC6D0\uB354\uB79C\uB4DC</color></bounce></link>\uB098
+        \uC744 \uC544\uC2ED\uB2C8\uAE4C?"
       tipEvent:
-        eventName: "\uC568\uB9AC\uC2A4"
+      - eventName: "\uC568\uB9AC\uC2A4"
+        talkName: alice
+        eventType: 1
+      - eventName: "\uC2DC\uACF5\uC758 \uD3ED\uD48D"
         talkName: alice
         eventType: 1
       active: 0
@@ -82,13 +85,12 @@ MonoBehaviour:
     dialogue:
       talker: "\uC5D0\uC774"
       text: "\uC774\uAC78 \uBAA8\uB974\uB124..."
-      tipEvent:
-        eventName: 
-        talkName: 
-        eventType: 1
+      tipEvent: []
       active: 0
       owner: A
-    eventList: []
+    eventList:
+    - name: "\uC568\uB9AC\uC2A4"
+      type: 0
     characters:
     - name: A
       clothes: Default
@@ -117,11 +119,6 @@ MonoBehaviour:
       effect: Face
       name: A
       parameter: SideSmile
-      duration: -1
-    - type: 4
-      effect: TIP_ADD
-      name: 
-      parameter: "\uC568\uB9AC\uC2A4"
       duration: -1
     - type: 2
       effect: On

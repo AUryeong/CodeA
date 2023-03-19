@@ -235,7 +235,8 @@ namespace UI
                 if (getVideos.Count > (videosIdx * 6) + i)
                 {
                     var talks = ResourcesManager.Instance.GetTalk(getVideos[(videosIdx * 6) + i]);
-                    videos[i].image.sprite = ResourcesManager.Instance.GetBackground(talks.talks[0].background.name);
+                    
+                    videos[i].image.sprite = talks.talks[0].background.name == null ? null : ResourcesManager.Instance.GetBackground(talks.talks[0].background.name);
                     videos[i].onClick.RemoveAllListeners();
                     videos[i].onClick.AddListener(() => ShowTalk(talks));
                     videoTitles[i].text = talks.cgTitle;

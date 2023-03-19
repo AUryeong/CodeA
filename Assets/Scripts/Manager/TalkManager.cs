@@ -53,6 +53,8 @@ public class TalkManager : Singleton<TalkManager>
     [SerializeField] private TextMeshProUGUI eventContinueText;
     private TextMeshProUGUI eventOkayButtonText;
 
+    private bool isHasEvent;
+    private string selectEvent;
     private Vector2 nowPos;
     private Vector2 defaultPos;
 
@@ -100,6 +102,7 @@ public class TalkManager : Singleton<TalkManager>
     private void EventOpen(string eventName, Vector2 pos)
     {
         nowPos = pos;
+        selectEvent = eventName;
 
         bool isHaveTips = SaveManager.Instance.GameData.getTips.Contains(eventName);
 
@@ -130,7 +133,7 @@ public class TalkManager : Singleton<TalkManager>
     {
         EventExit();
         talkQueue.Clear();
-        AddTalk(nowTalk.dialogue.tipEvent.talkName);
+        AddTalk(nowTalk.dialogue.tipEvent.Find((tip) => tip.eventName == selectEvent).talkName);
     }
 
     private void EventExit()
@@ -147,7 +150,7 @@ public class TalkManager : Singleton<TalkManager>
     public List<Talk> GetLeftTalks()
     {
         var talkList = new List<Talk>();
-        if(nowTalk != null)
+        if (nowTalk != null)
             talkList.Add(nowTalk);
         talkList.AddRange(talkQueue);
         return talkList;
@@ -255,6 +258,8 @@ public class TalkManager : Singleton<TalkManager>
                         dialogueImage.gameObject.SetActive(true);
                         dialogueImage.color = new Color(0.08627451F, 0.08627451F, 0.08627451F, 0);
                         dialogueImage.DOFade(0.9137255F, 0.2f);
+
+                        GetEvent();
 
                         if (!string.IsNullOrEmpty(nowTalk.dialogue.owner))
                         {
@@ -384,7 +389,7 @@ public class TalkManager : Singleton<TalkManager>
 
             endTextEffect.rectTransform.anchoredPosition = new Vector2(characterPos.x + 40, characterPos.y - 20);
 
-            if (SaveManager.Instance.GameData.textAuto && nowTalk.dialogue?.tipEvent == null)
+            if (SaveManager.Instance.GameData.textAuto && !isHasEvent)
             {
                 autoDuration += Time.deltaTime;
                 if (autoDuration >= autoWaitTime)
@@ -453,14 +458,19 @@ public class TalkManager : Singleton<TalkManager>
 
         endTextEffect.gameObject.SetActive(false);
         nowTalk = talkQueue.Dequeue();
+        isHasEvent = false;
 
         if (nowTalk.dialogue != null)
         {
+            isHasEvent = nowTalk.dialogue.tipEvent != null && nowTalk.dialogue.tipEvent.Exists((tipEvent) => SaveManager.Instance.GameData.getTips.Contains(tipEvent.eventName));
             talkerText.text = "> " + Utility.GetTalkerName(nowTalk.dialogue.talker);
             descriptionText.text = Utility.GetTalkerName(nowTalk.dialogue.text);
             dialogueImage.gameObject.SetActive(nowTalk.dialogue.active);
             if (nowTalk.dialogue.active)
+            {
                 LogManager.Instance.AddLog(nowTalk);
+                GetEvent();
+            }
         }
         else
             dialogueImage.gameObject.SetActive(false);
@@ -579,6 +589,23 @@ public class TalkManager : Singleton<TalkManager>
         }
 
         GetEffect();
+    }
+
+    private void GetEvent()
+    {
+        if (nowTalk.eventList == null || nowTalk.eventList.Count <= 0) return;
+        
+        foreach (var getEvent in nowTalk.eventList)
+        {
+            switch (getEvent.type)
+            {
+                case Event.Type.ADD_TIP:
+                {
+                    GameManager.Instance.AddTip(getEvent.name);
+                    break;
+                }
+            }
+        }
     }
 
     private void GetEffect()

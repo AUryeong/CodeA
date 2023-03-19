@@ -47,6 +47,8 @@ public class GameManager : Singleton<GameManager>
     {
         if (Input.GetMouseButtonDown(0))
         {
+            if (ResourcesManager.Instance.isLoading) return;
+            
             GameObject obj = PoolManager.Instance.Init(clickEffect.gameObject);
             var vector = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             vector.z = 0;

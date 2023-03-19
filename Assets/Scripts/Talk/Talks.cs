@@ -35,7 +35,7 @@ public class Dialogue
 
     [XmlElement("Text")] public string text;
 
-    [XmlElement("Tip")] public TipEvent tipEvent = null;
+    [XmlElement("Tip")] public List<TipEvent> tipEvent = null;
 
     [XmlAttribute("Active")] public bool active = true;
 

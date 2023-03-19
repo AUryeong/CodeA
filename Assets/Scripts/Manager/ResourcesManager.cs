@@ -232,11 +232,7 @@ public class ResourcesManager : Singleton<ResourcesManager>
         Addressables.LoadAssetsAsync<Tips>(tipLabel, tipLists =>
         {
             foreach (var tip in tipLists.tips)
-            {
                 tips.Add(tip.id, tip.lore);
-            }
-
-            ;
         }).Completed += (list) => { isLoading = false; };
     }
 

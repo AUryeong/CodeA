@@ -6,8 +6,9 @@
         <BG Name="Class_Morning"/>
         <Dialogue Active="false" Owner="A">
             <Talker>에이</Talker>
-            <Text>혹시 {원더랜드}를 아십니까?</Text>
+            <Text>혹시 {원더랜드}나 {시공의 폭풍}을 아십니까?</Text>
             <Tip Name="앨리스" Dialog="alice"/>
+            <Tip Name="시공의 폭풍" Dialog="alice"/>
         </Dialogue>
         <Characters>
             <Character Name="A" Clothes="Default" Face="Default" Pos="R2" Size="M" Dark="false"/>
@@ -27,7 +28,7 @@
             <Talker>에이</Talker>
             <Text>이걸 모르네...</Text>
         </Dialogue>
-		<Event Type="TIP_ADD" name="앨리스" />
+		<Event Type="ADD_TIP" Name="앨리스" />
         <Characters>
             <Character Name="A" Face="Smile" Pos="C" Size="M" Dark="false"/>
             <Character Name="Loli" Face="Default" Pos="L2" Size="M" Dark="false"/>
@@ -36,7 +37,6 @@
             <Animation Type="CHAR" Name="Loli" Effect="Emotion" Parameter="Worry" Duration="0.5"/>
             <Animation Type="UTIL" Effect="Wait" Duration="2"/>
             <Animation Type="CHAR" Name="A" Effect="Face" Parameter="SideSmile" />
-            <Animation Type="EVENT" Effect="TIP_ADD"  Parameter="앨리스" />
             <Animation Type="DIAL" Effect="On"/>
         </Animations>
     </Talk>
