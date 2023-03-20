@@ -35,20 +35,10 @@ public class Dialogue
 
     [XmlElement("Text")] public string text;
 
-    [XmlElement("Tip")] public List<TipEvent> tipEvent = null;
-
     [XmlAttribute("Active")] public bool active = true;
 
     [XmlAttribute("Owner")] public string owner;
 
-}
-
-[System.Serializable]
-public class TipEvent
-{
-    [XmlAttribute("Name")] public string eventName;
-    [XmlAttribute("Dialog")] public string talkName;
-    [XmlAttribute("Type")] public EventType eventType = EventType.CHANGE;
 }
 
 [System.Serializable]
@@ -95,9 +85,9 @@ public class Character
 
     [XmlAttribute("Face")] public string face;
 
-    [XmlAttribute("Pos")] public CharacterPos pos;
+    [XmlAttribute("Pos")] public CharacterPos pos = CharacterPos.N;
 
-    [XmlAttribute("Size")] public CharacterSize size = CharacterSize.M;
+    [XmlAttribute("Size")] public CharacterSize size = CharacterSize.N;
 
     [XmlAttribute("Dark")] public bool dark = true;
 }
@@ -126,6 +116,7 @@ public enum AnimationType
 
 public enum CharacterPos
 {
+    N,
     R3,
     R2,
     R1,
@@ -139,6 +130,7 @@ public enum CharacterPos
 
 public enum CharacterSize
 {
+    N,
     S,
     M,
     L,

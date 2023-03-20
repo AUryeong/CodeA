@@ -28,6 +28,21 @@ namespace EditorUtil
             Debug.Log("난카이데모");
             const string csvPath = "/Editor/Xmls/Talk";
             var dir = new DirectoryInfo(Application.dataPath + csvPath);
+            ConvertXmlTalk(dir);
+
+            AssetDatabase.SaveAssets();
+        }
+
+        private static void ConvertXmlTalk(DirectoryInfo dir)
+        {
+            if (dir.GetDirectories().Length > 0)
+            {
+                var directories = dir.GetDirectories();
+                foreach (var directory in directories)
+                {
+                    ConvertXmlTalk(directory);
+                }
+            }
             foreach (FileInfo fileInfo in dir.GetFiles())
             {
                 if (fileInfo.FullName.EndsWith(".meta")) continue;
@@ -48,8 +63,8 @@ namespace EditorUtil
                 float backgroundScale = 1;
                 string bgm = string.Empty;
 
-                Dictionary<string, string> characterDictionary = new Dictionary<string, string>();
-                Dictionary<string, string> faceDictionary = new Dictionary<string, string>();
+                var characterDictionary = new Dictionary<string, string>();
+                var faceDictionary = new Dictionary<string, string>();
                 foreach (var talk in newTalks.talks)
                 {
                     if (string.IsNullOrEmpty(talk.background.name))
@@ -82,9 +97,10 @@ namespace EditorUtil
 
                                 string s = "<#FFEE00><bounce><link=" + eventName + ">" + command + "</color></bounce></link>";
                                 talk.dialogue.text = talk.dialogue.text.Insert(match.Index + indexAdd, s);
-                                indexAdd += s.Length - command.Length;
+                                indexAdd += s.Length ;
                             }
 
+                            Debug.Log(talk.dialogue.text );
                             talk.dialogue.text = Regex.Replace(talk.dialogue.text, TIP_REGEX_STRING, "");
                         }
 
@@ -141,8 +157,6 @@ namespace EditorUtil
 
                 AssetDatabase.CreateAsset(newTalks, $"Assets/ScriptableObjects/Talks/{Path.GetFileNameWithoutExtension(fileInfo.FullName)}.asset");
             }
-
-            AssetDatabase.SaveAssets();
         }
 
 

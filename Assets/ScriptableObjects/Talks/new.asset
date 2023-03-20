@@ -21,8 +21,9 @@ MonoBehaviour:
       scale: 1
     dialogue:
       talker: "\uC5D0\uC774"
-      text: "\uD639\uC2DC <#FFEE00><bounce><link=\uC568\uB9AC\uC2A4>\uC6D0\uB354\uB79C\uB4DC</color></bounce></link>\uB098
-        \uC744 \uC544\uC2ED\uB2C8\uAE4C?"
+      text: "\uD639\uC2DC <#FFEE00><bounce><link=\uC568\uB9AC\uC2A4>\uC6D0\uB354\uB79C\uB4DC:\uC568\uB9AC\uC2A4</color></bounce></link>\uB098
+        <#FFEE00><bounce><link=\uC2DC\uACF5\uC758 \uD3ED\uD48D>\uC2DC\uACF5\uC758
+        \uD3ED\uD48D:\uC568\uB9AC\uC2A4</color></bounce></link>\uC744 \uC544\uC2ED\uB2C8\uAE4C?"
       tipEvent:
       - eventName: "\uC568\uB9AC\uC2A4"
         talkName: alice

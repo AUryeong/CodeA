@@ -6,9 +6,7 @@
         <BG Name="Class_Morning"/>
         <Dialogue Active="false" Owner="A">
             <Talker>에이</Talker>
-            <Text>혹시 {원더랜드}나 {시공의 폭풍}을 아십니까?</Text>
-            <Tip Name="앨리스" Dialog="alice"/>
-            <Tip Name="시공의 폭풍" Dialog="alice"/>
+            <Text>혹시 {원더랜드:앨리스:alice:CHANGE}나 {시공의 폭풍:앨리스}을 아십니까?</Text>
         </Dialogue>
         <Characters>
             <Character Name="A" Clothes="Default" Face="Default" Pos="R2" Size="M" Dark="false"/>
