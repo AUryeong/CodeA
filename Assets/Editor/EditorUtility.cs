@@ -47,9 +47,10 @@ namespace EditorUtil
             {
                 talkOwners = (XMLTalkOwners)new XmlSerializer(typeof(XMLTalkOwners)).Deserialize(stringReader);
             }
-            foreach(var owner in talkOwners.owners)
+
+            foreach (var owner in talkOwners.owners)
                 ownerDictionaries.Add(owner.name, owner.ownerName);
-            
+
             const string xmlPath = "/Editor/Xmls/Talk";
             var dir = new DirectoryInfo(Application.dataPath + xmlPath);
             ConvertXmlTalk(dir, ownerDictionaries);
@@ -67,11 +68,11 @@ namespace EditorUtil
                     ConvertXmlTalk(directory, ownerDictionaries);
                 }
             }
+
             foreach (FileInfo fileInfo in dir.GetFiles())
             {
                 if (fileInfo.FullName.EndsWith(".meta")) continue;
 
-                Debug.Log(Path.GetFileNameWithoutExtension(fileInfo.FullName));
                 string str = File.ReadAllText(fileInfo.FullName);
 
                 XMLTalks talks;
@@ -111,46 +112,53 @@ namespace EditorUtil
 
                     if (talk.dialogue != null)
                     {
-                        if (ownerDictionaries.ContainsKey(talk.dialogue.talker))
+                        if (!string.IsNullOrEmpty(talk.dialogue.talker))
                         {
-                            if (string.IsNullOrEmpty(talk.dialogue.owner))
+                            if (ownerDictionaries.ContainsKey(talk.dialogue.talker))
                             {
-                                talk.dialogue.owner = ownerDictionaries[talk.dialogue.talker];
+                                if (string.IsNullOrEmpty(talk.dialogue.owner))
+                                {
+                                    talk.dialogue.owner = ownerDictionaries[talk.dialogue.talker];
+                                }
                             }
-                        }
-                        else
-                        {
-                            if (!string.IsNullOrEmpty(talk.dialogue.owner))
-                            {
-                                ownerDictionaries.Add(talk.dialogue.talker, talk.dialogue.owner);
-                            }
-                        }
-                        var matches = pauseRegex.Matches(talk.dialogue.text);
-                        int indexAdd = 0;
-                        for (var i = 0; i < matches.Count; i++)
-                        {
-                            var match = matches[i];
-
-                            var commands = match.Groups["Tip"].Value.Split(':');
-
-                            string name = commands[0];
-                            string eventName = (commands.Length >= 2) ? commands[1] : commands[0];
-                            talk.dialogue.tipEvent.Add(new TipEvent()
-                            {
-                                eventName = eventName,
-                                talkName = (commands.Length >= 3) ? commands[2] : null,
-                                eventType = (commands.Length >= 4) ? Utility.GetStringToEventType(commands[3]) : EventType.CHANGE
-                            });
-                            string s;
-                            if (commands.Length >= 3)
-                                s = "<#FFAA00><bounce><link=" + eventName + ">" + name + "</color></bounce></link>";
                             else
-                                s = "<#FFEE00><link=" + eventName + ">" + name + "</color></link>";
-                            talk.dialogue.text = talk.dialogue.text.Insert(match.Index + indexAdd, s);
-                            indexAdd += s.Length;
+                            {
+                                if (!string.IsNullOrEmpty(talk.dialogue.owner))
+                                {
+                                    ownerDictionaries.Add(talk.dialogue.talker, talk.dialogue.owner);
+                                }
+                            }
                         }
 
-                        talk.dialogue.text = Regex.Replace(talk.dialogue.text, TIP_REGEX_STRING, "");
+                        if (!string.IsNullOrEmpty(talk.dialogue.text))
+                        {
+                            var matches = pauseRegex.Matches(talk.dialogue.text);
+                            int indexAdd = 0;
+                            for (var i = 0; i < matches.Count; i++)
+                            {
+                                var match = matches[i];
+
+                                var commands = match.Groups["Tip"].Value.Split(':');
+
+                                string name = commands[0];
+                                string eventName = (commands.Length >= 2) ? commands[1] : commands[0];
+                                talk.dialogue.tipEvent.Add(new TipEvent()
+                                {
+                                    eventName = eventName,
+                                    talkName = (commands.Length >= 3) ? commands[2] : null,
+                                    eventType = (commands.Length >= 4) ? Utility.GetStringToEventType(commands[3]) : EventType.CHANGE
+                                });
+                                string s;
+                                if (commands.Length >= 3)
+                                    s = "<#FFAA00><bounce><link=" + eventName + ">" + name + "</color></bounce></link>";
+                                else
+                                    s = "<#FFEE00><link=" + eventName + ">" + name + "</color></link>";
+                                talk.dialogue.text = talk.dialogue.text.Insert(match.Index + indexAdd, s);
+                                indexAdd += s.Length;
+                            }
+
+                            talk.dialogue.text = Regex.Replace(talk.dialogue.text, TIP_REGEX_STRING, "");
+                        }
 
                         if (talk.dialogue.active && talk.characters != null)
                         {
@@ -192,6 +200,7 @@ namespace EditorUtil
 
                             face = faceDictionary[character.name];
                         }
+
                         character.face = face;
 
                         CharacterPos pos = character.pos;
@@ -204,6 +213,7 @@ namespace EditorUtil
 
                             pos = posDictionary[character.name];
                         }
+
                         character.pos = pos;
 
                         CharacterSize size = character.size;
@@ -216,9 +226,8 @@ namespace EditorUtil
 
                             size = sizeDictionary[character.name];
                         }
-                        character.size = size;
 
-                        Debug.Log(character.name);
+                        character.size = size;
 
                         foreach (var anim in talk.animations)
                         {
@@ -256,7 +265,6 @@ namespace EditorUtil
                             sizeDictionary[character.name] = size;
                         else
                             sizeDictionary.Add(character.name, size);
-
                     }
                 }
 

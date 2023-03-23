@@ -378,7 +378,19 @@ public class TalkManager : Singleton<TalkManager>
     private void TalkUpdate()
     {
         if (!talkWindow.gameObject.activeSelf) return;
-        if (!dialogueImage.gameObject.activeSelf) return;
+        if (!dialogueImage.gameObject.activeSelf)
+        {
+            if (animations.Count <= 0)
+            {
+                autoDuration += Time.deltaTime;
+                if (autoDuration >= autoWaitTime)
+                {
+                    autoDuration -= autoWaitTime;
+                    NewTalk();
+                }
+            }
+            return;
+        }
         if (eventWindow.gameObject.activeSelf) return;
         if (nowTalk.dialogue == null)
         {
@@ -510,7 +522,9 @@ public class TalkManager : Singleton<TalkManager>
             }
         }
         else
+        {
             dialogueImage.gameObject.SetActive(false);
+        }
 
         if (!string.IsNullOrEmpty(nowTalk.bgm))
         {

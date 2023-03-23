@@ -20,11 +20,11 @@ MonoBehaviour:
       effect: 0
       scale: 1
     dialogue:
-      talker: "\uC5D0\uC774"
-      text: "\uC640! \uC568\uB9AC\uC2A4 \uC544\uC2DC\uB294\uAD6C\uB098!!!!"
+      talker: 
+      text: 
       tipEvent: []
       active: 0
-      owner: A
+      owner: 
     eventList: []
     characters:
     - name: A
@@ -64,11 +64,6 @@ MonoBehaviour:
       effect: Face
       name: A
       parameter: SmileFlush
-      duration: -1
-    - type: 2
-      effect: On
-      name: 
-      parameter: 
       duration: -1
     - type: 1
       effect: Wait
