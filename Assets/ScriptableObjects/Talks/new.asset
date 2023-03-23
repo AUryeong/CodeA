@@ -21,15 +21,15 @@ MonoBehaviour:
       scale: 1
     dialogue:
       talker: "\uC5D0\uC774"
-      text: "\uD639\uC2DC <#FFEE00><bounce><link=\uC568\uB9AC\uC2A4>\uC6D0\uB354\uB79C\uB4DC:\uC568\uB9AC\uC2A4</color></bounce></link>\uB098
-        <#FFEE00><bounce><link=\uC2DC\uACF5\uC758 \uD3ED\uD48D>\uC2DC\uACF5\uC758
-        \uD3ED\uD48D:\uC568\uB9AC\uC2A4</color></bounce></link>\uC744 \uC544\uC2ED\uB2C8\uAE4C?"
+      text: "\uD639\uC2DC <#FFAA00><bounce><link=\uC568\uB9AC\uC2A4>\uC6D0\uB354\uB79C\uB4DC</color></bounce></link>\uB098
+        <#FFEE00><link=\uC2DC\uACF5\uC758 \uD3ED\uD48D>\uC2DC\uACF5\uC758 \uD3ED\uD48D</color></link>\uC744
+        \uC544\uC2ED\uB2C8\uAE4C?"
       tipEvent:
       - eventName: "\uC568\uB9AC\uC2A4"
         talkName: alice
-        eventType: 1
+        eventType: 0
       - eventName: "\uC2DC\uACF5\uC758 \uD3ED\uD48D"
-        talkName: alice
+        talkName: 
         eventType: 1
       active: 0
       owner: A
@@ -38,14 +38,14 @@ MonoBehaviour:
     - name: A
       clothes: Default
       face: Default
-      pos: 1
-      size: 1
+      pos: 2
+      size: 2
       dark: 0
     - name: Loli
       clothes: Default
       face: DefaultLight
-      pos: 6
-      size: 1
+      pos: 7
+      size: 2
       dark: 1
     animations:
     - type: 0
@@ -84,26 +84,20 @@ MonoBehaviour:
       effect: 0
       scale: 1
     dialogue:
-      talker: "\uC5D0\uC774"
-      text: "\uC774\uAC78 \uBAA8\uB974\uB124..."
+      talker: "\uC774\uB85C\uB9AC"
+      text: "\uC774\uAC78 \uAC00\uBC84\uB9AC\uB124..."
       tipEvent: []
       active: 0
-      owner: A
+      owner: Loli
     eventList:
     - name: "\uC568\uB9AC\uC2A4"
       type: 0
     characters:
-    - name: A
-      clothes: Default
-      face: Smile
-      pos: 4
-      size: 1
-      dark: 0
     - name: Loli
       clothes: Default
       face: Default
-      pos: 6
-      size: 1
+      pos: 7
+      size: 2
       dark: 0
     animations:
     - type: 0
@@ -116,11 +110,6 @@ MonoBehaviour:
       name: 
       parameter: 
       duration: 2
-    - type: 0
-      effect: Face
-      name: A
-      parameter: SideSmile
-      duration: -1
     - type: 2
       effect: On
       name: 

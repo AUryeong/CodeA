@@ -12,7 +12,7 @@ namespace UI
         private List<LogCellData> datas;
         private readonly Dictionary<GameObject, UILogCell> cellDictionaries = new Dictionary<GameObject, UILogCell>();
 
-        public void SetLog( List<LogCellData> cellDatas)
+        public void SetLog(List<LogCellData> cellDatas)
         {
             datas = cellDatas;
             cellDictionaries.Clear();

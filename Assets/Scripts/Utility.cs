@@ -19,6 +19,27 @@ public static class Utility
         return (vector + vector2) / 2;
     }
 
+    public static EventType GetStringToEventType(string eventType)
+    {
+        if (!string.IsNullOrEmpty(eventType))
+        {
+            switch (eventType)
+            {
+
+                case "Before":
+                case "BEFORE":
+                    return EventType.BEFORE;
+                case "Change":
+                case "CHANGE":
+                    return EventType.CHANGE;
+                case "After":
+                case "AFTER":
+                    return EventType.AFTER;
+            }
+        }
+        return EventType.CHANGE;
+    }
+
     public static string GetTimeToString(TimeType timeType)
     {
         switch (timeType)
@@ -98,7 +119,7 @@ public static class Utility
                 return new Vector3(0.6f, 0.6f, 0.6f);
             case "M":
                 return new Vector3(0.7f, 0.7f, 0.7f);
-            case"L":
+            case "L":
                 return new Vector3(0.8f, 0.8f, 0.8f);
             case "XL":
                 return new Vector3(1f, 1f, 1f);
@@ -120,12 +141,12 @@ public static class Utility
                 return new Vector3(1f, 1f, 1f);
         }
     }
-    
+
     public static T SelectOne<T>(List<T> tList)
     {
         return tList[UnityEngine.Random.Range(0, tList.Count)];
     }
-    
+
     public static T SelectOne<T>(params T[] tList)
     {
         return tList[UnityEngine.Random.Range(0, tList.Length)];

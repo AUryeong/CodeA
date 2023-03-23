@@ -546,6 +546,10 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2270577577628898412, guid: 77480689c3fc67d48976e88e28d35139, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -115.600006
+      objectReference: {fileID: 0}
     - target: {fileID: 2934584747104526480, guid: 77480689c3fc67d48976e88e28d35139, type: 3}
       propertyPath: m_AnchorMax.y
       value: 1
@@ -654,6 +658,10 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6284897838065411903, guid: 77480689c3fc67d48976e88e28d35139, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -115.600006
+      objectReference: {fileID: 0}
     - target: {fileID: 6441533239433996354, guid: 77480689c3fc67d48976e88e28d35139, type: 3}
       propertyPath: Count
       value: 100
@@ -722,6 +730,10 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7438140677523419909, guid: 77480689c3fc67d48976e88e28d35139, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -115.600006
+      objectReference: {fileID: 0}
     - target: {fileID: 7706615281609950204, guid: 77480689c3fc67d48976e88e28d35139, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -770,14 +782,10 @@ PrefabInstance:
       propertyPath: m_AnchorMin.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 9126023065538368755, guid: 77480689c3fc67d48976e88e28d35139, type: 3}
-      propertyPath: m_ReferenceResolution.x
-      value: 1920
-      objectReference: {fileID: 0}
-    - target: {fileID: 9126023065538368755, guid: 77480689c3fc67d48976e88e28d35139, type: 3}
-      propertyPath: m_ReferenceResolution.y
-      value: 1080
-      objectReference: {fileID: 0}
+    - target: {fileID: 9126023065538368764, guid: 77480689c3fc67d48976e88e28d35139, type: 3}
+      propertyPath: m_Camera
+      value: 
+      objectReference: {fileID: 775280443}
     - target: {fileID: 9126023065992542624, guid: 77480689c3fc67d48976e88e28d35139, type: 3}
       propertyPath: m_RootOrder
       value: 5

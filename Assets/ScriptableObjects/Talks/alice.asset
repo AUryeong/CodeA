@@ -30,14 +30,14 @@ MonoBehaviour:
     - name: A
       clothes: Default
       face: Smile
-      pos: 4
-      size: 1
+      pos: 5
+      size: 2
       dark: 0
     - name: Loli
       clothes: Default
       face: DefaultLight
-      pos: 6
-      size: 1
+      pos: 7
+      size: 2
       dark: 0
     animations:
     - type: 0
@@ -101,14 +101,14 @@ MonoBehaviour:
     - name: Loli
       clothes: Default
       face: DefaultLight
-      pos: 6
-      size: 1
+      pos: 7
+      size: 2
       dark: 1
     - name: A
       clothes: Default
       face: SmileFlush
-      pos: 5
-      size: 1
+      pos: 6
+      size: 2
       dark: 1
     animations: []
   - bgm: School
@@ -127,13 +127,13 @@ MonoBehaviour:
     - name: A
       clothes: Default
       face: SmileFlush
-      pos: 5
-      size: 1
+      pos: 6
+      size: 2
       dark: 1
     - name: Loli
       clothes: Default
       face: DefaultLight
-      pos: 6
-      size: 1
+      pos: 8
+      size: 2
       dark: 0
     animations: []

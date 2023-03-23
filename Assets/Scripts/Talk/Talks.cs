@@ -28,12 +28,23 @@ public class Talk
     public List<Animation> animations = new List<Animation>();
 }
 
+
+[System.Serializable]
+public class TipEvent
+{
+    [XmlAttribute("Name")] public string eventName;
+    [XmlAttribute("Dialog")] public string talkName;
+    [XmlAttribute("Type")] public EventType eventType = EventType.CHANGE;
+}
+
 [System.Serializable]
 public class Dialogue
 {
     [XmlElement("Talker")] public string talker;
 
     [XmlElement("Text")] public string text;
+
+    public List<TipEvent> tipEvent = new List<TipEvent>();
 
     [XmlAttribute("Active")] public bool active = true;
 
