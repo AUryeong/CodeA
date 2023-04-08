@@ -9,11 +9,11 @@ using UnityEngine;
 namespace EditorUtil
 {
     [System.Serializable]
-    public class XMLTalks
+    public class XMLDialogs
     {
         [XmlElement("Title")] public string cgTitle;
 
-        [XmlElement("Talk")] public List<Talk> talks = new List<Talk>();
+        [XmlElement("Dialog")] public List<Talk> talks = new List<Talk>();
     }
 
     [System.Serializable]
@@ -75,10 +75,10 @@ namespace EditorUtil
 
                 string str = File.ReadAllText(fileInfo.FullName);
 
-                XMLTalks talks;
+                XMLDialogs talks;
                 using (var stringReader = new StringReader(str))
                 {
-                    talks = (XMLTalks)new XmlSerializer(typeof(XMLTalks)).Deserialize(stringReader);
+                    talks = (XMLDialogs)new XmlSerializer(typeof(XMLDialogs)).Deserialize(stringReader);
                 }
 
                 var newTalks = ScriptableObject.CreateInstance<Talks>();

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<XMLTalks xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-	<Talk>
+<XMLDialogs xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<Dialog>
 		<Bgm>School</Bgm>
 		<BG Name="Class_Morning"/>
 		<Dialogue Active="false" />
@@ -18,8 +18,8 @@
 			<Animation Type="CHAR" Name="A" Effect="Move" Parameter="L1" Duration="0.8"/>
 			<Animation Type="CHAR" Name="A" Effect="Bounce" Parameter="3" Duration="0.2"/>
 		</Animations>
-	</Talk>
-	<Talk>
+	</Dialog>
+	<Dialog>
 		<Dialogue>
 			<Talker>{0}</Talker>
 			<Text>이건 모를 수가 없긴해</Text>
@@ -28,8 +28,8 @@
 			<Character Name="Loli" />
 			<Character Name="A" />
 		</Characters>
-	</Talk>
-	<Talk>
+	</Dialog>
+	<Dialog>
 		<Dialogue>
 			<Talker>이로리</Talker>
 			<Text>히히 알아서 다행이다</Text>
@@ -38,5 +38,5 @@
 			<Character Name="A" />
 			<Character Name="Loli" Pos="L3"/>
 		</Characters>
-	</Talk>
-</XMLTalks>
+	</Dialog>
+</XMLDialogs>

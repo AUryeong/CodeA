@@ -19,6 +19,8 @@ public class Talk
 
     [XmlElement("Event")] public List<Event> eventList = new List<Event>();
 
+    [XmlElement("Option")] public List<Option> optionList;
+
     [XmlArray("Characters")]
     [XmlArrayItem("Character")]
     public List<Character> characters = new List<Character>();
@@ -28,13 +30,42 @@ public class Talk
     public List<Animation> animations = new List<Animation>();
 }
 
+[System.Serializable]
+public class Option
+{
+    [XmlAttribute("Sciprt")] 
+    public string script;
+
+    [XmlAttribute("Dialog")] 
+    public string dialog;
+
+    [XmlAttribute("DialogType")]
+    public EventType eventType;
+
+    [XmlArray("Dialogs")]
+    [XmlArrayItem("Dialog")]
+    public List<Talk> dialogs;
+
+    [XmlElement("Event")] 
+    public List<Event> eventList = new List<Event>();
+}
+
 
 [System.Serializable]
 public class TipEvent
 {
-    [XmlAttribute("Name")] public string eventName;
-    [XmlAttribute("Dialog")] public string talkName;
-    [XmlAttribute("Type")] public EventType eventType = EventType.CHANGE;
+    [XmlAttribute("Name")] 
+    public string eventName;
+
+    [XmlAttribute("Dialog")] 
+    public string talkName;
+
+    [XmlArray("Dialogs")]
+    [XmlArrayItem("Dialog")]
+    public List<Talk> dialogs;
+
+    [XmlAttribute("Type")]
+    public EventType eventType = EventType.CHANGE;
 }
 
 [System.Serializable]

@@ -47,6 +47,8 @@ public class TalkManager : Singleton<TalkManager>
     private float autoDuration;
     private const float autoWaitTime = 2f;
 
+    [Header("선택지")]
+
     [Header("이벤트")][SerializeField] private Image eventWindow;
     [SerializeField] private TextMeshProUGUI eventTitleText;
     [SerializeField] private TextMeshProUGUI eventDescriptionText;
@@ -98,6 +100,52 @@ public class TalkManager : Singleton<TalkManager>
             obj.Init();
         }
     }
+    private void DialogAdd(EventType eventType, List<Talk> talks)
+    {
+        switch (eventType)
+        {
+            case EventType.BEFORE:
+                {
+                    var leftTalks = talkQueue.ToList();
+                    talkQueue.Clear();
+
+                    foreach (var talk in talks)
+                        talkQueue.Enqueue(talk);
+
+                    foreach (var talk in leftTalks)
+                        talkQueue.Enqueue(talk);
+
+                    if (talks.Count != 0 && leftTalks.Count != 0)
+                        NewTalk();
+                    break;
+                }
+            case EventType.AFTER:
+                {
+                    bool flag = talkQueue.Count <= 0;
+
+                    AddTalk(talks);
+                    if (!flag)
+                        NewTalk();
+                    break;
+                }
+            default:
+            case EventType.CHANGE:
+                {
+                    talkQueue.Clear();
+                    AddTalk(talks);
+                    break;
+                }
+        }
+    }
+
+    #region Option
+    private void OptionSetting()
+    {
+        if (nowTalk.optionList == null || nowTalk.optionList.Count <= 0) return;
+
+        
+    }
+    #endregion
 
     #region Event
 
@@ -131,46 +179,18 @@ public class TalkManager : Singleton<TalkManager>
         }
     }
 
-
     private void EventOkay()
     {
         EventExit();
         TipEvent tipEvent = nowTalk.dialogue.tipEvent.Find((tip) => tip.eventName == selectEvent);
-        switch (tipEvent.eventType)
-        {
-            case EventType.BEFORE:
-                {
-                    var leftTalks = talkQueue.ToList();
-                    talkQueue.Clear();
-                    var talks = ResourcesManager.Instance.GetTalk(tipEvent.talkName);
+        List<Talk> talks = new List<Talk>();
+        if (!string.IsNullOrEmpty(tipEvent.talkName))
+            talks.AddRange(ResourcesManager.Instance.GetTalk(tipEvent.talkName).talks);
 
-                    if (!string.IsNullOrEmpty(talks.cgTitle))
-                        if (!SaveManager.Instance.GameData.getVideo.Contains(tipEvent.talkName))
-                            SaveManager.Instance.GameData.getVideo.Add(tipEvent.talkName);
+        if (tipEvent.dialogs != null)
+            talks.AddRange(tipEvent.dialogs);
 
-                    foreach (var talk in talks.talks)
-                        talkQueue.Enqueue(talk);
-
-                    foreach (var talk in leftTalks)
-                        talkQueue.Enqueue(talk);
-
-                    NewTalk();
-                    break;
-                }
-            case EventType.AFTER:
-                {
-                    AddTalk(tipEvent.talkName);
-                    NewTalk();
-                    break;
-                }
-            default:
-            case EventType.CHANGE:
-                {
-                    talkQueue.Clear();
-                    AddTalk(tipEvent.talkName);
-                    break;
-                }
-        }
+        DialogAdd(tipEvent.eventType, talks);
     }
 
     private void EventExit()
