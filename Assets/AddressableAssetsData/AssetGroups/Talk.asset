@@ -17,11 +17,6 @@ MonoBehaviour:
     m_SerializedData: []
   m_GUID: 5dc993f9af76f094785e8ee32156f0fa
   m_SerializeEntries:
-  - m_GUID: 4056a649b10555d42afd215a1b2b1c25
-    m_Address: Assets/ScriptableObjects/Talks/Opening.asset
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - talk
   - m_GUID: 01b50535ad8479e4ea6af9651409a1c9
     m_Address: Assets/ScriptableObjects/Talks/new.asset
     m_ReadOnly: 0

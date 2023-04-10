@@ -155,7 +155,8 @@ public class TalkManager : Singleton<TalkManager>
         selectEvent = eventName;
 
         bool isHaveTips = SaveManager.Instance.GameData.getTips.Contains(eventName);
-        bool isDialogTips = !string.IsNullOrEmpty(nowTalk.dialogue.tipEvent.Find((tip) => tip.eventName == eventName).talkName);
+        var tipEvent = nowTalk.dialogue.tipEvent.Find((tip) => tip.eventName == eventName);
+        bool isDialogTips = !string.IsNullOrEmpty(tipEvent.talkName) || (tipEvent.dialogs != null && tipEvent.dialogs.Count > 0);
 
         eventTitleText.text = eventName + "에 대해";
         eventDescriptionText.text = isHaveTips ? ResourcesManager.Instance.GetTip(eventName) : "정보가 없다...";
@@ -182,8 +183,8 @@ public class TalkManager : Singleton<TalkManager>
     private void EventOkay()
     {
         EventExit();
-        TipEvent tipEvent = nowTalk.dialogue.tipEvent.Find((tip) => tip.eventName == selectEvent);
-        List<Talk> talks = new List<Talk>();
+        var tipEvent = nowTalk.dialogue.tipEvent.Find((tip) => tip.eventName == selectEvent);
+        var talks = new List<Talk>();
         if (!string.IsNullOrEmpty(tipEvent.talkName))
             talks.AddRange(ResourcesManager.Instance.GetTalk(tipEvent.talkName).talks);
 

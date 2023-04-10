@@ -33,7 +33,7 @@ public class Talk
 [System.Serializable]
 public class Option
 {
-    [XmlAttribute("Sciprt")] 
+    [XmlAttribute("Script")] 
     public string script;
 
     [XmlAttribute("Dialog")] 
@@ -75,7 +75,7 @@ public class Dialogue
 
     [XmlElement("Text")] public string text;
 
-    public List<TipEvent> tipEvent = new List<TipEvent>();
+    [XmlElement("TipEvent")]  public List<TipEvent> tipEvent = new List<TipEvent>();
 
     [XmlAttribute("Active")] public bool active = true;
 

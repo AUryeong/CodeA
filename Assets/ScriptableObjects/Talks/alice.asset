@@ -26,6 +26,7 @@ MonoBehaviour:
       active: 0
       owner: 
     eventList: []
+    optionList: []
     characters:
     - name: A
       clothes: Default
@@ -92,6 +93,7 @@ MonoBehaviour:
       active: 1
       owner: 
     eventList: []
+    optionList: []
     characters:
     - name: Loli
       clothes: Default
@@ -118,6 +120,7 @@ MonoBehaviour:
       active: 1
       owner: Loli
     eventList: []
+    optionList: []
     characters:
     - name: A
       clothes: Default
