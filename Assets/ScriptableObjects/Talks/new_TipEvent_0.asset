@@ -1,0 +1,142 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ea4cc8aacb5484389845b651f03202d, type: 3}
+  m_Name: new_TipEvent_0
+  m_EditorClassIdentifier: 
+  cgTitle: 
+  talks:
+  - bgm: School
+    background:
+      name: Class_Morning
+      effect: 0
+      scale: 1
+    dialogue:
+      talker: "\uC5D0\uC774"
+      text: "\uC568\uB9AC\uC2A4 \uC544\uC2DC\uB294\uAD6C\uB098!"
+      tipEvent: []
+      active: 0
+      owner: A
+    eventList: []
+    optionList: []
+    characters:
+    - name: A
+      clothes: Default
+      face: Smile
+      pos: 5
+      size: 2
+      dark: 0
+    - name: Loli
+      clothes: Default
+      face: DefaultLight
+      pos: 7
+      size: 2
+      dark: 0
+    animations:
+    - type: 0
+      effect: Shake
+      name: Loli
+      parameter: -1
+      duration: 0.2
+    - type: 0
+      effect: Emotion
+      name: Loli
+      parameter: Thinking
+      duration: 0.5
+    - type: 1
+      effect: Wait
+      name: 
+      parameter: 
+      duration: 1
+    - type: 0
+      effect: Bounce
+      name: A
+      parameter: 1
+      duration: 0.2
+    - type: 0
+      effect: Face
+      name: A
+      parameter: SmileFlush
+      duration: -1
+    - type: 1
+      effect: Wait
+      name: 
+      parameter: 
+      duration: 0.5
+    - type: 2
+      effect: On
+      name: 
+      parameter: 
+      duration: -1
+    - type: 0
+      effect: Move
+      name: A
+      parameter: L1
+      duration: 0.8
+    - type: 0
+      effect: Bounce
+      name: A
+      parameter: 3
+      duration: 0.2
+  - bgm: School
+    background:
+      name: Class_Morning
+      effect: 0
+      scale: 1
+    dialogue:
+      talker: '{0}'
+      text: "\uC774\uAC74 \uBAA8\uB97C \uC218\uAC00 \uC5C6\uAE34\uD574"
+      tipEvent: []
+      active: 1
+      owner: 
+    eventList: []
+    optionList: []
+    characters:
+    - name: Loli
+      clothes: Default
+      face: DefaultLight
+      pos: 7
+      size: 2
+      dark: 1
+    - name: A
+      clothes: Default
+      face: SmileFlush
+      pos: 6
+      size: 2
+      dark: 1
+    animations: []
+  - bgm: School
+    background:
+      name: Class_Morning
+      effect: 0
+      scale: 1
+    dialogue:
+      talker: "\uC774\uB85C\uB9AC"
+      text: "\uD788\uD788 \uC54C\uC544\uC11C \uB2E4\uD589\uC774\uB2E4"
+      tipEvent: []
+      active: 1
+      owner: Loli
+    eventList: []
+    optionList: []
+    characters:
+    - name: A
+      clothes: Default
+      face: SmileFlush
+      pos: 6
+      size: 2
+      dark: 1
+    - name: Loli
+      clothes: Default
+      face: DefaultLight
+      pos: 8
+      size: 2
+      dark: 0
+    animations: []

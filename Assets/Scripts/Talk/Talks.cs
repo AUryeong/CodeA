@@ -44,6 +44,7 @@ public class Option
 
     [XmlArray("Dialogs")]
     [XmlArrayItem("Dialog")]
+    [HideInInspector]
     public List<Talk> dialogs;
 
     [XmlElement("Event")] 
@@ -62,6 +63,7 @@ public class TipEvent
 
     [XmlArray("Dialogs")]
     [XmlArrayItem("Dialog")]
+    [HideInInspector]
     public List<Talk> dialogs;
 
     [XmlAttribute("Type")]

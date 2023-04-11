@@ -17,13 +17,18 @@ MonoBehaviour:
     m_SerializedData: []
   m_GUID: 5dc993f9af76f094785e8ee32156f0fa
   m_SerializeEntries:
+  - m_GUID: 802699580ea2e0f4086524fb3377cec6
+    m_Address: Assets/ScriptableObjects/Talks/alice.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - talk
   - m_GUID: 01b50535ad8479e4ea6af9651409a1c9
     m_Address: Assets/ScriptableObjects/Talks/new.asset
     m_ReadOnly: 0
     m_SerializedLabels:
     - talk
-  - m_GUID: 802699580ea2e0f4086524fb3377cec6
-    m_Address: Assets/ScriptableObjects/Talks/alice.asset
+  - m_GUID: 476d30301e1a7b04e8007ce08314baef
+    m_Address: Assets/ScriptableObjects/Talks/new_TipEvent_0.asset
     m_ReadOnly: 0
     m_SerializedLabels:
     - talk

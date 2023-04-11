@@ -8,6 +8,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
+using UI;
 
 public class TalkManager : Singleton<TalkManager>
 {
@@ -47,7 +48,9 @@ public class TalkManager : Singleton<TalkManager>
     private float autoDuration;
     private const float autoWaitTime = 2f;
 
-    [Header("선택지")]
+    [Header("선택지")][SerializeField] private UIOption uiOption;
+    [SerializeField] private RectTransform optionParent;
+    private readonly List<UIOption> uiOptions = new List<UIOption>();
 
     [Header("이벤트")][SerializeField] private Image eventWindow;
     [SerializeField] private TextMeshProUGUI eventTitleText;
@@ -75,6 +78,9 @@ public class TalkManager : Singleton<TalkManager>
 
         eventOkayButton.onClick.RemoveAllListeners();
         eventOkayButton.onClick.AddListener(EventOkay);
+
+        uiStandings.AddRange(standingParent.GetComponentsInChildren<UIStanding>());
+        uiOptions.AddRange(optionParent.GetComponentsInChildren<UIOption>());
     }
 
     protected override void OnReset()
@@ -141,9 +147,54 @@ public class TalkManager : Singleton<TalkManager>
     #region Option
     private void OptionSetting()
     {
-        if (nowTalk.optionList == null || nowTalk.optionList.Count <= 0) return;
+        if (nowTalk == null || nowTalk.optionList == null || nowTalk.optionList.Count <= 0) return;
 
-        
+        if (uiOptions.Count < nowTalk.optionList.Count)
+        {
+            int repeatCount = nowTalk.optionList.Count - uiOptions.Count;
+            for (int i = 0; i < repeatCount; i++)
+            {
+                var temp = Instantiate(uiOption, optionParent);
+                uiOptions.Add(temp);
+            }
+        }
+
+        var options = new List<UIOption>(uiOptions);
+        var talkOptions = new List<Option>(nowTalk.optionList);
+
+        foreach (var standing in nowTalk.characters)
+        {
+            var prevStanding = options.Find(x =>
+                x.NowStanding != null && x.NowStanding.name.Equals(standing.name) &&
+                x.NowStanding.clothes.Equals(standing.clothes));
+
+            if (prevStanding == null) continue;
+
+            options.Remove(prevStanding);
+            prevStanding.gameObject.SetActive(true);
+            prevStanding.ShowCharacter(standing);
+            talkOptions.Remove(standing);
+        }
+
+        foreach (var standing in talkOptions)
+        {
+            var newStanding = options[0];
+
+            if (newStanding == null) continue;
+
+            options.Remove(newStanding);
+            newStanding.gameObject.SetActive(true);
+            newStanding.ShowCharacter(standing);
+        }
+
+        foreach (var standing in options)
+        {
+            standing.Init();
+        }
+    }
+
+    public void SelectOption(Option setOption)
+    {
     }
     #endregion
 
@@ -156,7 +207,7 @@ public class TalkManager : Singleton<TalkManager>
 
         bool isHaveTips = SaveManager.Instance.GameData.getTips.Contains(eventName);
         var tipEvent = nowTalk.dialogue.tipEvent.Find((tip) => tip.eventName == eventName);
-        bool isDialogTips = !string.IsNullOrEmpty(tipEvent.talkName) || (tipEvent.dialogs != null && tipEvent.dialogs.Count > 0);
+        bool isDialogTips = !string.IsNullOrEmpty(tipEvent.talkName);
 
         eventTitleText.text = eventName + "에 대해";
         eventDescriptionText.text = isHaveTips ? ResourcesManager.Instance.GetTip(eventName) : "정보가 없다...";
@@ -184,12 +235,7 @@ public class TalkManager : Singleton<TalkManager>
     {
         EventExit();
         var tipEvent = nowTalk.dialogue.tipEvent.Find((tip) => tip.eventName == selectEvent);
-        var talks = new List<Talk>();
-        if (!string.IsNullOrEmpty(tipEvent.talkName))
-            talks.AddRange(ResourcesManager.Instance.GetTalk(tipEvent.talkName).talks);
-
-        if (tipEvent.dialogs != null)
-            talks.AddRange(tipEvent.dialogs);
+        var talks = ResourcesManager.Instance.GetTalk(tipEvent.talkName).talks;
 
         DialogAdd(tipEvent.eventType, talks);
     }

@@ -81,17 +81,22 @@ namespace EditorUtil
                     talks = (XMLDialogs)new XmlSerializer(typeof(XMLDialogs)).Deserialize(stringReader);
                 }
 
-                var newTalks = ScriptableObject.CreateInstance<Talks>();
-
-                newTalks.talks = talks.talks;
-                ParsingTalks(ref newTalks.talks, ownerDictionaries);
-                newTalks.cgTitle = talks.cgTitle;
-
-                AssetDatabase.CreateAsset(newTalks, $"Assets/ScriptableObjects/Talks/{Path.GetFileNameWithoutExtension(fileInfo.FullName)}.asset");
+                CreateNewAsset(Path.GetFileNameWithoutExtension(fileInfo.FullName), talks.talks, talks.cgTitle, ownerDictionaries);
             }
         }
 
-        public static void ParsingTalks(ref List<Talk> talkList, Dictionary<string, string> ownerDictionaries)
+        public static void CreateNewAsset(string assetName, List<Talk> talkList, string title, Dictionary<string, string> ownerDictionaries)
+        {
+            var newTalks = ScriptableObject.CreateInstance<Talks>();
+
+            ParsingTalks(assetName, ref talkList, ownerDictionaries);
+            newTalks.talks = talkList;
+            newTalks.cgTitle = title;
+
+            AssetDatabase.CreateAsset(newTalks, $"Assets/ScriptableObjects/Talks/{assetName}.asset");
+        }
+
+        public static void ParsingTalks(string assetName, ref List<Talk> talkList, Dictionary<string, string> ownerDictionaries)
         {
             string background = string.Empty;
             float backgroundScale = 1;
@@ -167,7 +172,13 @@ namespace EditorUtil
                             {
                                 var tipEvent = talk.dialogue.tipEvent.Find((x) => !string.IsNullOrEmpty(x.eventName) && x.eventName == eventName);
                                 if (tipEvent.dialogs != null)
-                                    ParsingTalks(ref tipEvent.dialogs, ownerDictionaries);
+                                {
+                                    string tipEventDialogName = string.Format("{0}_TipEvent_{1}", assetName, i);
+                                    ParsingTalks(tipEventDialogName, ref tipEvent.dialogs, ownerDictionaries);
+                                    CreateNewAsset(tipEventDialogName, tipEvent.dialogs, string.Empty, ownerDictionaries);
+                                    tipEvent.dialogs = null;
+                                    tipEvent.talkName = tipEventDialogName;
+                                }
                             }
 
                             string s;
