@@ -19,6 +19,11 @@ public static class Utility
         return (vector + vector2) / 2;
     }
 
+    public static Color ChangeColorFade(Color color, float fade)
+    {
+        return new Color(color.r, color.g, color.b, fade);
+    }
+
     public static EventType GetStringToEventType(string eventType)
     {
         if (!string.IsNullOrEmpty(eventType))

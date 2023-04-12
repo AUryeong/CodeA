@@ -87,6 +87,63 @@ MonoBehaviour:
       effect: 0
       scale: 1
     dialogue:
+      talker: "\uC5D0\uC774"
+      text: "\uADF8... \uADF8\uB7FC <#FFEE00><link=\uB85C\uBCF4\uD1A0\uBBF8>\uB85C\uBCF4\uD1A0\uBBF8</color></link>\uB294
+        \uC54C\uC9C0?"
+      tipEvent:
+      - eventName: "\uB85C\uBCF4\uD1A0\uBBF8"
+        talkName: 
+        dialogs: []
+        eventType: 1
+      active: 0
+      owner: A
+    eventList: []
+    optionList:
+    - script: "\uC5D0\uC774 \uADF8\uAC74 \uC54C\uC9C0 \u314B\u314B"
+      dialog: new_Event_0
+      eventType: 0
+      dialogs: []
+      eventList: []
+    - script: "\uBAB0... \uBAB0\uB8E8?"
+      dialog: 
+      eventType: 0
+      dialogs: []
+      eventList: []
+    characters:
+    - name: Loli
+      clothes: Default
+      face: DefaultLight
+      pos: 7
+      size: 2
+      dark: 1
+    - name: A
+      clothes: Default
+      face: Smile
+      pos: 5
+      size: 2
+      dark: 1
+    animations:
+    - type: 0
+      effect: Emotion
+      name: A
+      parameter: Thinking
+      duration: 0.5
+    - type: 1
+      effect: Wait
+      name: 
+      parameter: 
+      duration: 2
+    - type: 2
+      effect: On
+      name: 
+      parameter: 
+      duration: -1
+  - bgm: School
+    background:
+      name: Class_Morning
+      effect: 0
+      scale: 1
+    dialogue:
       talker: "\uC774\uB85C\uB9AC"
       text: "\uC774\uAC78 \uAC00\uBC84\uB9AC\uB124..."
       tipEvent: []

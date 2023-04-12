@@ -1,42 +1,100 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
+using Coffee.UIEffects;
 
 namespace UI
 {
-    public class UIOption : MonoBehaviour
+    public class UIOption : MonoBehaviour, IPointerDownHandler, IPointerClickHandler, IPointerUpHandler
     {
         [SerializeField] TextMeshProUGUI scriptText;
+        [SerializeField] TextMeshProUGUI effectText;
 
         public Option option
         {
             get; private set;
         }
 
-        private RectTransform rectTransform;
-        private Button button;
+        public RectTransform rectTransform
+        {
+            get; private set;
+        }
+        private Image image;
+
 
         protected void Awake()
         {
             rectTransform = GetComponent<RectTransform>();
-            button = GetComponent<Button>();
+            image = GetComponent<Image>();
+        }
 
-            button.onClick.RemoveAllListeners();
-            button.onClick.AddListener(ClickOption);
+        public void Disable()
+        {
+            if (option == null)
+            {
+                gameObject.SetActive(false);
+            }
+
+            option = null;
+            rectTransform.DOScale(Vector3.zero, 0.5f).SetEase(Ease.InBack).OnComplete(() =>
+            {
+                image.DOFade(0, 0.5f);
+                scriptText.DOFade(0, 0.5f);
+                effectText.DOFade(0, 0.5f).OnComplete(() =>
+                {
+                    gameObject.SetActive(false);
+                });
+            });
         }
 
         public void SetOption(Option setOption)
         {
             option = setOption;
 
+            scriptText.DOKill();
             scriptText.text = setOption.script;
+            scriptText.DOFade(1, 0.5f);
+
+            rectTransform.DOKill();
+            rectTransform.localScale = Vector3.zero;
+            rectTransform.DOScale(1, 0.3f).SetEase(Ease.OutBack);
+
+            image.DOKill();
+            image.color = Utility.ChangeColorFade(image.color, 0);
+            image.DOFade(1, 0.3f);
+
+            effectText.DOKill();
+            effectText.color = Utility.ChangeColorFade(effectText.color, 0);
+            effectText.DOFade(1, 0.3f);
         }
 
-        private void ClickOption()
+        public void OnPointerUp(PointerEventData eventData)
         {
-            TalkManager.Instance.SelectOption(option);
+            rectTransform.DOScale(Vector3.one, 0.2f);
+        }
+
+        public void OnPointerClick(PointerEventData eventData)
+        {
+            rectTransform.DOScale(Vector3.one * 1.15f, 0.5f).SetEase(Ease.OutQuad).OnComplete(() =>
+            {
+                image.DOFade(0, 0.5f);
+                scriptText.DOFade(0, 0.5f);
+                effectText.DOFade(0, 0.5f).OnComplete(() =>
+                {
+                    gameObject.SetActive(false);
+                });
+            });
+            TalkManager.Instance.SelectOption(this);
+            option = null;
+        }
+
+        public void OnPointerDown(PointerEventData eventData)
+        {
+            rectTransform.DOScale(Vector3.one * 0.95f, 0.2f);
         }
     }
 

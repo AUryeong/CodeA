@@ -272,7 +272,7 @@ public class ResourcesManager : Singleton<ResourcesManager>
 
     public Talks GetTalk(string talkName)
     {
-        return talks[talkName];
+        return talks.ContainsKey(talkName) ? talks[talkName] : null;
     }
 
     public string GetTip(string tipName)

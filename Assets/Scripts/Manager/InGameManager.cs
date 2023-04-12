@@ -108,6 +108,6 @@ public class InGameManager : Singleton<InGameManager>
         SaveManager.Instance.GameData.name = string.IsNullOrEmpty(namingInput.text) ? "김준우" : namingInput.text;
         namingCanvas.gameObject.SetActive(false);
 
-        TalkManager.Instance.AddTalk("Opening");
+        TalkManager.Instance.AddTalk("new");
     }
 }

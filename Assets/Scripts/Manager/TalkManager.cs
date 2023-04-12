@@ -9,6 +9,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 using UI;
+using static UnityEditor.Progress;
 
 public class TalkManager : Singleton<TalkManager>
 {
@@ -51,6 +52,8 @@ public class TalkManager : Singleton<TalkManager>
     [Header("선택지")][SerializeField] private UIOption uiOption;
     [SerializeField] private RectTransform optionParent;
     private readonly List<UIOption> uiOptions = new List<UIOption>();
+    private bool isHasOption = false;
+    private bool optionActive = false;
 
     [Header("이벤트")][SerializeField] private Image eventWindow;
     [SerializeField] private TextMeshProUGUI eventTitleText;
@@ -79,8 +82,11 @@ public class TalkManager : Singleton<TalkManager>
         eventOkayButton.onClick.RemoveAllListeners();
         eventOkayButton.onClick.AddListener(EventOkay);
 
-        uiStandings.AddRange(standingParent.GetComponentsInChildren<UIStanding>());
-        uiOptions.AddRange(optionParent.GetComponentsInChildren<UIOption>());
+        foreach (RectTransform rect in standingParent)
+            uiStandings.Add(rect.GetComponent<UIStanding>());
+
+        foreach (RectTransform rect in optionParent)
+            uiOptions.Add(rect.GetComponent<UIOption>());
     }
 
     protected override void OnReset()
@@ -100,6 +106,8 @@ public class TalkManager : Singleton<TalkManager>
         blackFadeIn.gameObject.SetActive(false);
         blackFadeOut.gameObject.SetActive(false);
 
+        OptionReset();
+
         foreach (var obj in uiStandings)
         {
             obj.gameObject.SetActive(false);
@@ -108,6 +116,11 @@ public class TalkManager : Singleton<TalkManager>
     }
     private void DialogAdd(EventType eventType, List<Talk> talks)
     {
+        if (talks == null || talks.Count <= 0)
+        {
+            NewTalk();
+            return;
+        }
         switch (eventType)
         {
             case EventType.BEFORE:
@@ -162,39 +175,43 @@ public class TalkManager : Singleton<TalkManager>
         var options = new List<UIOption>(uiOptions);
         var talkOptions = new List<Option>(nowTalk.optionList);
 
-        foreach (var standing in nowTalk.characters)
+        foreach (var option in talkOptions)
         {
-            var prevStanding = options.Find(x =>
-                x.NowStanding != null && x.NowStanding.name.Equals(standing.name) &&
-                x.NowStanding.clothes.Equals(standing.clothes));
+            var uiOption = options[0];
 
-            if (prevStanding == null) continue;
+            if (uiOption == null) continue;
 
-            options.Remove(prevStanding);
-            prevStanding.gameObject.SetActive(true);
-            prevStanding.ShowCharacter(standing);
-            talkOptions.Remove(standing);
+            options.Remove(uiOption);
+            uiOption.gameObject.SetActive(true);
+            uiOption.SetOption(option);
         }
 
-        foreach (var standing in talkOptions)
-        {
-            var newStanding = options[0];
-
-            if (newStanding == null) continue;
-
-            options.Remove(newStanding);
-            newStanding.gameObject.SetActive(true);
-            newStanding.ShowCharacter(standing);
-        }
-
-        foreach (var standing in options)
-        {
-            standing.Init();
-        }
+        foreach (var uiOption in options)
+            uiOption.gameObject.SetActive(false);
     }
 
-    public void SelectOption(Option setOption)
+    private void OptionReset()
     {
+        foreach (var uiOption in uiOptions)
+            uiOption.gameObject.SetActive(false);
+    }
+
+
+    public void SelectOption(UIOption setOption)
+    {
+        foreach (UIOption option in uiOptions)
+        {
+            if (option.gameObject.activeSelf)
+            {
+                if (option != setOption)
+                {
+                    option.Disable();
+                }
+            }
+        }
+        var talks = ResourcesManager.Instance.GetTalk(setOption.option.dialog);
+
+        DialogAdd(setOption.option.eventType, talks == null ? null : talks.talks);
     }
     #endregion
 
@@ -376,7 +393,9 @@ public class TalkManager : Singleton<TalkManager>
                             }
 
                             if (!nowTalk.dialogue.active)
+                            {
                                 LogManager.Instance.AddLog(nowTalk);
+                            }
                             break;
                     }
 
@@ -436,7 +455,10 @@ public class TalkManager : Singleton<TalkManager>
                 }
                 else
                 {
-                    NewTalk();
+                    if (nowTalk.optionList == null || nowTalk.optionList.Count <= 0)
+                    {
+                        NewTalk();
+                    }
                 }
             }
         }
@@ -453,7 +475,19 @@ public class TalkManager : Singleton<TalkManager>
                 if (autoDuration >= autoWaitTime)
                 {
                     autoDuration -= autoWaitTime;
-                    NewTalk();
+                    if (isHasOption)
+                    {
+                        if (!optionActive)
+                        {
+                            OptionSetting();
+                            optionActive = true;
+                        }
+                        return;
+                    }
+                    else
+                    {
+                        NewTalk();
+                    }
                 }
             }
             return;
@@ -467,9 +501,20 @@ public class TalkManager : Singleton<TalkManager>
             if (autoDuration >= autoWaitTime)
             {
                 autoDuration -= autoWaitTime;
-                NewTalk();
+                if (isHasOption)
+                {
+                    if (!optionActive)
+                    {
+                        OptionSetting();
+                        optionActive = true;
+                    }
+                    return;
+                }
+                else
+                {
+                    NewTalk();
+                }
             }
-
             return;
         }
 
@@ -491,6 +536,14 @@ public class TalkManager : Singleton<TalkManager>
                 endTextEffect.DOKill();
                 endTextEffect.color = new Color(105 / 255f, 1, 126 / 255f, 1);
                 endTextEffect.DOFade(0, 0.8f).SetLoops(-1, LoopType.Yoyo);
+            }
+            if (isHasOption)
+            {
+                if (!optionActive)
+                {
+                    OptionSetting();
+                    optionActive = true;
+                }
             }
 
             var characterPos = new Vector3(-824.4f, 32.39394f);
@@ -575,6 +628,9 @@ public class TalkManager : Singleton<TalkManager>
         endTextEffect.gameObject.SetActive(false);
         nowTalk = talkQueue.Dequeue();
         isHasEvent = false;
+
+        isHasOption = nowTalk.optionList.Count > 0;
+        optionActive = false;
 
         if (nowTalk.dialogue != null)
         {

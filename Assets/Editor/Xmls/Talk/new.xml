@@ -68,6 +68,69 @@
             <Animation Type="DIAL" Effect="On"/>
         </Animations>
     </Dialog>
+	<Dialog>
+		<Dialogue Active="false">
+			<Talker>에이</Talker>
+			<Text>그... 그럼 {로보토미}는 알지?</Text>
+		</Dialogue>
+		<Option Script="에이 그건 알지 ㅋㅋ">
+			<Dialogs>
+				<Dialog>
+					<Bgm>School</Bgm>
+					<BG Name="Class_Morning"/>
+					<Dialogue Active="false">
+						<Talker>에이</Talker>
+						<Text>아 ㅋㅋ 이건 알아야지</Text>
+					</Dialogue>
+					<Characters>
+						<Character Name="A" Face="Smile" Pos="C" Size="M" Dark="false"/>
+						<Character Name="Loli" Face="DefaultLight" Pos="L2" Size="M" Dark="false"/>
+					</Characters>
+					<Animations>
+						<Animation Type="CHAR" Name="Loli" Effect="Shake" Parameter="-1" Duration="0.2"/>
+						<Animation Type="CHAR" Name="Loli" Effect="Emotion" Parameter="Thinking" Duration="0.5"/>
+						<Animation Type="UTIL" Effect="Wait" Duration="1"/>
+						<Animation Type="CHAR" Name="A" Effect="Bounce" Parameter="1" Duration="0.2"/>
+						<Animation Type="CHAR" Name="A" Effect="Face" Parameter="SmileFlush"/>
+						<Animation Type="UTIL" Effect="Wait" Duration="0.5"/>
+						<Animation Type="DIAL" Effect="On"/>
+						<Animation Type="CHAR" Name="A" Effect="Move" Parameter="L1" Duration="0.8"/>
+						<Animation Type="CHAR" Name="A" Effect="Bounce" Parameter="3" Duration="0.2"/>
+					</Animations>
+				</Dialog>
+				<Dialog>
+					<Dialogue>
+						<Talker>{0}</Talker>
+						<Text>이건 모를 수가 없긴해</Text>
+					</Dialogue>
+					<Characters>
+						<Character Name="Loli" />
+						<Character Name="A" />
+					</Characters>
+				</Dialog>
+				<Dialog>
+					<Dialogue>
+						<Talker>이로리</Talker>
+						<Text>히히 알아서 다행이다</Text>
+					</Dialogue>
+					<Characters>
+						<Character Name="A" />
+						<Character Name="Loli" Pos="L3"/>
+					</Characters>
+				</Dialog>
+			</Dialogs>
+		</Option>
+		<Option Script="몰... 몰루?" />
+		<Characters>
+			<Character Name="Loli" />
+			<Character Name="A" />
+		</Characters>
+		<Animations>
+			<Animation Type="CHAR" Name="A" Effect="Emotion" Parameter="Thinking" Duration="0.5"/>
+			<Animation Type="UTIL" Effect="Wait" Duration="2"/>
+			<Animation Type="DIAL" Effect="On"/>
+		</Animations>
+	</Dialog>
     <Dialog>
         <Dialogue Active="false">
             <Talker>이로리</Talker>

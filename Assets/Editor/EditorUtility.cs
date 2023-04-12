@@ -1,10 +1,12 @@
-﻿using System.Collections;
+﻿using CodiceApp.EventTracking.Plastic;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Xml.Serialization;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace EditorUtil
 {
@@ -200,6 +202,21 @@ namespace EditorUtil
                             var findCharacter = talk.characters.Find((character) => character.dark && talk.dialogue.owner == character.name);
                             if (findCharacter != null)
                                 findCharacter.dark = false;
+                        }
+                    }
+                }
+                if(talk.optionList != null && talk.optionList.Count > 0)
+                {
+                    for (int i = 0; i < talk.optionList.Count; i++)
+                    {
+                        Option option = talk.optionList[i];
+                        if (option.dialogs != null && option.dialogs.Count > 0)
+                        {
+                            string tipEventDialogName = string.Format("{0}_Event_{1}", assetName, i);
+                            ParsingTalks(tipEventDialogName, ref option.dialogs, ownerDictionaries);
+                            CreateNewAsset(tipEventDialogName, option.dialogs, string.Empty, ownerDictionaries);
+                            option.dialogs = null;
+                            option.dialog = tipEventDialogName;
                         }
                     }
                 }
