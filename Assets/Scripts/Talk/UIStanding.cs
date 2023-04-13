@@ -15,16 +15,19 @@ namespace UI
 
         private RectTransform rectTransform;
 
-        [Header("감정 표현용")][SerializeField] private Image emotionBase;
+        [Header("감정 표현용")] [SerializeField] private Image emotionBase;
 
-        [Space(10)][SerializeField] private Image[] thinkingTalks;
+        [Space(10)] [SerializeField] private Image[] thinkingTalks;
 
-        [Space(10)][SerializeField] private Image flushBase;
+        [Space(10)] [SerializeField] private Image flushBase;
         [SerializeField] private Image flushLine;
 
-        [Space(10)][SerializeField] private Image funnyNote;
+        [Space(10)] [SerializeField] private Image funnyNote;
 
-        [Space(10)][SerializeField] private Image worry;
+        [Space(10)] [SerializeField] private Image worry;
+
+        [Space(10)] [SerializeField] private Image tiredSweat;
+        [SerializeField] private Image tiredSmallSweat;
 
         protected void Awake()
         {
@@ -227,6 +230,13 @@ namespace UI
             worry.rectTransform.DOKill();
             worry.gameObject.SetActive(false);
 
+            tiredSweat.DOKill();
+            tiredSweat.rectTransform.DOKill();
+            tiredSweat.gameObject.SetActive(false);
+            tiredSmallSweat.DOKill();
+            tiredSmallSweat.rectTransform.DOKill();
+            tiredSmallSweat.gameObject.SetActive(false);
+
             switch (emotionName)
             {
                 case "Thinking":
@@ -249,7 +259,10 @@ namespace UI
                     flushLine.gameObject.SetActive(true);
                     flushLine.rectTransform.DOLocalRotate(new Vector3(0, 0, 10), duration / 3).OnComplete(() =>
                     {
-                        flushLine.rectTransform.DOLocalRotate(new Vector3(0, 0, -10), duration / 3).OnComplete(() => { flushLine.rectTransform.DOLocalRotate(new Vector3(0, 0, 0), duration / 3); });
+                        flushLine.rectTransform.DOLocalRotate(new Vector3(0, 0, -10), duration / 3).OnComplete(() =>
+                        {
+                            flushLine.rectTransform.DOLocalRotate(new Vector3(0, 0, 0), duration / 3);
+                        });
                     });
                     flushLine.DOFade(0, fadeOutDuration).SetDelay(fadeOutDelay);
                     break;
@@ -287,6 +300,23 @@ namespace UI
                     {
                         worry.rectTransform.DOLocalRotate(new Vector3(0, 0, Random.Range(-15f, -35f)), fadeOutDuration);
                     });
+                    break;
+                case "Sweat":
+                    tiredSmallSweat.gameObject.SetActive(true);
+                    tiredSmallSweat.color = Utility.fadeWhite;
+                    tiredSmallSweat.DOFade(1, duration / 10);
+                    tiredSmallSweat.DOFade(0, fadeOutDuration).SetDelay(fadeOutDelay);
+
+                    tiredSmallSweat.rectTransform.anchoredPosition = new Vector2(-32.9f, 34.7f);
+                    tiredSmallSweat.rectTransform.DOAnchorPosY(24.7f, fadeOutDelay);
+                    
+                    tiredSweat.gameObject.SetActive(true);
+                    tiredSweat.color = Utility.fadeWhite;
+                    tiredSweat.DOFade(1, duration / 10);
+                    tiredSweat.DOFade(0, fadeOutDuration).SetDelay(fadeOutDelay);
+
+                    tiredSweat.rectTransform.anchoredPosition = new Vector2(25, 20.9f);
+                    tiredSweat.rectTransform.DOAnchorPosY(-14.8f, fadeOutDelay);
                     break;
             }
         }

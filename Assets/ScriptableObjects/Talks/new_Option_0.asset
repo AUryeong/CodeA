@@ -10,9 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0ea4cc8aacb5484389845b651f03202d, type: 3}
-  m_Name: new_Event_0
+  m_Name: new_Option_0
   m_EditorClassIdentifier: 
   cgTitle: 
+  skipText: 
   talks:
   - bgm: School
     background:

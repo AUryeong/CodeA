@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: new_TipEvent_0
   m_EditorClassIdentifier: 
   cgTitle: 
+  skipText: 
   talks:
   - bgm: School
     background:

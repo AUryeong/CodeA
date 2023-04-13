@@ -62,6 +62,8 @@ public class InGameManager : Singleton<InGameManager>
     {
         if (GameManager.Instance.nowGameData.leftTalks.Count > 0)
             TalkManager.Instance.AddTalk(GameManager.Instance.nowGameData.leftTalks);
+        
+        TalkManager.Instance.talkSkipText = GameManager.Instance.nowGameData.leftTalkSkipText;
     }
 
     private void NewSaveData()

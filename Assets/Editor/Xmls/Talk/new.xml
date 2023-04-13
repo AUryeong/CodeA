@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <XMLDialogs xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <Title>안녕 세계!</Title>
+    <SkipText>신 학기에 앨리스 보고 싶다 하 시발\n와하하하</SkipText>
     <Dialog>
         <Bgm>School</Bgm>
         <BG Name="Class_Morning"/>
@@ -68,12 +69,52 @@
             <Animation Type="DIAL" Effect="On"/>
         </Animations>
     </Dialog>
+    <Dialog>
+        <Dialogue>
+            <Talker>에이</Talker>
+            <Text>나는 유해한 인간이야</Text>
+        </Dialogue>
+        <Characters>
+            <Character Name="Loli" />
+            <Character Name="A" Dark="false"/>
+        </Characters>
+    </Dialog>
+    <Dialog>
+        <Dialogue>
+            <Talker>에이</Talker>
+            <Text>나는 유해한 인간이야</Text>
+        </Dialogue>
+        <Characters>
+            <Character Name="Loli" />
+            <Character Name="A" Dark="false"/>
+        </Characters>
+    </Dialog>
+    <Dialog>
+        <Dialogue>
+            <Talker>에이</Talker>
+            <Text>나는 유해한 인간이야</Text>
+        </Dialogue>
+        <Characters>
+            <Character Name="Loli" />
+            <Character Name="A" Dark="false"/>
+        </Characters>
+    </Dialog>
+    <Dialog>
+        <Dialogue>
+            <Talker>에이</Talker>
+            <Text>나는 유해한 인간이야</Text>
+        </Dialogue>
+        <Characters>
+            <Character Name="Loli" />
+            <Character Name="A" Dark="false"/>
+        </Characters>
+    </Dialog>
 	<Dialog>
 		<Dialogue Active="false">
 			<Talker>에이</Talker>
 			<Text>그... 그럼 {로보토미}는 알지?</Text>
 		</Dialogue>
-		<Option Script="에이 그건 알지 ㅋㅋ">
+		<Option Script="에이 그건 알지 ㅋㅋ" Special="true">
 			<Dialogs>
 				<Dialog>
 					<Bgm>School</Bgm>
@@ -123,7 +164,7 @@
 		<Option Script="몰... 몰루?" />
 		<Characters>
 			<Character Name="Loli" />
-			<Character Name="A" />
+			<Character Name="A" Dark="false"/>
 		</Characters>
 		<Animations>
 			<Animation Type="CHAR" Name="A" Effect="Emotion" Parameter="Thinking" Duration="0.5"/>

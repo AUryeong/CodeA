@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: alice
   m_EditorClassIdentifier: 
   cgTitle: 
+  skipText: 
   talks:
   - bgm: School
     background:

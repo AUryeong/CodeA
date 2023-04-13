@@ -5,6 +5,7 @@ using UnityEngine;
 public class Talks : ScriptableObject
 {
     public string cgTitle;
+    [TextArea] public string skipText;
     public List<Talk> talks = new List<Talk>();
 }
 
@@ -36,11 +37,17 @@ public class Option
     [XmlAttribute("Script")] 
     public string script;
 
+    [XmlElement("SkipText")] 
+    public string skipText;
+    
     [XmlAttribute("Dialog")] 
     public string dialog;
 
     [XmlAttribute("DialogType")]
     public EventType eventType;
+    
+    [XmlAttribute("Special")]
+    public bool special;
 
     [XmlArray("Dialogs")]
     [XmlArrayItem("Dialog")]
@@ -57,6 +64,9 @@ public class TipEvent
 {
     [XmlAttribute("Name")] 
     public string eventName;
+
+    [XmlElement("SkipText")] 
+    public string skipText;
 
     [XmlAttribute("Dialog")] 
     public string talkName;

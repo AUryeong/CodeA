@@ -15,6 +15,8 @@ namespace EditorUtil
     {
         [XmlElement("Title")] public string cgTitle;
 
+        [XmlElement("SkipText")] public string skipText;
+        
         [XmlElement("Dialog")] public List<Talk> talks = new List<Talk>();
     }
 
@@ -83,17 +85,18 @@ namespace EditorUtil
                     talks = (XMLDialogs)new XmlSerializer(typeof(XMLDialogs)).Deserialize(stringReader);
                 }
 
-                CreateNewAsset(Path.GetFileNameWithoutExtension(fileInfo.FullName), talks.talks, talks.cgTitle, ownerDictionaries);
+                CreateNewAsset(Path.GetFileNameWithoutExtension(fileInfo.FullName), talks.talks, talks.cgTitle, talks.skipText, ownerDictionaries);
             }
         }
 
-        public static void CreateNewAsset(string assetName, List<Talk> talkList, string title, Dictionary<string, string> ownerDictionaries)
+        public static void CreateNewAsset(string assetName, List<Talk> talkList, string title, string skipText, Dictionary<string, string> ownerDictionaries)
         {
             var newTalks = ScriptableObject.CreateInstance<Talks>();
 
             ParsingTalks(assetName, ref talkList, ownerDictionaries);
             newTalks.talks = talkList;
             newTalks.cgTitle = title;
+            newTalks.skipText = skipText == null ? null : skipText.Replace("\\n", "\n");
 
             AssetDatabase.CreateAsset(newTalks, $"Assets/ScriptableObjects/Talks/{assetName}.asset");
         }
@@ -177,7 +180,7 @@ namespace EditorUtil
                                 {
                                     string tipEventDialogName = string.Format("{0}_TipEvent_{1}", assetName, i);
                                     ParsingTalks(tipEventDialogName, ref tipEvent.dialogs, ownerDictionaries);
-                                    CreateNewAsset(tipEventDialogName, tipEvent.dialogs, string.Empty, ownerDictionaries);
+                                    CreateNewAsset(tipEventDialogName, tipEvent.dialogs, string.Empty, tipEvent.skipText, ownerDictionaries);
                                     tipEvent.dialogs = null;
                                     tipEvent.talkName = tipEventDialogName;
                                 }
@@ -212,9 +215,9 @@ namespace EditorUtil
                         Option option = talk.optionList[i];
                         if (option.dialogs != null && option.dialogs.Count > 0)
                         {
-                            string tipEventDialogName = string.Format("{0}_Event_{1}", assetName, i);
+                            string tipEventDialogName = string.Format("{0}_Option_{1}", assetName, i);
                             ParsingTalks(tipEventDialogName, ref option.dialogs, ownerDictionaries);
-                            CreateNewAsset(tipEventDialogName, option.dialogs, string.Empty, ownerDictionaries);
+                            CreateNewAsset(tipEventDialogName, option.dialogs, string.Empty, option.skipText, ownerDictionaries);
                             option.dialogs = null;
                             option.dialog = tipEventDialogName;
                         }

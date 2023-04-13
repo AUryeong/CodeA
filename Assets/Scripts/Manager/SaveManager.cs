@@ -37,7 +37,7 @@ public enum TimeType
 public class GameData
 {
     public bool isDownloadFile;
-    
+
     public string name = string.Empty; // 이름
     public float sfxSound = 1; // 효과음 배율
     public float bgmSound = 1; // BGM 배율
@@ -50,7 +50,7 @@ public class GameData
     public List<string> getCg = new List<string>(); // 얻은 CG
 
     public List<string> getVideo = new List<string>(); // 얻은 w
-    
+
     public List<string> getTips = new List<string>();
 
 
@@ -96,12 +96,14 @@ public class SubGameData
     public TimeType time = MORNING;
 
     public List<int> loveLevel = new List<int>();
-    
+
     public List<int> statLevels = new List<int>();
 
     public List<SkillType> hasSkills = new List<SkillType>();
 
     public List<Item> hasItems = new List<Item>();
+
+    public string leftTalkSkipText = string.Empty;
 
     public List<Talk> leftTalks = new List<Talk>();
 
@@ -121,6 +123,7 @@ public class SubGameData
             hasSkills = hasSkills,
             hasItems = hasItems,
             leftTalks = leftTalks,
+            leftTalkSkipText = leftTalkSkipText,
             saveTime = saveTime
         };
     }
@@ -130,7 +133,7 @@ public class SaveManager : Singleton<SaveManager>
 {
     public string prefsName = "CodeA";
 
-    [SerializeField]private GameData gameData;
+    [SerializeField] private GameData gameData;
 
     public GameData GameData
     {

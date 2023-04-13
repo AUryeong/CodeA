@@ -32,6 +32,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels:
     - talk
+  - m_GUID: c82cfa8cd8de7e346ad1a4bd5e4b5b9d
+    m_Address: Assets/ScriptableObjects/Talks/new_Option_0.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - talk
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 09f2a6625245fee47a2f1a97f32f2b44, type: 2}
   m_SchemaSet:

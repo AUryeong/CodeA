@@ -112,6 +112,7 @@ public class GameManager : Singleton<GameManager>
         if (nowGameData == null) return;
 
         nowGameData.leftTalks = TalkManager.Instance.GetLeftTalks();
+        nowGameData.leftTalkSkipText = TalkManager.Instance.talkSkipText;
         nowGameData.saveTime = DateTime.Now.ToString("yyyy/MM/dd HH:mm");
 
         nowGameData.year = InGameManager.Instance.year;

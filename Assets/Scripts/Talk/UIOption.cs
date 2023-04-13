@@ -14,16 +14,13 @@ namespace UI
         [SerializeField] TextMeshProUGUI scriptText;
         [SerializeField] TextMeshProUGUI effectText;
 
-        public Option option
-        {
-            get; private set;
-        }
+        public Option option { get; private set; }
 
-        public RectTransform rectTransform
-        {
-            get; private set;
-        }
+        public RectTransform rectTransform { get; private set; }
         private Image image;
+
+        private Color defaultTextColor = Color.white;
+        private Color specialTextColor = new Color(105f / 255f, 1, 126 / 255f);
 
 
         protected void Awake()
@@ -44,10 +41,7 @@ namespace UI
             {
                 image.DOFade(0, 0.5f);
                 scriptText.DOFade(0, 0.5f);
-                effectText.DOFade(0, 0.5f).OnComplete(() =>
-                {
-                    gameObject.SetActive(false);
-                });
+                effectText.DOFade(0, 0.5f).OnComplete(() => { gameObject.SetActive(false); });
             });
         }
 
@@ -57,6 +51,12 @@ namespace UI
 
             scriptText.DOKill();
             scriptText.text = setOption.script;
+
+            var color = defaultTextColor;
+            if ((setOption.eventList != null && setOption.eventList.Count > 0) || setOption.special)
+                color = specialTextColor;
+            
+            scriptText.color = Utility.ChangeColorFade(color, 0);
             scriptText.DOFade(1, 0.5f);
 
             rectTransform.DOKill();
@@ -68,7 +68,7 @@ namespace UI
             image.DOFade(1, 0.3f);
 
             effectText.DOKill();
-            effectText.color = Utility.ChangeColorFade(effectText.color, 0);
+            effectText.color = Utility.ChangeColorFade(color, 0);
             effectText.DOFade(1, 0.3f);
         }
 
@@ -83,10 +83,7 @@ namespace UI
             {
                 image.DOFade(0, 0.5f);
                 scriptText.DOFade(0, 0.5f);
-                effectText.DOFade(0, 0.5f).OnComplete(() =>
-                {
-                    gameObject.SetActive(false);
-                });
+                effectText.DOFade(0, 0.5f).OnComplete(() => { gameObject.SetActive(false); });
             });
             TalkManager.Instance.SelectOption(this);
             option = null;
@@ -97,5 +94,4 @@ namespace UI
             rectTransform.DOScale(Vector3.one * 0.95f, 0.2f);
         }
     }
-
 }

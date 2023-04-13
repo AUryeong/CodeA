@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: new
   m_EditorClassIdentifier: 
   cgTitle: "\uC548\uB155 \uC138\uACC4!"
+  skipText: "\uC2E0 \uD559\uAE30\uC5D0 \uC568\uB9AC\uC2A4 \uBCF4\uACE0 \uC2F6\uB2E4
+    \uD558 \uC2DC\uBC1C\n\uC640\uD558\uD558\uD558"
   talks:
   - bgm: School
     background:
@@ -26,10 +28,12 @@ MonoBehaviour:
         \uC544\uC2ED\uB2C8\uAE4C?"
       tipEvent:
       - eventName: "\uC568\uB9AC\uC2A4"
+        skipText: 
         talkName: new_TipEvent_0
         dialogs: []
         eventType: 1
       - eventName: "\uC2DC\uACF5\uC758 \uD3ED\uD48D"
+        skipText: 
         talkName: 
         dialogs: []
         eventType: 1
@@ -88,10 +92,119 @@ MonoBehaviour:
       scale: 1
     dialogue:
       talker: "\uC5D0\uC774"
+      text: "\uB098\uB294 \uC720\uD574\uD55C \uC778\uAC04\uC774\uC57C"
+      tipEvent: []
+      active: 1
+      owner: A
+    eventList: []
+    optionList: []
+    characters:
+    - name: Loli
+      clothes: Default
+      face: DefaultLight
+      pos: 7
+      size: 2
+      dark: 1
+    - name: A
+      clothes: Default
+      face: Smile
+      pos: 5
+      size: 2
+      dark: 0
+    animations: []
+  - bgm: School
+    background:
+      name: Class_Morning
+      effect: 0
+      scale: 1
+    dialogue:
+      talker: "\uC5D0\uC774"
+      text: "\uB098\uB294 \uC720\uD574\uD55C \uC778\uAC04\uC774\uC57C"
+      tipEvent: []
+      active: 1
+      owner: A
+    eventList: []
+    optionList: []
+    characters:
+    - name: Loli
+      clothes: Default
+      face: DefaultLight
+      pos: 7
+      size: 2
+      dark: 1
+    - name: A
+      clothes: Default
+      face: Smile
+      pos: 5
+      size: 2
+      dark: 0
+    animations: []
+  - bgm: School
+    background:
+      name: Class_Morning
+      effect: 0
+      scale: 1
+    dialogue:
+      talker: "\uC5D0\uC774"
+      text: "\uB098\uB294 \uC720\uD574\uD55C \uC778\uAC04\uC774\uC57C"
+      tipEvent: []
+      active: 1
+      owner: A
+    eventList: []
+    optionList: []
+    characters:
+    - name: Loli
+      clothes: Default
+      face: DefaultLight
+      pos: 7
+      size: 2
+      dark: 1
+    - name: A
+      clothes: Default
+      face: Smile
+      pos: 5
+      size: 2
+      dark: 0
+    animations: []
+  - bgm: School
+    background:
+      name: Class_Morning
+      effect: 0
+      scale: 1
+    dialogue:
+      talker: "\uC5D0\uC774"
+      text: "\uB098\uB294 \uC720\uD574\uD55C \uC778\uAC04\uC774\uC57C"
+      tipEvent: []
+      active: 1
+      owner: A
+    eventList: []
+    optionList: []
+    characters:
+    - name: Loli
+      clothes: Default
+      face: DefaultLight
+      pos: 7
+      size: 2
+      dark: 1
+    - name: A
+      clothes: Default
+      face: Smile
+      pos: 5
+      size: 2
+      dark: 0
+    animations: []
+  - bgm: School
+    background:
+      name: Class_Morning
+      effect: 0
+      scale: 1
+    dialogue:
+      talker: "\uC5D0\uC774"
       text: "\uADF8... \uADF8\uB7FC <#FFEE00><link=\uB85C\uBCF4\uD1A0\uBBF8>\uB85C\uBCF4\uD1A0\uBBF8</color></link>\uB294
         \uC54C\uC9C0?"
       tipEvent:
       - eventName: "\uB85C\uBCF4\uD1A0\uBBF8"
+        skipText: 
         talkName: 
         dialogs: []
         eventType: 1
@@ -100,13 +213,17 @@ MonoBehaviour:
     eventList: []
     optionList:
     - script: "\uC5D0\uC774 \uADF8\uAC74 \uC54C\uC9C0 \u314B\u314B"
-      dialog: new_Event_0
+      skipText: 
+      dialog: new_Option_0
       eventType: 0
+      special: 1
       dialogs: []
       eventList: []
     - script: "\uBAB0... \uBAB0\uB8E8?"
+      skipText: 
       dialog: 
       eventType: 0
+      special: 0
       dialogs: []
       eventList: []
     characters:
@@ -121,7 +238,7 @@ MonoBehaviour:
       face: Smile
       pos: 5
       size: 2
-      dark: 1
+      dark: 0
     animations:
     - type: 0
       effect: Emotion
