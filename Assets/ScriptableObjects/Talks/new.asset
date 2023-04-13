@@ -243,7 +243,7 @@ MonoBehaviour:
     - type: 0
       effect: Emotion
       name: A
-      parameter: Thinking
+      parameter: Sweat
       duration: 0.5
     - type: 1
       effect: Wait

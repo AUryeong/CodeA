@@ -68,7 +68,7 @@ namespace UI
             image.DOFade(1, 0.3f);
 
             effectText.DOKill();
-            effectText.color = Utility.ChangeColorFade(color, 0);
+            effectText.color = Utility.ChangeColorFade(effectText.color, 0);
             effectText.DOFade(1, 0.3f);
         }
 

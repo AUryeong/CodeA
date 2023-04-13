@@ -191,14 +191,14 @@ public class TalkManager : Singleton<TalkManager>
 
     public void PointerDown(BaseEventData data)
     {
-        if (string.IsNullOrEmpty(talkSkipText)) return;
+        if (string.IsNullOrEmpty(talkSkipText) || isHasOption) return;
 
         skipButtonClicking = true;
     }
 
     public void PointerUp(BaseEventData data)
     {
-        if (string.IsNullOrEmpty(talkSkipText)) return;
+        if (string.IsNullOrEmpty(talkSkipText) || isHasOption) return;
 
         skipButtonClicking = false;
         skipDuration = 0;
