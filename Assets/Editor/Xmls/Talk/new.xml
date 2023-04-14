@@ -167,7 +167,7 @@
 			<Character Name="A" Dark="false"/>
 		</Characters>
 		<Animations>
-			<Animation Type="CHAR" Name="A" Effect="Emotion" Parameter="Thinking" Duration="0.5"/>
+			<Animation Type="CHAR" Name="A" Effect="Emotion" Parameter="Sweat" Duration="0.5"/>
 			<Animation Type="UTIL" Effect="Wait" Duration="2"/>
 			<Animation Type="DIAL" Effect="On"/>
 		</Animations>

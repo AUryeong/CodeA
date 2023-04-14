@@ -3,7 +3,7 @@
     "m_SelectedPackage": {
         "deviceId": "RFCT70CWD5V",
         "name": "com.AUryeong.CodeA",
-        "processId": 23422,
+        "processId": 22087,
         "exited": false
     },
     "m_SelectedPriority": 0,
@@ -216,42 +216,6 @@
             "deviceId": "RFCT70CWD5V",
             "name": "com.AUryeong.CodeA",
             "processId": 22087,
-            "exited": false
-        },
-        {
-            "deviceId": "RFCT70CWD5V",
-            "name": "com.AUryeong.CodeA",
-            "processId": 18241,
-            "exited": false
-        },
-        {
-            "deviceId": "RFCT70CWD5V",
-            "name": "com.AUryeong.CodeA",
-            "processId": 19670,
-            "exited": false
-        },
-        {
-            "deviceId": "RFCT70CWD5V",
-            "name": "com.AUryeong.CodeA",
-            "processId": 20535,
-            "exited": false
-        },
-        {
-            "deviceId": "RFCT70CWD5V",
-            "name": "com.AUryeong.CodeA",
-            "processId": 20831,
-            "exited": false
-        },
-        {
-            "deviceId": "RFCT70CWD5V",
-            "name": "com.AUryeong.CodeA",
-            "processId": 21228,
-            "exited": false
-        },
-        {
-            "deviceId": "RFCT70CWD5V",
-            "name": "com.AUryeong.CodeA",
-            "processId": 23422,
             "exited": false
         }
     ],

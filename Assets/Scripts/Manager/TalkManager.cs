@@ -395,8 +395,8 @@ public class TalkManager : Singleton<TalkManager>
         eventWindow.rectTransform.anchoredPosition = pos;
         eventWindow.rectTransform.localScale = Vector3.zero;
 
-        eventWindow.rectTransform.DOScale(Vector3.one, 0.2f);
-        eventWindow.rectTransform.DOAnchorPos(defaultPos, 0.2f);
+        eventWindow.rectTransform.DOScale(Vector3.one, 0.3f).SetEase(Ease.OutBack);
+        eventWindow.rectTransform.DOAnchorPos(defaultPos, 0.3f).SetEase(Ease.OutBack);
 
         eventContinueText.gameObject.SetActive(isHaveTips && isDialogTips);
         eventOkayButtonText.gameObject.SetActive(isHaveTips && isDialogTips);

@@ -14,6 +14,8 @@ public class InGameManager : Singleton<InGameManager>
     [SerializeField] private Button warningOkay;
     [SerializeField] private Button warningCancel;
 
+    [Header("리얼리 인게임 요소")]
+
     public int year;
     public int month;
     public int week;
@@ -35,6 +37,8 @@ public class InGameManager : Singleton<InGameManager>
                 NewSaveData();
         }
     }
+
+    #region 세이브 로드
 
     private void ApplySaveData()
     {
@@ -112,4 +116,5 @@ public class InGameManager : Singleton<InGameManager>
 
         TalkManager.Instance.AddTalk("new");
     }
+    #endregion
 }
