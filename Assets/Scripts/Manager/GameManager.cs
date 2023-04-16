@@ -49,7 +49,7 @@ public class GameManager : Singleton<GameManager>
         {
             if (ResourcesManager.Instance.isLoading) return;
             
-            GameObject obj = PoolManager.Instance.Init(clickEffect.gameObject);
+            GameObject obj = PoolManager.Instance.Init("Click Effect");
             var vector = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             vector.z = 0;
             obj.transform.position = vector;

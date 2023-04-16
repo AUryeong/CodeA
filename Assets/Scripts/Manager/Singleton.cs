@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
 {
@@ -27,7 +28,10 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
         {
             OnCreated();
             if (IsDontDestroying)
+            {
                 DontDestroyOnLoad(gameObject);
+                SceneManager.sceneLoaded += OnSceneLoaded;
+            }
         }
         else
         {
@@ -36,6 +40,11 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
         }
     }
 
+    private void OnSceneLoaded(UnityEngine.SceneManagement.Scene scene, LoadSceneMode mode)
+    {
+        OnReset();
+    }
+    
     protected virtual void OnReset()
     {
     }

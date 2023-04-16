@@ -31,13 +31,13 @@ namespace UI
 
             if (GameManager.Instance.nowGameData == null && TalkManager.Instance.GetLeftTalks().Count <= 0)
             {
-                warningDescription.text = "정말로 종료 하시겠습니까?";
+                warningDescription.text = "정말로 종료하시겠습니까?";
                 warningDescription2.gameObject.SetActive(false);
                 warningOkayButton.onClick.AddListener(Application.Quit);
             }
             else
             {
-                warningDescription.text = "정말로 타이틀로 돌아가시겠습니까?";
+                warningDescription.text = "정말로 타이틀로\n돌아가시겠습니까?";
                 warningDescription2.gameObject.SetActive(true);
                 warningOkayButton.onClick.AddListener(() => GameManager.Instance.SceneLoad(Scene.TITLE));
             }

@@ -2,29 +2,44 @@
 using System.Linq;
 using UnityEngine;
 
+[System.Serializable]
+public class PoolingData
+{
+    [Tooltip("풀링 이름 비어있을시 오브젝트 이름으로")] public string name;
+    public GameObject originObject;
+    public List<GameObject> poolingList;
+}
 public class PoolManager : Singleton<PoolManager>
 {
     protected override bool IsDontDestroying => true;
 
-    public readonly Dictionary<GameObject, List<GameObject>> pools = new Dictionary<GameObject, List<GameObject>>();
+    private readonly Dictionary<string, List<GameObject>> pools = new Dictionary<string, List<GameObject>>();
+    private readonly Dictionary<string, GameObject> originObjects = new Dictionary<string, GameObject>();
+    [SerializeField] private List<PoolingData> poolingDatas = new List<PoolingData>();
 
-    public void AddPooling(GameObject origin, Transform parent)
+    protected override void OnCreated()
     {
-        if (!pools.ContainsKey(origin))
-            pools.Add(origin, new List<GameObject>());
-
-        foreach (Transform tarns in parent)
+        foreach (var data in poolingDatas)
         {
-            if (tarns.gameObject == origin) continue;
+            string poolName = string.IsNullOrEmpty(data.name) ? data.originObject.name : data.name;
+            originObjects.Add(poolName, data.originObject);
+
+            if (data.poolingList.Count <= 0) continue;
             
-            pools[origin].Add(tarns.gameObject);
+            pools.Add(poolName, new List<GameObject>());
+            foreach (var obj in data.poolingList)
+            {
+                pools[poolName].Add(obj);
+                obj.gameObject.SetActive(false);
+            }
         }
+        poolingDatas.Clear();
     }
 
-    public GameObject Init(GameObject origin)
+    public GameObject Init(string origin)
     {
-        if (origin == null) return null;
-        
+        if (string.IsNullOrEmpty(origin)) return null;
+
         GameObject copy;
         if (pools.ContainsKey(origin))
         {
@@ -33,9 +48,6 @@ public class PoolManager : Singleton<PoolManager>
                 copy = pools[origin].Find((x) => !x.activeSelf);
                 copy.SetActive(true);
 
-                var poolObject = copy.GetComponent<IPoolObject>();
-                poolObject?.Init();
-                    
                 return copy;
             }
         }
@@ -44,14 +56,16 @@ public class PoolManager : Singleton<PoolManager>
             pools.Add(origin, new List<GameObject>());
         }
 
-        copy = Instantiate(origin);
+        if (!originObjects.ContainsKey(origin))
+        {
+            Debug.Log("풀링 에러");
+            return null;
+        }
+        copy = Instantiate(originObjects[origin]);
         copy.SetActive(true);
         if (IsDontDestroying)
             DontDestroyOnLoad(copy);
 
-        var poolObject2 = copy.GetComponent<IPoolObject>();
-        poolObject2?.Init();
-            
         pools[origin].Add(copy);
         return copy;
     }

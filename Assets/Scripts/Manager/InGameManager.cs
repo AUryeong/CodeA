@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -14,13 +15,13 @@ public class InGameManager : Singleton<InGameManager>
     [SerializeField] private Button warningOkay;
     [SerializeField] private Button warningCancel;
 
-    [Header("리얼리 인게임 요소")]
+    [SerializeField] private Image fadeInBlack;
 
-    public int year;
+    [Header("리얼리 인게임 요소")] public int year;
     public int month;
     public int week;
     public TimeType time;
-    
+
     public List<int> loveLevel = new List<int>();
     public List<int> statLevels = new List<int>();
     public List<SkillType> hasSkills = new List<SkillType>();
@@ -44,12 +45,12 @@ public class InGameManager : Singleton<InGameManager>
     {
         var gameData = GameManager.Instance.nowGameData;
         if (gameData == null) return;
-        
+
         year = gameData.year;
         month = gameData.month;
         week = gameData.week;
         time = gameData.time;
-        
+
         loveLevel = gameData.loveLevel;
         statLevels = gameData.statLevels;
         hasSkills = gameData.hasSkills;
@@ -58,22 +59,30 @@ public class InGameManager : Singleton<InGameManager>
 
     private void ContinueSaveData()
     {
+        StartFadeOut();
         ApplySaveData();
         AddLeftTalks();
+    }
+
+    private void StartFadeOut()
+    {
+        fadeInBlack.gameObject.SetActive(true);
+        fadeInBlack.color = Color.black;
+        fadeInBlack.DOFade(0, 1).SetDelay(1).OnComplete(() => { fadeInBlack.gameObject.SetActive(false); });
     }
 
     private void AddLeftTalks()
     {
         if (GameManager.Instance.nowGameData.leftTalks.Count > 0)
             TalkManager.Instance.AddTalk(GameManager.Instance.nowGameData.leftTalks);
-        
+
         TalkManager.Instance.talkSkipText = GameManager.Instance.nowGameData.leftTalkSkipText;
     }
 
     private void NewSaveData()
     {
         GameManager.Instance.nowGameData = new SubGameData();
-        
+
         ApplySaveData();
         NamingSetting();
     }
@@ -82,11 +91,11 @@ public class InGameManager : Singleton<InGameManager>
     {
         if (!string.IsNullOrEmpty(SaveManager.Instance.GameData.name))
         {
+            StartFadeOut();
             TalkManager.Instance.AddTalk("new");
             return;
         }
 
-        GameManager.Instance.nowGameData = new SubGameData();
         namingCanvas.gameObject.SetActive(true);
 
         enterButton.onClick.RemoveAllListeners();
@@ -112,9 +121,16 @@ public class InGameManager : Singleton<InGameManager>
     {
         //TODO SOUND
         SaveManager.Instance.GameData.name = string.IsNullOrEmpty(namingInput.text) ? "김준우" : namingInput.text;
-        namingCanvas.gameObject.SetActive(false);
+        fadeInBlack.gameObject.SetActive(true);
+        fadeInBlack.color = Utility.ChangeColorFade(Color.black, 0);
+        fadeInBlack.DOFade(1, 1).OnComplete(() =>
+        {
+            namingCanvas.gameObject.SetActive(false);
+            fadeInBlack.DOFade(0, 1).SetDelay(1).OnComplete(() => { fadeInBlack.gameObject.SetActive(false); });
+        });
 
         TalkManager.Instance.AddTalk("new");
     }
+
     #endregion
 }

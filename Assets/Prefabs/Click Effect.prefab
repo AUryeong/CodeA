@@ -14606,7 +14606,7 @@ GameObject:
   - component: {fileID: 4987723487009787008}
   - component: {fileID: 4987723487009787013}
   - component: {fileID: 4987723487009787014}
-  - component: {fileID: 4987723487009787015}
+  - component: {fileID: -9179826943522570871}
   m_Layer: 5
   m_Name: Click Effect
   m_TagString: Untagged
@@ -14639,7 +14639,7 @@ ParticleSystem:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4987723487009787009}
   serializedVersion: 7
-  lengthInSec: 5
+  lengthInSec: 2
   simulationSpeed: 1
   stopAction: 0
   cullingMode: 0
@@ -19461,7 +19461,7 @@ ParticleSystemRenderer:
   m_Mesh2: {fileID: 0}
   m_Mesh3: {fileID: 0}
   m_MaskInteraction: 0
---- !u!114 &4987723487009787015
+--- !u!114 &-9179826943522570871
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

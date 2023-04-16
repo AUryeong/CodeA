@@ -30,6 +30,12 @@ public class TalkManager : Singleton<TalkManager>
     [SerializeField] private UITransitionEffect blackFadeOut;
     [SerializeField] private TextMeshProUGUI endTextEffect;
 
+    [Space(10)] [SerializeField] private UITransitionEffect endingBlackFadeIn;
+    [SerializeField] private UITransitionEffect endingBlackFadeOut;
+    private bool isEnding;
+    private float endingDuration;
+    private const float endingWaitTime = 1;
+
     [Header("배경")] [SerializeField] private Image backgroundImage;
     [SerializeField] private Image subBackgroundImage;
     private UITransitionEffect subBackgroundEffect;
@@ -116,22 +122,27 @@ public class TalkManager : Singleton<TalkManager>
 
     protected override void OnReset()
     {
+        nowTalk = null;
+        prevTalk = null;
+
         talkQueue.Clear();
         animations.Clear();
 
         talkDuration = 0;
         autoDuration = 0;
+        endingDuration = 0;
 
         talkWindow.gameObject.SetActive(false);
         eventWindow.gameObject.SetActive(false);
 
-        nowTalk = null;
-        prevTalk = null;
-
         blackFadeIn.gameObject.SetActive(false);
         blackFadeOut.gameObject.SetActive(false);
 
+        endingBlackFadeIn.gameObject.SetActive(false);
+        endingBlackFadeOut.gameObject.SetActive(false);
+
         talkSkipText = string.Empty;
+        isEnding = false;
 
         SkipReset();
         OptionReset();
@@ -143,54 +154,372 @@ public class TalkManager : Singleton<TalkManager>
         }
     }
 
-    private void DialogAdd(EventType eventType, List<Talk> talks)
+    private void Update()
     {
-        if (talks == null || talks.Count <= 0)
+        if (isEnding)
         {
-            NewTalk();
+            EndingUpdate();
             return;
         }
 
-        switch (eventType)
+        TalkUpdate();
+        AnimationWait();
+    }
+
+    private void EndingUpdate()
+    {
+        if (endingBlackFadeIn.gameObject.activeSelf)
         {
-            case EventType.BEFORE:
+            endingBlackFadeIn.effectFactor = Mathf.Min(1, endingBlackFadeIn.effectFactor + Time.deltaTime / 2);
+            if (endingBlackFadeIn.effectFactor >= 1 || Input.GetMouseButtonDown(0))
             {
-                var leftTalks = talkQueue.ToList();
-                talkQueue.Clear();
+                endingBlackFadeIn.gameObject.SetActive(false);
+                endingBlackFadeOut.gameObject.SetActive(true);
+                endingBlackFadeOut.effectFactor = 1;
 
-                foreach (var talk in talks)
-                    talkQueue.Enqueue(talk);
+                foreach (var obj in uiStandings)
+                {
+                    obj.gameObject.SetActive(false);
+                    obj.Init();
+                }
 
-                foreach (var talk in leftTalks)
-                    talkQueue.Enqueue(talk);
+                talkWindow.gameObject.SetActive(false);
 
-                if (talks.Count != 0 && leftTalks.Count != 0)
-                    NewTalk();
-                break;
-            }
-            case EventType.AFTER:
-            {
-                bool flag = talkQueue.Count <= 0;
-
-                AddTalk(talks);
-                if (!flag)
-                    NewTalk();
-                break;
-            }
-            default:
-            case EventType.CHANGE:
-            {
-                talkQueue.Clear();
-                AddTalk(talks);
-                break;
+                endingDuration = 0;
             }
         }
+        else if (endingDuration < endingWaitTime)
+        {
+            if (Input.GetMouseButtonDown(0))
+            {
+                endingDuration = endingWaitTime;
+            }
+
+            endingDuration += Time.deltaTime;
+        }
+        else if (endingBlackFadeOut.gameObject.activeSelf)
+        {
+            endingBlackFadeOut.effectFactor = Mathf.Max(0, endingBlackFadeOut.effectFactor - Time.deltaTime / 2);
+            if (endingBlackFadeOut.effectFactor <= 0 || Input.GetMouseButtonDown(0))
+            {
+                endingBlackFadeOut.gameObject.SetActive(false);
+                isEnding = false;
+            }
+        }
+    }
+
+
+    public void PointerClick(BaseEventData data)
+    {
+        if (isEnding) return;
+
+        if (skipDuration >= 1) return;
+        if (dialogueImage.gameObject.activeSelf)
+        {
+            if (descriptionText.maxVisibleCharacters < descriptionText.textInfo.characterCount)
+            {
+                descriptionText.maxVisibleCharacters = descriptionText.textInfo.characterCount;
+            }
+            else
+            {
+                int linkIndex = TMP_TextUtilities.FindIntersectingLink(descriptionText, Input.mousePosition, GameManager.Instance.UICamera);
+
+                if (linkIndex != -1)
+                {
+                    var linkInfo = descriptionText.textInfo.linkInfo[linkIndex];
+                    EventOpen(linkInfo.GetLinkID(), (data as PointerEventData).position);
+                }
+                else
+                {
+                    if (nowTalk.optionList == null || nowTalk.optionList.Count <= 0)
+                    {
+                        NewTalk();
+                    }
+                }
+            }
+        }
+    }
+
+    private void CheckNextNoDialogue()
+    {
+        if (animations.Count > 0) return;
+
+        if (isHasOption)
+        {
+            if (!optionActive)
+            {
+                OptionSetting();
+                optionActive = true;
+            }
+
+            return;
+        }
+
+        autoDuration += Time.deltaTime;
+        if (autoDuration >= autoWaitTime)
+        {
+            autoDuration -= autoWaitTime;
+
+            NewTalk();
+        }
+    }
+
+    private void TalkUpdate()
+    {
+        if (!talkWindow.gameObject.activeSelf) return;
+        if (nowTalk == null) return;
+
+        if (!dialogueImage.gameObject.activeSelf || nowTalk.dialogue == null)
+        {
+            CheckNextNoDialogue();
+            return;
+        }
+
+        if (eventWindow.gameObject.activeSelf) return;
+
+        SkipUpdate();
+
+        if (skipWindow.gameObject.activeSelf) return;
+        if (descriptionText.maxVisibleCharacters < descriptionText.textInfo.characterCount)
+        {
+            talkDuration += Time.deltaTime;
+            float nextDuration = defaultTalkCooltime * SaveManager.Instance.GameData.textSpeed;
+            if (talkDuration >= nextDuration)
+            {
+                talkDuration -= nextDuration;
+                descriptionText.maxVisibleCharacters++;
+            }
+        }
+        else
+        {
+            if (!endTextEffect.gameObject.activeSelf)
+            {
+                endTextEffect.gameObject.SetActive(true);
+                endTextEffect.DOKill();
+                endTextEffect.color = Utility.ChangeColorFade(endTextEffect.color, 1);
+                endTextEffect.DOFade(0, 0.8f).SetLoops(-1, LoopType.Yoyo);
+            }
+
+            var characterPos = new Vector3(-824.4f, 32.39394f);
+            if (!string.IsNullOrWhiteSpace(descriptionText.text) && !descriptionText.text.Equals(string.Empty))
+            {
+                if (descriptionText.textInfo.characterInfo != null && descriptionText.maxVisibleCharacters > 0 &&
+                    descriptionText.textInfo.characterInfo.Length >= descriptionText.maxVisibleCharacters - 1)
+                {
+                    characterPos = Utility.GetVector3Aver(
+                        descriptionText.textInfo.characterInfo[descriptionText.maxVisibleCharacters - 1].topRight,
+                        descriptionText.textInfo.characterInfo[descriptionText.maxVisibleCharacters - 1].bottomRight);
+                }
+            }
+
+            endTextEffect.rectTransform.anchoredPosition = new Vector2(characterPos.x + 40, characterPos.y - 20);
+
+            if (isHasOption)
+            {
+                if (!optionActive)
+                {
+                    OptionSetting();
+                    optionActive = true;
+                }
+
+                return;
+            }
+
+            if (SaveManager.Instance.GameData.textAuto && !isHasEvent)
+            {
+                autoDuration += Time.deltaTime;
+                if (autoDuration >= autoWaitTime)
+                {
+                    autoDuration -= autoWaitTime;
+                    NewTalk();
+                }
+            }
+        }
+
+        EffectUpdate();
+    }
+
+    private void NewTalk(Talk newTalk = null)
+    {
+        if (talkQueue.Count <= 0)
+        {
+            isEnding = true;
+            endingBlackFadeIn.gameObject.SetActive(true);
+            endingBlackFadeIn.effectFactor = 0;
+
+            animations.Clear();
+
+            talkSkipText = string.Empty;
+
+            prevTalk = null;
+            nowTalk = null;
+
+            EventExit();
+            SkipReset();
+            OptionReset();
+
+            return;
+        }
+
+        prevTalk = nowTalk;
+        talkWindow.gameObject.SetActive(true);
+        dialogueImage.DOKill();
+
+        descriptionText.maxVisibleCharacters = 0;
+        talkDuration = 0;
+        autoDuration = 0;
+        animationWaitTime = 0;
+        animations.Clear();
+
+        endTextEffect.gameObject.SetActive(false);
+        nowTalk = newTalk == null ? talkQueue.Dequeue() : newTalk;
+        isHasEvent = false;
+
+        isHasOption = nowTalk.optionList.Count > 0;
+        optionActive = false;
+
+        if (nowTalk.dialogue != null)
+        {
+            isHasEvent = nowTalk.dialogue.tipEvent != null && nowTalk.dialogue.tipEvent.Exists((tipEvent) => SaveManager.Instance.GameData.getTips.Contains(tipEvent.eventName));
+            talkerText.text = "> " + Utility.GetTalkerName(nowTalk.dialogue.talker);
+            descriptionText.text = Utility.GetTalkerName(nowTalk.dialogue.text);
+            dialogueImage.gameObject.SetActive(nowTalk.dialogue.active);
+            if (nowTalk.dialogue.active)
+            {
+                LogManager.Instance.AddLog(nowTalk);
+                EventSetting();
+            }
+        }
+        else
+        {
+            dialogueImage.gameObject.SetActive(false);
+        }
+
+        if (!string.IsNullOrEmpty(nowTalk.bgm))
+        {
+            if (prevTalk == null || !nowTalk.bgm.Equals(prevTalk.bgm))
+            {
+                SoundManager.Instance.PlaySound(nowTalk.bgm);
+            }
+        }
+
+        var background = ResourcesManager.Instance.GetBackground(nowTalk.background.name);
+        if (prevTalk != null)
+        {
+            if (prevTalk.background.name != nowTalk.background.name || Math.Abs(prevTalk.background.scale - nowTalk.background.scale) > 0.01f)
+            {
+                if (!string.IsNullOrEmpty(nowTalk.background.name))
+                {
+                    subBackgroundImage.DOKill(true);
+                    switch (nowTalk.background.effect)
+                    {
+                        default:
+                        case BackgroundEffect.NONE:
+                            backgroundImage.sprite = background;
+                            backgroundImage.rectTransform.localScale = Vector3.one * nowTalk.background.scale;
+                            subBackgroundImage.gameObject.SetActive(false);
+                            break;
+                        case BackgroundEffect.TRANS:
+                            subBackgroundImage.gameObject.SetActive(true);
+                            subBackgroundImage.sprite = background;
+                            backgroundImage.rectTransform.localScale = Vector3.one * prevTalk.background.scale;
+                            subBackgroundImage.rectTransform.localScale = Vector3.one * nowTalk.background.scale;
+                            subBackgroundEffect.effectFactor = 0;
+                            break;
+                        case BackgroundEffect.FADE:
+                            subBackgroundEffect.effectFactor = 1;
+
+                            backgroundImage.rectTransform.localScale = Vector3.one * prevTalk.background.scale;
+
+                            subBackgroundImage.gameObject.SetActive(true);
+                            subBackgroundImage.sprite = background;
+                            subBackgroundImage.rectTransform.localScale = Vector3.one * nowTalk.background.scale;
+                            subBackgroundImage.color = Utility.fadeWhite;
+
+                            subBackgroundImage.DOFade(1, nowTalk.background.effectDuration).OnComplete(() =>
+                            {
+                                backgroundImage.sprite = subBackgroundImage.sprite;
+                                backgroundImage.rectTransform.localScale = subBackgroundImage.rectTransform.localScale;
+                                subBackgroundEffect.gameObject.SetActive(false);
+                            });
+                            break;
+                    }
+                }
+            }
+        }
+        else
+        {
+            subBackgroundImage.DOKill(true);
+            backgroundImage.sprite = background;
+            backgroundImage.rectTransform.localScale = Vector3.one * nowTalk.background.scale;
+            subBackgroundImage.gameObject.SetActive(false);
+        }
+
+        if (nowTalk.background.name.StartsWith("CG_"))
+        {
+            foreach (var standing in uiStandings)
+            {
+                standing.gameObject.SetActive(false);
+                standing.Init();
+            }
+
+            GameManager.Instance.ViewCG(nowTalk.background.name);
+            EffectSetting();
+            return;
+        }
+
+        if (uiStandings.Count < nowTalk.characters.Count)
+        {
+            int repeatCount = nowTalk.characters.Count - uiStandings.Count;
+            for (int i = 0; i < repeatCount; i++)
+            {
+                var temp = Instantiate(uiStanding, standingParent);
+                temp.Init();
+                uiStandings.Add(temp);
+            }
+        }
+
+        var standings = new List<UIStanding>(uiStandings);
+        var talkStandings = new List<Character>(nowTalk.characters);
+
+        foreach (var standing in nowTalk.characters)
+        {
+            var prevStanding = standings.Find(x =>
+                x.NowStanding != null && x.NowStanding.name.Equals(standing.name) &&
+                x.NowStanding.clothes.Equals(standing.clothes));
+
+            if (prevStanding == null) continue;
+
+            standings.Remove(prevStanding);
+            prevStanding.gameObject.SetActive(true);
+            prevStanding.ShowCharacter(standing);
+            talkStandings.Remove(standing);
+        }
+
+        foreach (var standing in talkStandings)
+        {
+            var newStanding = standings[0];
+
+            if (newStanding == null) continue;
+
+            standings.Remove(newStanding);
+            newStanding.gameObject.SetActive(true);
+            newStanding.ShowCharacter(standing);
+        }
+
+        foreach (var standing in standings)
+        {
+            standing.Init();
+        }
+
+        EffectSetting();
     }
 
     #region Skip
 
     public void PointerDown(BaseEventData data)
     {
+        if (isEnding) return;
         if (string.IsNullOrEmpty(talkSkipText) || isHasOption) return;
 
         skipButtonClicking = true;
@@ -198,6 +527,7 @@ public class TalkManager : Singleton<TalkManager>
 
     public void PointerUp(BaseEventData data)
     {
+        if (isEnding) return;
         if (string.IsNullOrEmpty(talkSkipText) || isHasOption) return;
 
         skipButtonClicking = false;
@@ -219,7 +549,7 @@ public class TalkManager : Singleton<TalkManager>
 
     private void SkipUpdate()
     {
-        if (!skipButtonClicking || skipWindow.gameObject.activeSelf) return;
+        if (!skipButtonClicking || skipWindow.gameObject.activeSelf || talkQueue.Count <= 0) return;
         skipDuration += Time.deltaTime;
         if (skipDuration >= 2.5f)
         {
@@ -255,10 +585,11 @@ public class TalkManager : Singleton<TalkManager>
     private void SkipOkay()
     {
         SkipExit();
+
         while (talkQueue.Count > 0)
         {
-            var talk = talkQueue.Dequeue();
-            
+            Talk talk = talkQueue.Dequeue();
+
             if (talk.optionList != null && talk.optionList.Count > 0)
             {
                 if (talk.optionList.Exists((x) => (x.eventList != null && x.eventList.Count > 0) || x.special))
@@ -269,7 +600,7 @@ public class TalkManager : Singleton<TalkManager>
 
                 DialogAdd(talk.optionList[0].eventType, ResourcesManager.Instance.GetTalk(talk.optionList[0].dialog).talks);
             }
-            
+
             if (talk.eventList != null && talk.eventList.Count > 0)
             {
                 foreach (var getEvent in talk.eventList)
@@ -281,22 +612,7 @@ public class TalkManager : Singleton<TalkManager>
             LogManager.Instance.AddLog(talk);
         }
 
-        talkWindow.gameObject.SetActive(false);
-        animations.Clear();
-
-        talkSkipText = string.Empty;
-
-        prevTalk = null;
-        nowTalk = null;
-
-        foreach (var obj in uiStandings)
-        {
-            obj.gameObject.SetActive(false);
-            obj.Init();
-        }
-
-        SkipReset();
-        OptionReset();
+        NewTalk();
     }
 
     private void SkipExit()
@@ -419,6 +735,8 @@ public class TalkManager : Singleton<TalkManager>
 
     private void EventExit()
     {
+        if (!eventWindow.gameObject.activeSelf) return;
+
         eventWindow.rectTransform.DOKill();
         eventWindow.rectTransform.localScale = Vector3.one;
 
@@ -426,16 +744,29 @@ public class TalkManager : Singleton<TalkManager>
         eventWindow.rectTransform.DOAnchorPos(nowPos, 0.2f);
     }
 
+    private void EventSetting()
+    {
+        if (nowTalk.eventList == null || nowTalk.eventList.Count <= 0) return;
+
+        foreach (var getEvent in nowTalk.eventList)
+            EventInteract(getEvent);
+    }
+
+    private void EventInteract(Event getEvent)
+    {
+        switch (getEvent.type)
+        {
+            case Event.Type.ADD_TIP:
+            {
+                GameManager.Instance.AddTip(getEvent.name);
+                break;
+            }
+        }
+    }
+
     #endregion
 
-    public List<Talk> GetLeftTalks()
-    {
-        var talkList = new List<Talk>();
-        if (nowTalk != null)
-            talkList.Add(nowTalk);
-        talkList.AddRange(talkQueue);
-        return talkList;
-    }
+    #region Add / Save Talk
 
     public void AddTalk(string talkName)
     {
@@ -469,11 +800,62 @@ public class TalkManager : Singleton<TalkManager>
         if (flag) NewTalk();
     }
 
-    private void Update()
+    public List<Talk> GetLeftTalks()
     {
-        TalkUpdate();
-        AnimationWait();
+        var talkList = new List<Talk>();
+        if (nowTalk != null)
+            talkList.Add(nowTalk);
+        talkList.AddRange(talkQueue);
+        return talkList;
     }
+
+    private void DialogAdd(EventType eventType, List<Talk> talks)
+    {
+        if (talks == null || talks.Count <= 0)
+        {
+            NewTalk();
+            return;
+        }
+
+        switch (eventType)
+        {
+            case EventType.BEFORE:
+            {
+                var leftTalks = talkQueue.ToList();
+                talkQueue.Clear();
+
+                foreach (var talk in talks)
+                    talkQueue.Enqueue(talk);
+
+                foreach (var talk in leftTalks)
+                    talkQueue.Enqueue(talk);
+
+                if (talks.Count != 0 && leftTalks.Count != 0)
+                    NewTalk();
+                break;
+            }
+            case EventType.AFTER:
+            {
+                bool flag = talkQueue.Count <= 0;
+
+                AddTalk(talks);
+                if (!flag)
+                    NewTalk();
+                break;
+            }
+            default:
+            case EventType.CHANGE:
+            {
+                talkQueue.Clear();
+                AddTalk(talks);
+                break;
+            }
+        }
+    }
+
+    #endregion
+
+    #region Animation
 
     private void AnimationWait()
     {
@@ -539,7 +921,7 @@ public class TalkManager : Singleton<TalkManager>
                         dialogueImage.color = new Color(0.08627451F, 0.08627451F, 0.08627451F, 0);
                         dialogueImage.DOFade(0.9137255F, 0.2f);
 
-                        GetEvent();
+                        EventSetting();
 
                         if (!string.IsNullOrEmpty(nowTalk.dialogue.owner))
                         {
@@ -596,150 +978,17 @@ public class TalkManager : Singleton<TalkManager>
         AnimationUpdate();
     }
 
-    public void PointerClick(BaseEventData data)
+    #endregion
+
+    #region Effect
+
+    private void EffectUpdate()
     {
-        if (skipDuration >= 1) return;
-        if (dialogueImage.gameObject.activeSelf)
-        {
-            if (descriptionText.maxVisibleCharacters < descriptionText.textInfo.characterCount)
-            {
-                descriptionText.maxVisibleCharacters = descriptionText.textInfo.characterCount;
-            }
-            else
-            {
-                int linkIndex = TMP_TextUtilities.FindIntersectingLink(descriptionText, Input.mousePosition, GameManager.Instance.UICamera);
-
-                if (linkIndex != -1)
-                {
-                    var linkInfo = descriptionText.textInfo.linkInfo[linkIndex];
-                    EventOpen(linkInfo.GetLinkID(), (data as PointerEventData).position);
-                }
-                else
-                {
-                    if (nowTalk.optionList == null || nowTalk.optionList.Count <= 0)
-                    {
-                        NewTalk();
-                    }
-                }
-            }
-        }
-    }
-
-    private void TalkUpdate()
-    {
-        if (!talkWindow.gameObject.activeSelf) return;
-        if (!dialogueImage.gameObject.activeSelf)
-        {
-            if (animations.Count <= 0)
-            {
-                autoDuration += Time.deltaTime;
-                if (autoDuration >= autoWaitTime)
-                {
-                    autoDuration -= autoWaitTime;
-                    if (isHasOption)
-                    {
-                        if (!optionActive)
-                        {
-                            OptionSetting();
-                            optionActive = true;
-                        }
-
-                        return;
-                    }
-
-                    NewTalk();
-                }
-            }
-
-            return;
-        }
-
-        if (eventWindow.gameObject.activeSelf) return;
-
-        SkipUpdate();
-        if (skipWindow.gameObject.activeSelf) return;
-        if (nowTalk.dialogue == null)
-        {
-            if (animations.Count > 0) return;
-
-            autoDuration += Time.deltaTime;
-            if (autoDuration >= autoWaitTime)
-            {
-                autoDuration -= autoWaitTime;
-                if (isHasOption)
-                {
-                    if (!optionActive)
-                    {
-                        OptionSetting();
-                        optionActive = true;
-                    }
-
-                    return;
-                }
-
-                NewTalk();
-            }
-
-            return;
-        }
-
-        if (descriptionText.maxVisibleCharacters < descriptionText.textInfo.characterCount)
-        {
-            talkDuration += Time.deltaTime;
-            float cooltime = defaultTalkCooltime * SaveManager.Instance.GameData.textSpeed;
-            if (talkDuration >= cooltime)
-            {
-                talkDuration -= cooltime;
-                descriptionText.maxVisibleCharacters++;
-            }
-        }
-        else
-        {
-            if (!endTextEffect.gameObject.activeSelf)
-            {
-                endTextEffect.gameObject.SetActive(true);
-                endTextEffect.DOKill();
-                endTextEffect.color = new Color(105 / 255f, 1, 126 / 255f, 1);
-                endTextEffect.DOFade(0, 0.8f).SetLoops(-1, LoopType.Yoyo);
-            }
-
-            var characterPos = new Vector3(-824.4f, 32.39394f);
-            if (!string.IsNullOrWhiteSpace(descriptionText.text) && !descriptionText.text.Equals(string.Empty))
-            {
-                if (descriptionText.textInfo.characterInfo != null &&
-                    descriptionText.textInfo.characterInfo.Length >= descriptionText.maxVisibleCharacters - 1)
-                    characterPos = Utility.GetVector3Aver(
-                        descriptionText.textInfo.characterInfo[descriptionText.maxVisibleCharacters - 1].topRight,
-                        descriptionText.textInfo.characterInfo[descriptionText.maxVisibleCharacters - 1].bottomRight);
-            }
-            endTextEffect.rectTransform.anchoredPosition = new Vector2(characterPos.x + 40, characterPos.y - 20);
-
-            if (isHasOption)
-            {
-                if (!optionActive)
-                {
-                    OptionSetting();
-                    optionActive = true;
-                }
-                return;
-            }
-
-            if (SaveManager.Instance.GameData.textAuto && !isHasEvent)
-            {
-                autoDuration += Time.deltaTime;
-                if (autoDuration >= autoWaitTime)
-                {
-                    autoDuration -= autoWaitTime;
-                    NewTalk();
-                }
-            }
-        }
-
         if (subBackgroundImage.gameObject.activeSelf)
         {
             if (subBackgroundEffect.effectFactor < 1)
             {
-                subBackgroundEffect.effectFactor = Mathf.Min(1, subBackgroundEffect.effectFactor + Time.deltaTime);
+                subBackgroundEffect.effectFactor = Mathf.Min(1, subBackgroundEffect.effectFactor + Time.deltaTime / nowTalk.background.effectDuration);
                 if (subBackgroundEffect.effectFactor >= 1)
                 {
                     backgroundImage.sprite = subBackgroundImage.sprite;
@@ -762,201 +1011,7 @@ public class TalkManager : Singleton<TalkManager>
         }
     }
 
-    private void NewTalk(Talk newTalk = null)
-    {
-        if (talkQueue.Count <= 0)
-        {
-            talkWindow.gameObject.SetActive(false);
-            animations.Clear();
-
-            talkSkipText = string.Empty;
-
-            prevTalk = null;
-            nowTalk = null;
-
-            foreach (var obj in uiStandings)
-            {
-                obj.gameObject.SetActive(false);
-                obj.Init();
-            }
-
-            SkipReset();
-            OptionReset();
-
-            return;
-        }
-
-        prevTalk = nowTalk;
-        talkWindow.gameObject.SetActive(true);
-        dialogueImage.DOKill();
-
-        descriptionText.maxVisibleCharacters = 0;
-        talkDuration = 0;
-        autoDuration = 0;
-        animationWaitTime = 0;
-        animations.Clear();
-
-        endTextEffect.gameObject.SetActive(false);
-        nowTalk = newTalk == null ? talkQueue.Dequeue() : newTalk;
-        isHasEvent = false;
-
-        isHasOption = nowTalk.optionList.Count > 0;
-        optionActive = false;
-
-        if (nowTalk.dialogue != null)
-        {
-            isHasEvent = nowTalk.dialogue.tipEvent != null && nowTalk.dialogue.tipEvent.Exists((tipEvent) => SaveManager.Instance.GameData.getTips.Contains(tipEvent.eventName));
-            talkerText.text = "> " + Utility.GetTalkerName(nowTalk.dialogue.talker);
-            descriptionText.text = Utility.GetTalkerName(nowTalk.dialogue.text);
-            dialogueImage.gameObject.SetActive(nowTalk.dialogue.active);
-            if (nowTalk.dialogue.active)
-            {
-                LogManager.Instance.AddLog(nowTalk);
-                GetEvent();
-            }
-        }
-        else
-        {
-            dialogueImage.gameObject.SetActive(false);
-        }
-
-        if (!string.IsNullOrEmpty(nowTalk.bgm))
-        {
-            if (prevTalk == null || !nowTalk.bgm.Equals(prevTalk.bgm))
-            {
-                SoundManager.Instance.PlaySound(nowTalk.bgm);
-            }
-        }
-
-        var background = ResourcesManager.Instance.GetBackground(nowTalk.background.name);
-        if (prevTalk != null)
-        {
-            if (prevTalk.background.name != nowTalk.background.name || Math.Abs(prevTalk.background.scale - nowTalk.background.scale) > 0.01f)
-            {
-                if (!string.IsNullOrEmpty(nowTalk.background.name))
-                {
-                    subBackgroundImage.DOKill(true);
-                    switch (nowTalk.background.effect)
-                    {
-                        default:
-                        case BackgroundEffect.NONE:
-                            backgroundImage.sprite = background;
-                            backgroundImage.rectTransform.localScale = Vector3.one * nowTalk.background.scale;
-                            subBackgroundImage.gameObject.SetActive(false);
-                            break;
-                        case BackgroundEffect.TRANS:
-                            subBackgroundImage.gameObject.SetActive(true);
-                            subBackgroundImage.sprite = background;
-                            backgroundImage.rectTransform.localScale = Vector3.one * prevTalk.background.scale;
-                            subBackgroundImage.rectTransform.localScale = Vector3.one * nowTalk.background.scale;
-                            subBackgroundEffect.effectFactor = 0;
-                            break;
-                        case BackgroundEffect.FADE:
-                            subBackgroundImage.gameObject.SetActive(true);
-                            subBackgroundImage.sprite = background;
-                            subBackgroundImage.color = Utility.fadeWhite;
-                            backgroundImage.rectTransform.localScale = Vector3.one * prevTalk.background.scale;
-                            subBackgroundImage.rectTransform.localScale = Vector3.one * nowTalk.background.scale;
-                            subBackgroundImage.DOFade(1, 1).OnComplete(() =>
-                            {
-                                backgroundImage.sprite = subBackgroundImage.sprite;
-                                backgroundImage.rectTransform.localScale = subBackgroundImage.rectTransform.localScale;
-                                subBackgroundEffect.gameObject.SetActive(false);
-                            });
-                            break;
-                    }
-                }
-            }
-        }
-        else
-        {
-            subBackgroundImage.DOKill(true);
-            backgroundImage.sprite = background;
-            backgroundImage.rectTransform.localScale = Vector3.one * nowTalk.background.scale;
-            subBackgroundImage.gameObject.SetActive(false);
-        }
-
-        if (nowTalk.background.name.StartsWith("CG_"))
-        {
-            foreach (var standing in uiStandings)
-            {
-                standing.gameObject.SetActive(false);
-                standing.Init();
-            }
-
-            GameManager.Instance.ViewCG(nowTalk.background.name);
-            GetEffect();
-            return;
-        }
-
-        if (uiStandings.Count < nowTalk.characters.Count)
-        {
-            int repeatCount = nowTalk.characters.Count - uiStandings.Count;
-            for (int i = 0; i < repeatCount; i++)
-            {
-                var temp = Instantiate(uiStanding, standingParent);
-                temp.Init();
-                uiStandings.Add(temp);
-            }
-        }
-
-        var standings = new List<UIStanding>(uiStandings);
-        var talkStandings = new List<Character>(nowTalk.characters);
-
-        foreach (var standing in nowTalk.characters)
-        {
-            var prevStanding = standings.Find(x =>
-                x.NowStanding != null && x.NowStanding.name.Equals(standing.name) &&
-                x.NowStanding.clothes.Equals(standing.clothes));
-
-            if (prevStanding == null) continue;
-
-            standings.Remove(prevStanding);
-            prevStanding.gameObject.SetActive(true);
-            prevStanding.ShowCharacter(standing);
-            talkStandings.Remove(standing);
-        }
-
-        foreach (var standing in talkStandings)
-        {
-            var newStanding = standings[0];
-
-            if (newStanding == null) continue;
-
-            standings.Remove(newStanding);
-            newStanding.gameObject.SetActive(true);
-            newStanding.ShowCharacter(standing);
-        }
-
-        foreach (var standing in standings)
-        {
-            standing.Init();
-        }
-
-        GetEffect();
-    }
-
-    private void GetEvent()
-    {
-        if (nowTalk.eventList == null || nowTalk.eventList.Count <= 0) return;
-
-        foreach (var getEvent in nowTalk.eventList)
-            EventInteract(getEvent);
-    }
-
-    private void EventInteract(Event getEvent)
-    {
-        switch (getEvent.type)
-        {
-            case Event.Type.ADD_TIP:
-            {
-                GameManager.Instance.AddTip(getEvent.name);
-                break;
-            }
-        }
-    }
-
-    private void GetEffect()
+    private void EffectSetting()
     {
         foreach (var anim in nowTalk.animations)
         {
@@ -965,4 +1020,6 @@ public class TalkManager : Singleton<TalkManager>
 
         AnimationUpdate();
     }
+
+    #endregion
 }

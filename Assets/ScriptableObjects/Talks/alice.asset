@@ -19,6 +19,7 @@ MonoBehaviour:
     background:
       name: Class_Morning
       effect: 0
+      effectDuration: 1
       scale: 1
     dialogue:
       talker: 
@@ -86,6 +87,7 @@ MonoBehaviour:
     background:
       name: Class_Morning
       effect: 0
+      effectDuration: 1
       scale: 1
     dialogue:
       talker: '{0}'
@@ -113,6 +115,7 @@ MonoBehaviour:
     background:
       name: Class_Morning
       effect: 0
+      effectDuration: 1
       scale: 1
     dialogue:
       talker: "\uC774\uB85C\uB9AC"

@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 namespace UI
 {
-    public class UIStanding : MonoBehaviour, IPoolObject
+    public class UIStanding : MonoBehaviour
     {
         [SerializeField] private Image baseStanding;
         [SerializeField] private Image face;

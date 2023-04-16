@@ -3,8 +3,18 @@
     <Title>안녕 세계!</Title>
     <SkipText>신 학기에 앨리스 보고 싶다 하 시발\n와하하하</SkipText>
     <Dialog>
+        <BG Name="Black"/>
+        <Dialogue/>
+    </Dialog>
+    <Dialog>
         <Bgm>School</Bgm>
-        <BG Name="Class_Morning"/>
+        <BG Name="Class_Morning" Effect="FADE" Duration="3"/>
+        <Dialogue>
+            <Talker>{0}</Talker>
+            <Text>그래서 이게 무슨 상황이지</Text>
+        </Dialogue>
+    </Dialog>
+    <Dialog>
         <Dialogue Active="false">
             <Talker>에이</Talker>
             <Text>혹시 {원더랜드:앨리스}나 {시공의 폭풍}을 아십니까?</Text>
@@ -39,8 +49,8 @@
                             <Text>이건 모를 수가 없긴해</Text>
                         </Dialogue>
                         <Characters>
-                            <Character Name="Loli" />
-                            <Character Name="A" />
+                            <Character Name="Loli"/>
+                            <Character Name="A"/>
                         </Characters>
                     </Dialog>
                     <Dialog>
@@ -49,7 +59,7 @@
                             <Text>히히 알아서 다행이다</Text>
                         </Dialogue>
                         <Characters>
-                            <Character Name="A" />
+                            <Character Name="A"/>
                             <Character Name="Loli" Pos="L3"/>
                         </Characters>
                     </Dialog>
@@ -75,7 +85,7 @@
             <Text>나는 유해한 인간이야</Text>
         </Dialogue>
         <Characters>
-            <Character Name="Loli" />
+            <Character Name="Loli"/>
             <Character Name="A" Dark="false"/>
         </Characters>
     </Dialog>
@@ -85,7 +95,7 @@
             <Text>나는 유해한 인간이야</Text>
         </Dialogue>
         <Characters>
-            <Character Name="Loli" />
+            <Character Name="Loli"/>
             <Character Name="A" Dark="false"/>
         </Characters>
     </Dialog>
@@ -95,7 +105,7 @@
             <Text>나는 유해한 인간이야</Text>
         </Dialogue>
         <Characters>
-            <Character Name="Loli" />
+            <Character Name="Loli"/>
             <Character Name="A" Dark="false"/>
         </Characters>
     </Dialog>
@@ -105,79 +115,79 @@
             <Text>나는 유해한 인간이야</Text>
         </Dialogue>
         <Characters>
-            <Character Name="Loli" />
+            <Character Name="Loli"/>
             <Character Name="A" Dark="false"/>
         </Characters>
     </Dialog>
-	<Dialog>
-		<Dialogue Active="false">
-			<Talker>에이</Talker>
-			<Text>그... 그럼 {로보토미}는 알지?</Text>
-		</Dialogue>
-		<Option Script="에이 그건 알지 ㅋㅋ" Special="true">
-			<Dialogs>
-				<Dialog>
-					<Bgm>School</Bgm>
-					<BG Name="Class_Morning"/>
-					<Dialogue Active="false">
-						<Talker>에이</Talker>
-						<Text>아 ㅋㅋ 이건 알아야지</Text>
-					</Dialogue>
-					<Characters>
-						<Character Name="A" Face="Smile" Pos="C" Size="M" Dark="false"/>
-						<Character Name="Loli" Face="DefaultLight" Pos="L2" Size="M" Dark="false"/>
-					</Characters>
-					<Animations>
-						<Animation Type="CHAR" Name="Loli" Effect="Shake" Parameter="-1" Duration="0.2"/>
-						<Animation Type="CHAR" Name="Loli" Effect="Emotion" Parameter="Thinking" Duration="0.5"/>
-						<Animation Type="UTIL" Effect="Wait" Duration="1"/>
-						<Animation Type="CHAR" Name="A" Effect="Bounce" Parameter="1" Duration="0.2"/>
-						<Animation Type="CHAR" Name="A" Effect="Face" Parameter="SmileFlush"/>
-						<Animation Type="UTIL" Effect="Wait" Duration="0.5"/>
-						<Animation Type="DIAL" Effect="On"/>
-						<Animation Type="CHAR" Name="A" Effect="Move" Parameter="L1" Duration="0.8"/>
-						<Animation Type="CHAR" Name="A" Effect="Bounce" Parameter="3" Duration="0.2"/>
-					</Animations>
-				</Dialog>
-				<Dialog>
-					<Dialogue>
-						<Talker>{0}</Talker>
-						<Text>이건 모를 수가 없긴해</Text>
-					</Dialogue>
-					<Characters>
-						<Character Name="Loli" />
-						<Character Name="A" />
-					</Characters>
-				</Dialog>
-				<Dialog>
-					<Dialogue>
-						<Talker>이로리</Talker>
-						<Text>히히 알아서 다행이다</Text>
-					</Dialogue>
-					<Characters>
-						<Character Name="A" />
-						<Character Name="Loli" Pos="L3"/>
-					</Characters>
-				</Dialog>
-			</Dialogs>
-		</Option>
-		<Option Script="몰... 몰루?" />
-		<Characters>
-			<Character Name="Loli" />
-			<Character Name="A" Dark="false"/>
-		</Characters>
-		<Animations>
-			<Animation Type="CHAR" Name="A" Effect="Emotion" Parameter="Sweat" Duration="0.5"/>
-			<Animation Type="UTIL" Effect="Wait" Duration="2"/>
-			<Animation Type="DIAL" Effect="On"/>
-		</Animations>
-	</Dialog>
+    <Dialog>
+        <Dialogue Active="false">
+            <Talker>에이</Talker>
+            <Text>그... 그럼 {로보토미}는 알지?</Text>
+        </Dialogue>
+        <Option Script="에이 그건 알지 ㅋㅋ" Special="true">
+            <Dialogs>
+                <Dialog>
+                    <Bgm>School</Bgm>
+                    <BG Name="Class_Morning"/>
+                    <Dialogue Active="false">
+                        <Talker>에이</Talker>
+                        <Text>아 ㅋㅋ 이건 알아야지</Text>
+                    </Dialogue>
+                    <Characters>
+                        <Character Name="A" Face="Smile" Pos="C" Size="M" Dark="false"/>
+                        <Character Name="Loli" Face="DefaultLight" Pos="L2" Size="M" Dark="false"/>
+                    </Characters>
+                    <Animations>
+                        <Animation Type="CHAR" Name="Loli" Effect="Shake" Parameter="-1" Duration="0.2"/>
+                        <Animation Type="CHAR" Name="Loli" Effect="Emotion" Parameter="Thinking" Duration="0.5"/>
+                        <Animation Type="UTIL" Effect="Wait" Duration="1"/>
+                        <Animation Type="CHAR" Name="A" Effect="Bounce" Parameter="1" Duration="0.2"/>
+                        <Animation Type="CHAR" Name="A" Effect="Face" Parameter="SmileFlush"/>
+                        <Animation Type="UTIL" Effect="Wait" Duration="0.5"/>
+                        <Animation Type="DIAL" Effect="On"/>
+                        <Animation Type="CHAR" Name="A" Effect="Move" Parameter="L1" Duration="0.8"/>
+                        <Animation Type="CHAR" Name="A" Effect="Bounce" Parameter="3" Duration="0.2"/>
+                    </Animations>
+                </Dialog>
+                <Dialog>
+                    <Dialogue>
+                        <Talker>{0}</Talker>
+                        <Text>이건 모를 수가 없긴해</Text>
+                    </Dialogue>
+                    <Characters>
+                        <Character Name="Loli"/>
+                        <Character Name="A"/>
+                    </Characters>
+                </Dialog>
+                <Dialog>
+                    <Dialogue>
+                        <Talker>이로리</Talker>
+                        <Text>히히 알아서 다행이다</Text>
+                    </Dialogue>
+                    <Characters>
+                        <Character Name="A"/>
+                        <Character Name="Loli" Pos="L3"/>
+                    </Characters>
+                </Dialog>
+            </Dialogs>
+        </Option>
+        <Option Script="몰... 몰루?"/>
+        <Characters>
+            <Character Name="Loli"/>
+            <Character Name="A" Dark="false"/>
+        </Characters>
+        <Animations>
+            <Animation Type="CHAR" Name="A" Effect="Emotion" Parameter="Sweat" Duration="0.5"/>
+            <Animation Type="UTIL" Effect="Wait" Duration="2"/>
+            <Animation Type="DIAL" Effect="On"/>
+        </Animations>
+    </Dialog>
     <Dialog>
         <Dialogue Active="false">
             <Talker>이로리</Talker>
             <Text>이걸 가버리네...</Text>
         </Dialogue>
-		<Event Type="ADD_TIP" Name="앨리스" />
+        <Event Type="ADD_TIP" Name="앨리스"/>
         <Characters>
             <Character Name="Loli" Face="Default" Dark="false"/>
         </Characters>

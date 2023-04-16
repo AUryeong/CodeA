@@ -14,12 +14,13 @@ public class SoundManager : Singleton<SoundManager>
         public AudioSource audioSource;
         public float audioVolume;
     }
-    
+
     private readonly string path = "Sounds/";
     private readonly Dictionary<string, AudioClip> audioClips = new Dictionary<string, AudioClip>();
 
     private readonly Dictionary<ESoundType, AudioInfo> audioInfos =
         new Dictionary<ESoundType, AudioInfo>();
+
     protected override bool IsDontDestroying => true;
 
     protected override void OnCreated()
@@ -31,7 +32,7 @@ public class SoundManager : Singleton<SoundManager>
         var audioInfo = AddAudioInfo(ESoundType.BGM);
         audioInfo.audioVolume = SaveManager.Instance.GameData.bgmSound;
         audioInfo.audioSource.loop = true;
-        
+
         AddAudioInfo(ESoundType.SFX).audioVolume = SaveManager.Instance.GameData.sfxSound;
     }
 
@@ -45,7 +46,7 @@ public class SoundManager : Singleton<SoundManager>
     {
         var audioSourceObj = new GameObject(nameof(soundType));
         audioSourceObj.transform.SetParent(transform);
-        
+
         var audioInfo = new AudioInfo
         {
             audioSource = audioSourceObj.AddComponent<AudioSource>(),
@@ -62,19 +63,21 @@ public class SoundManager : Singleton<SoundManager>
             Debug.Log("그 소리 없음!");
             return null;
         }
-        
+
         var clip = audioClips[soundName];
         var audioInfo = audioInfos[soundType];
         var audioSource = audioInfo.audioSource;
-        
-        audioSource.clip = clip;
-        audioSource.volume = audioInfo.audioVolume * multipleVolume;
+
         audioSource.pitch = pitch;
 
-        if (soundType.Equals(ESoundType.BGM)) //BGM
+        if (soundType.Equals(ESoundType.BGM))
+        {
+            audioSource.clip = clip;
+            audioSource.volume = audioInfo.audioVolume * multipleVolume;
             audioSource.Play();
+        }
         else //SFX
-            audioSource.PlayOneShot(clip);
+            audioSource.PlayOneShot(clip, audioInfo.audioVolume * multipleVolume);
 
         return clip;
     }
