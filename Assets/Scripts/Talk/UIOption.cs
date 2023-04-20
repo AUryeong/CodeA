@@ -1,11 +1,8 @@
 using DG.Tweening;
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
-using Coffee.UIEffects;
 
 namespace UI
 {
@@ -14,13 +11,13 @@ namespace UI
         [SerializeField] TextMeshProUGUI scriptText;
         [SerializeField] TextMeshProUGUI effectText;
 
-        public Option option { get; private set; }
+        public Option Option { get; private set; }
 
-        public RectTransform rectTransform { get; private set; }
+        private RectTransform rectTransform;
         private Image image;
 
-        private Color defaultTextColor = Color.white;
-        private Color specialTextColor = new Color(105f / 255f, 1, 126 / 255f);
+        private readonly Color defaultTextColor = Color.white;
+        private readonly Color specialTextColor = new Color(105f / 255f, 1, 126 / 255f);
 
 
         protected void Awake()
@@ -31,12 +28,12 @@ namespace UI
 
         public void Disable()
         {
-            if (option == null)
+            if (Option == null)
             {
                 gameObject.SetActive(false);
             }
 
-            option = null;
+            Option = null;
             rectTransform.DOScale(Vector3.zero, 0.5f).SetEase(Ease.InBack).OnComplete(() =>
             {
                 image.DOFade(0, 0.5f);
@@ -47,7 +44,7 @@ namespace UI
 
         public void SetOption(Option setOption)
         {
-            option = setOption;
+            Option = setOption;
 
             scriptText.DOKill();
             scriptText.text = setOption.script;
@@ -86,7 +83,7 @@ namespace UI
                 effectText.DOFade(0, 0.5f).OnComplete(() => { gameObject.SetActive(false); });
             });
             TalkManager.Instance.SelectOption(this);
-            option = null;
+            Option = null;
         }
 
         public void OnPointerDown(PointerEventData eventData)

@@ -47,10 +47,10 @@ namespace UI
             if (!gameObject.activeSelf) return;
 
             baseStanding.DOKill();
-            baseStanding.DOColor(Utility.fadeOutBlack, 0.3f).OnComplete(() => { gameObject.SetActive(false); });
+            baseStanding.DOColor(Utility.fadeOutBlack, 0.5f).OnComplete(() => { gameObject.SetActive(false); });
 
             face.DOKill();
-            face.DOColor(Utility.fadeOutBlack, 0.3f);
+            face.DOColor(Utility.fadeOutBlack, 0.5f);
         }
 
         public void ShowCharacter(Character talkStanding)
@@ -119,12 +119,12 @@ namespace UI
             baseStanding.sprite = standing.baseStanding;
             baseStanding.color = Utility.fadeOutBlack;
             var toColor = talkStanding.dark ? Utility.darkColor : Color.white;
-            baseStanding.DOColor(toColor, 0.3f);
+            baseStanding.DOColor(toColor, 0.5f);
 
             face.DOKill();
             face.sprite = standing.faces[talkStanding.face];
             face.color = Utility.fadeOutBlack;
-            face.DOColor(toColor, 0.3f);
+            face.DOColor(toColor, 0.5f);
 
             sideFace.gameObject.SetActive(false);
             NowStanding = talkStanding;
@@ -137,10 +137,10 @@ namespace UI
             var toColor = dark ? Utility.darkColor : Color.white;
 
             baseStanding.DOKill();
-            baseStanding.DOColor(toColor, 0.3f);
+            baseStanding.DOColor(toColor, 0.5f);
 
             face.DOKill();
-            face.DOColor(toColor, 0.3f);
+            face.DOColor(toColor, 0.5f);
         }
 
         public void Move(float posX, float duration)

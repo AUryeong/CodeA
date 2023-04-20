@@ -684,9 +684,9 @@ public class TalkManager : Singleton<TalkManager>
             }
         }
 
-        var talks = ResourcesManager.Instance.GetTalk(setOption.option.dialog);
+        var talks = ResourcesManager.Instance.GetTalk(setOption.Option.dialog);
 
-        DialogAdd(setOption.option.eventType, talks == null ? null : talks.talks);
+        DialogAdd(setOption.Option.eventType, talks == null ? null : talks.talks);
     }
 
     #endregion
