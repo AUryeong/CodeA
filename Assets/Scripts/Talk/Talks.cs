@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Xml.Serialization;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class Talks : ScriptableObject
 {
@@ -12,22 +13,49 @@ public class Talks : ScriptableObject
 [System.Serializable]
 public class Talk
 {
-    [XmlElement("Bgm")] public string bgm = "";
+    [XmlElement("Bgm")] 
+    public string bgm = "";
 
-    [XmlElement("BG")] public Background background = new Background();
+    [XmlElement("BG")] 
+    public Background background = new Background();
 
-    [XmlElement("Dialogue")] public Dialogue dialogue;
+    [XmlElement("Dialogue")] 
+    public Dialogue dialogue;
 
-    [XmlElement("Event")] public List<Event> eventList = new List<Event>();
+    [XmlElement("Event")] 
+    public List<Event> eventList = new List<Event>();
 
-    [XmlElement("Option")] public List<Option> optionList;
+    [XmlElement("Option")] 
+    public List<Option> optionList;
 
     [XmlArray("Characters")]
     [XmlArrayItem("Character")]
     public List<Character> characters = new List<Character>();
 
-    [XmlArray("Animations")]
-    [XmlArrayItem("Animation")]
+    [FormerlySerializedAs("animations")] [XmlElement("Animations")] 
+    public List<AnimationList> animationLists = new List<AnimationList>();
+}
+
+[System.Serializable]
+public class TalkAnimation
+{
+    [XmlAttribute("Index")]
+    public int startIndex = 0;
+
+    [XmlAttribute("Type")] 
+    public TalkAnimationType type = TalkAnimationType.ANIM;
+    
+    [XmlAttribute("Parameter")]
+    public float parameter;
+}
+
+[System.Serializable]
+public class AnimationList
+{
+    [XmlAttribute("Index")]
+    public int index = 0;
+    
+    [XmlElement("Animation")]
     public List<Animation> animations = new List<Animation>();
 }
 
@@ -83,23 +111,34 @@ public class TipEvent
 [System.Serializable]
 public class Dialogue
 {
-    [XmlElement("Talker")] public string talker;
+    [XmlElement("Talker")] 
+    public string talker;
 
-    [XmlElement("Text")] public string text;
+    [XmlElement("Text")] 
+    public string text;
 
-    [XmlElement("TipEvent")]  public List<TipEvent> tipEvent = new List<TipEvent>();
+    [XmlElement("TipEvent")]  
+    public List<TipEvent> tipEvent = new List<TipEvent>();
 
-    [XmlAttribute("Active")] public bool active = true;
+    [XmlElement("TalkAnimation")]  
+    public List<TalkAnimation> talkAnimations = new List<TalkAnimation>();
 
-    [XmlAttribute("Owner")] public string owner;
+    [XmlAttribute("Active")] 
+    public bool active = true;
+
+    [XmlAttribute("Owner")] 
+    public string owner;
 
 }
 
 [System.Serializable]
 public class Event
 {
-    [XmlAttribute("Name")] public string name;
-    [XmlAttribute("Type")] public Type type;
+    [XmlAttribute("Name")] 
+    public string name;
+    
+    [XmlAttribute("Type")] 
+    public Type type;
     public enum Type
     {
         ADD_TIP,
@@ -110,41 +149,58 @@ public class Event
 [System.Serializable]
 public class Background
 {
-    [XmlAttribute("Name")] public string name;
-    [XmlAttribute("Effect")] public BackgroundEffect effect = BackgroundEffect.NONE;
-    [XmlAttribute("Duration")] public float effectDuration = 1;
+    [XmlAttribute("Name")] 
+    public string name;
+    
+    [XmlAttribute("Effect")]
+    public BackgroundEffect effect = BackgroundEffect.NONE;
+    
+    [XmlAttribute("Duration")] 
+    public float effectDuration = 1;
 
-    [XmlAttribute("Scale")] public float scale = 1;
+    [XmlAttribute("Scale")] 
+    public float scale = 1;
 }
 
 [System.Serializable]
 public class Animation
 {
-    [XmlAttribute("Type")] public AnimationType type = AnimationType.UTIL;
+    [XmlAttribute("Type")] 
+    public AnimationType type = AnimationType.UTIL;
 
-    [XmlAttribute("Effect")] public string effect;
+    [XmlAttribute("Effect")] 
+    public string effect;
 
-    [XmlAttribute("Name")] public string name;
+    [XmlAttribute("Name")] 
+    public string name;
 
-    [XmlAttribute("Parameter")] public string parameter;
+    [XmlAttribute("Parameter")] 
+    public string parameter;
 
-    [XmlAttribute("Duration")] public float duration = -1;
+    [XmlAttribute("Duration")] 
+    public float duration = -1;
 }
 
 [System.Serializable]
 public class Character
 {
-    [XmlAttribute("Name")] public string name;
+    [XmlAttribute("Name")] 
+    public string name;
 
-    [XmlAttribute("Clothes")] public string clothes;
+    [XmlAttribute("Clothes")] 
+    public string clothes;
 
-    [XmlAttribute("Face")] public string face;
+    [XmlAttribute("Face")] 
+    public string face;
 
-    [XmlAttribute("Pos")] public CharacterPos pos = CharacterPos.N;
+    [XmlAttribute("Pos")] 
+    public CharacterPos pos = CharacterPos.N;
 
-    [XmlAttribute("Size")] public CharacterSize size = CharacterSize.N;
+    [XmlAttribute("Size")] 
+    public CharacterSize size = CharacterSize.N;
 
-    [XmlAttribute("Dark")] public bool dark = true;
+    [XmlAttribute("Dark")] 
+    public bool dark = true;
 }
 
 public enum BackgroundEffect
@@ -169,6 +225,11 @@ public enum AnimationType
     CAM
 }
 
+public enum TalkAnimationType
+{
+    WAIT,
+    ANIM
+}
 public enum CharacterPos
 {
     N,

@@ -26,28 +26,30 @@ MonoBehaviour:
       talker: 
       text: 
       tipEvent: []
+      talkAnimations: []
       active: 1
       owner: 
     eventList: []
     optionList: []
     characters: []
-    animations: []
+    animationLists: []
   - bgm: School
     background:
       name: Class_Morning
       effect: 2
-      effectDuration: 2
+      effectDuration: 3
       scale: 1
     dialogue:
       talker: '{0}'
       text: "\uADF8\uB798\uC11C \uC774\uAC8C \uBB34\uC2A8 \uC0C1\uD669\uC774\uC9C0"
       tipEvent: []
+      talkAnimations: []
       active: 1
       owner: 
     eventList: []
     optionList: []
     characters: []
-    animations: []
+    animationLists: []
   - bgm: School
     background:
       name: Class_Morning
@@ -70,6 +72,13 @@ MonoBehaviour:
         talkName: 
         dialogs: []
         eventType: 1
+      talkAnimations:
+      - startIndex: 7
+        type: 0
+        parameter: 1
+      - startIndex: 15
+        type: 0
+        parameter: 1
       active: 0
       owner: A
     eventList: []
@@ -87,37 +96,39 @@ MonoBehaviour:
       pos: 7
       size: 2
       dark: 1
-    animations:
-    - type: 0
-      effect: Move
-      name: A
-      parameter: C
-      duration: 1
-    - type: 1
-      effect: Wait
-      name: 
-      parameter: 
-      duration: 1.1
-    - type: 0
-      effect: Bounce
-      name: A
-      parameter: 2
-      duration: 0.2
-    - type: 0
-      effect: Face
-      name: A
-      parameter: Smile
-      duration: -1
-    - type: 0
-      effect: Emotion
-      name: A
-      parameter: Funny
-      duration: 0.4
-    - type: 2
-      effect: On
-      name: 
-      parameter: 
-      duration: -1
+    animationLists:
+    - index: 0
+      animations:
+      - type: 0
+        effect: Move
+        name: A
+        parameter: C
+        duration: 1
+      - type: 1
+        effect: Wait
+        name: 
+        parameter: 
+        duration: 1.1
+      - type: 0
+        effect: Bounce
+        name: A
+        parameter: 2
+        duration: 0.2
+      - type: 0
+        effect: Face
+        name: A
+        parameter: Smile
+        duration: -1
+      - type: 0
+        effect: Emotion
+        name: A
+        parameter: Funny
+        duration: 0.4
+      - type: 2
+        effect: On
+        name: 
+        parameter: 
+        duration: -1
   - bgm: School
     background:
       name: Class_Morning
@@ -128,6 +139,7 @@ MonoBehaviour:
       talker: "\uC5D0\uC774"
       text: "\uB098\uB294 \uC720\uD574\uD55C \uC778\uAC04\uC774\uC57C"
       tipEvent: []
+      talkAnimations: []
       active: 1
       owner: A
     eventList: []
@@ -145,7 +157,7 @@ MonoBehaviour:
       pos: 5
       size: 2
       dark: 0
-    animations: []
+    animationLists: []
   - bgm: School
     background:
       name: Class_Morning
@@ -156,6 +168,7 @@ MonoBehaviour:
       talker: "\uC5D0\uC774"
       text: "\uB098\uB294 \uC720\uD574\uD55C \uC778\uAC04\uC774\uC57C"
       tipEvent: []
+      talkAnimations: []
       active: 1
       owner: A
     eventList: []
@@ -173,7 +186,7 @@ MonoBehaviour:
       pos: 5
       size: 2
       dark: 0
-    animations: []
+    animationLists: []
   - bgm: School
     background:
       name: Class_Morning
@@ -184,6 +197,7 @@ MonoBehaviour:
       talker: "\uC5D0\uC774"
       text: "\uB098\uB294 \uC720\uD574\uD55C \uC778\uAC04\uC774\uC57C"
       tipEvent: []
+      talkAnimations: []
       active: 1
       owner: A
     eventList: []
@@ -201,7 +215,7 @@ MonoBehaviour:
       pos: 5
       size: 2
       dark: 0
-    animations: []
+    animationLists: []
   - bgm: School
     background:
       name: Class_Morning
@@ -212,6 +226,7 @@ MonoBehaviour:
       talker: "\uC5D0\uC774"
       text: "\uB098\uB294 \uC720\uD574\uD55C \uC778\uAC04\uC774\uC57C"
       tipEvent: []
+      talkAnimations: []
       active: 1
       owner: A
     eventList: []
@@ -229,7 +244,7 @@ MonoBehaviour:
       pos: 5
       size: 2
       dark: 0
-    animations: []
+    animationLists: []
   - bgm: School
     background:
       name: Class_Morning
@@ -246,6 +261,7 @@ MonoBehaviour:
         talkName: 
         dialogs: []
         eventType: 1
+      talkAnimations: []
       active: 0
       owner: A
     eventList: []
@@ -277,22 +293,24 @@ MonoBehaviour:
       pos: 5
       size: 2
       dark: 0
-    animations:
-    - type: 0
-      effect: Emotion
-      name: A
-      parameter: Sweat
-      duration: 0.5
-    - type: 1
-      effect: Wait
-      name: 
-      parameter: 
-      duration: 2
-    - type: 2
-      effect: On
-      name: 
-      parameter: 
-      duration: -1
+    animationLists:
+    - index: 0
+      animations:
+      - type: 0
+        effect: Emotion
+        name: A
+        parameter: Sweat
+        duration: 0.5
+      - type: 1
+        effect: Wait
+        name: 
+        parameter: 
+        duration: 2
+      - type: 2
+        effect: On
+        name: 
+        parameter: 
+        duration: -1
   - bgm: School
     background:
       name: Class_Morning
@@ -303,6 +321,7 @@ MonoBehaviour:
       talker: "\uC774\uB85C\uB9AC"
       text: "\uC774\uAC78 \uAC00\uBC84\uB9AC\uB124..."
       tipEvent: []
+      talkAnimations: []
       active: 0
       owner: Loli
     eventList:
@@ -316,19 +335,21 @@ MonoBehaviour:
       pos: 7
       size: 2
       dark: 0
-    animations:
-    - type: 0
-      effect: Emotion
-      name: Loli
-      parameter: Worry
-      duration: 0.5
-    - type: 1
-      effect: Wait
-      name: 
-      parameter: 
-      duration: 2
-    - type: 2
-      effect: On
-      name: 
-      parameter: 
-      duration: -1
+    animationLists:
+    - index: 0
+      animations:
+      - type: 0
+        effect: Emotion
+        name: Loli
+        parameter: Worry
+        duration: 0.5
+      - type: 1
+        effect: Wait
+        name: 
+        parameter: 
+        duration: 2
+      - type: 2
+        effect: On
+        name: 
+        parameter: 
+        duration: -1

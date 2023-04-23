@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Xml.Serialization;
@@ -11,7 +12,7 @@ public class XMLDialogs
     [XmlElement("Title")] public string cgTitle;
 
     [XmlElement("SkipText")] public string skipText;
-        
+
     [XmlElement("Dialog")] public List<Talk> talks = new List<Talk>();
 }
 
@@ -33,7 +34,7 @@ public class EditorUtility
 {
     private const string remainderRegex = "(.*?((?=})|(/|$)))";
     private const string tipRegexString = "{(?<Tip>" + remainderRegex + ")}";
-    private static readonly Regex pauseRegex = new Regex(tipRegexString);
+    private static readonly Regex tipRegex = new Regex(tipRegexString);
 
     [MenuItem("Assets/Convert Xml To ScriptableObject Talk")]
     public static void CreateTalkScriptableObject()
@@ -91,7 +92,7 @@ public class EditorUtility
         ParsingTalks(assetName, ref talkList, ownerDictionaries);
         newTalks.talks = talkList;
         newTalks.cgTitle = title;
-        newTalks.skipText = skipText == null ? null : skipText.Replace("\\n", "\n");
+        newTalks.skipText = string.IsNullOrEmpty(skipText) ? null : skipText.Replace("\\n", "\n");
 
         AssetDatabase.CreateAsset(newTalks, $"Assets/ScriptableObjects/Talks/{assetName}.asset");
     }
@@ -146,16 +147,45 @@ public class EditorUtility
 
                 if (!string.IsNullOrEmpty(talk.dialogue.text))
                 {
-                    var matches = pauseRegex.Matches(talk.dialogue.text);
+                    var matches = tipRegex.Matches(talk.dialogue.text);
                     int indexAdd = 0;
+                    int indexAnimAdd = 0;
                     for (var i = 0; i < matches.Count; i++)
                     {
                         var match = matches[i];
-
                         var commands = match.Groups["Tip"].Value.Split(':');
 
-                        string name = commands[0];
-                        string eventName = (commands.Length >= 2) ? commands[1] : commands[0];
+                        if (commands[0] != "Tip")
+                        {
+                            var talkAnimation = new TalkAnimation
+                            {
+                                startIndex = match.Index - indexAnimAdd + 1,
+                                type = Utility.GetEnum<TalkAnimationType>(commands[1])
+                            };
+                            if (commands.Length < 3)
+                            {
+                                switch (talkAnimation.type)
+                                {
+                                    case TalkAnimationType.WAIT:
+                                        talkAnimation.parameter = 1;
+                                        break;
+                                    case TalkAnimationType.ANIM:
+                                        talkAnimation.parameter = 1;
+                                        break;
+                                }
+                            }
+                            else
+                            {
+                                talkAnimation.parameter = float.Parse(commands[2]);
+                            }
+
+                            talk.dialogue.talkAnimations.Add(talkAnimation);
+                            indexAnimAdd += match.Groups["Tip"].Value.Length-1;
+                            continue;
+                        }
+
+                        string name = commands[1];
+                        string eventName = (commands.Length >= 3) ? commands[2] : commands[1];
 
                         bool flag = talk.dialogue.tipEvent == null || talk.dialogue.tipEvent.Count <= 0 ||
                                     !talk.dialogue.tipEvent.Exists((x) => !string.IsNullOrEmpty(x.eventName) && x.eventName == eventName);
@@ -164,8 +194,8 @@ public class EditorUtility
                             talk.dialogue.tipEvent.Add(new TipEvent()
                             {
                                 eventName = eventName,
-                                talkName = (commands.Length >= 3) ? commands[2] : null,
-                                eventType = (commands.Length >= 4) ? Utility.GetStringToEventType(commands[3]) : EventType.CHANGE
+                                talkName = (commands.Length >= 4) ? commands[3] : null,
+                                eventType = (commands.Length >= 5) ? Utility.GetStringToEventType(commands[4]) : EventType.CHANGE
                             });
                         }
                         else
@@ -182,14 +212,15 @@ public class EditorUtility
                         }
 
                         string s;
-                        if (commands.Length >= 3 || !flag)
+                        if (commands.Length >= 4 || !flag)
                             s = "<#FFAA00><bounce><link=" + eventName + ">" + name + "</color></bounce></link>";
                         else
                             s = "<#FFEE00><link=" + eventName + ">" + name + "</color></link>";
                         talk.dialogue.text = talk.dialogue.text.Insert(match.Index + indexAdd, s);
                         indexAdd += s.Length;
+                        indexAnimAdd += match.Groups["Tip"].Value.Length -1;
                     }
-
+                    
                     talk.dialogue.text = Regex.Replace(talk.dialogue.text, tipRegexString, "");
                 }
 
@@ -203,7 +234,8 @@ public class EditorUtility
                     }
                 }
             }
-            if(talk.optionList != null && talk.optionList.Count > 0)
+
+            if (talk.optionList != null && talk.optionList.Count > 0)
             {
                 for (int i = 0; i < talk.optionList.Count; i++)
                 {
@@ -277,23 +309,26 @@ public class EditorUtility
 
                 character.size = size;
 
-                foreach (var anim in talk.animations)
+                foreach (var animationList in talk.animationLists)
                 {
-                    if (anim.type == AnimationType.CHAR)
+                    foreach (var anim in animationList.animations)
                     {
-                        if (anim.name == character.name)
+                        if (anim.type == AnimationType.CHAR)
                         {
-                            switch (anim.effect)
+                            if (anim.name == character.name)
                             {
-                                case "Face":
-                                    face = anim.parameter;
-                                    break;
-                                case "Scale":
-                                    size = Utility.GetEnum<CharacterSize>(anim.parameter);
-                                    break;
-                                case "Move":
-                                    pos = Utility.GetEnum<CharacterPos>(anim.parameter);
-                                    break;
+                                switch (anim.effect)
+                                {
+                                    case "Face":
+                                        face = anim.parameter;
+                                        break;
+                                    case "Scale":
+                                        size = Utility.GetEnum<CharacterSize>(anim.parameter);
+                                        break;
+                                    case "Move":
+                                        pos = Utility.GetEnum<CharacterPos>(anim.parameter);
+                                        break;
+                                }
                             }
                         }
                     }

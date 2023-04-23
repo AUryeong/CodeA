@@ -17,7 +17,7 @@
     <Dialog>
         <Dialogue Active="false">
             <Talker>에이</Talker>
-            <Text>혹시 {원더랜드:앨리스}나 {시공의 폭풍}을 아십니까?</Text>
+            <Text>혹시 {Tip:원더랜드:앨리스}나{Anim:WAIT} {Tip:시공의 폭풍}을{Anim:WAIT} 아십니까?</Text>
             <TipEvent Name="앨리스" Type="CHANGE">
                 <Dialogs>
                     <Dialog>
@@ -122,7 +122,7 @@
     <Dialog>
         <Dialogue Active="false">
             <Talker>에이</Talker>
-            <Text>그... 그럼 {로보토미}는 알지?</Text>
+            <Text>그... 그럼 {Tip:로보토미}는 알지?</Text>
         </Dialogue>
         <Option Script="에이 그건 알지 ㅋㅋ" Special="true">
             <Dialogs>

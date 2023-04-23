@@ -288,6 +288,21 @@ public class TalkManager : Singleton<TalkManager>
             {
                 talkDuration -= nextDuration;
                 descriptionText.maxVisibleCharacters++;
+                foreach (var talkAnimation in nowTalk.dialogue.talkAnimations)
+                {
+                    if (talkAnimation.startIndex == descriptionText.maxVisibleCharacters)
+                    {
+                        switch (talkAnimation.type)
+                        {
+                            case TalkAnimationType.WAIT:
+                                talkDuration -= talkAnimation.parameter;
+                                break;
+                            case TalkAnimationType.ANIM:
+                                EffectSetting(Mathf.RoundToInt(talkAnimation.parameter));
+                                break;
+                        }
+                    }
+                }
             }
         }
         else
@@ -1011,14 +1026,19 @@ public class TalkManager : Singleton<TalkManager>
         }
     }
 
-    private void EffectSetting()
+    private void EffectSetting(int index = 0)
     {
-        foreach (var anim in nowTalk.animations)
+        if (nowTalk.animationLists.Count <= index || nowTalk.animationLists[0].animations.Count <= 0) return;
+
+        bool flag = animations.Count == 0;
+
+        foreach (var anim in nowTalk.animationLists[index].animations)
         {
             animations.Enqueue(anim);
         }
 
-        AnimationUpdate();
+        if (flag)
+            AnimationUpdate();
     }
 
     #endregion
