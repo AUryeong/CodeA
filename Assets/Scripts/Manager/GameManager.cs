@@ -14,7 +14,6 @@ public class GameManager : Singleton<GameManager>
     protected override bool IsDontDestroying => true;
     [SerializeField] protected Camera uiCamera;
     public Scene nowScene;
-    [SerializeField] private ParticleSystem clickEffect;
 
     public Camera UICamera
     {
@@ -47,7 +46,7 @@ public class GameManager : Singleton<GameManager>
     {
         if (Input.GetMouseButtonDown(0))
         {
-            if (ResourcesManager.Instance.isLoading) return;
+            if (ResourcesManager.Instance.IsLoading) return;
             
             GameObject obj = PoolManager.Instance.Init("Click Effect");
             var vector = Camera.main.ScreenToWorldPoint(Input.mousePosition);

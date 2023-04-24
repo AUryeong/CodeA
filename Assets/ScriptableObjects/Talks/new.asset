@@ -73,10 +73,10 @@ MonoBehaviour:
         dialogs: []
         eventType: 1
       talkAnimations:
-      - startIndex: 7
+      - startIndex: 8
         type: 0
         parameter: 1
-      - startIndex: 15
+      - startIndex: 16
         type: 0
         parameter: 1
       active: 0

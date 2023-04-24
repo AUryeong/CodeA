@@ -6,7 +6,7 @@ using System.Xml.Serialization;
 using UnityEditor;
 using UnityEngine;
 
-[System.Serializable]
+[Serializable]
 public class XMLDialogs
 {
     [XmlElement("Title")] public string cgTitle;
@@ -16,13 +16,13 @@ public class XMLDialogs
     [XmlElement("Dialog")] public List<Talk> talks = new List<Talk>();
 }
 
-[System.Serializable]
+[Serializable]
 public class XMLTalkOwners
 {
     [XmlElement("Owner")] public List<Owner> owners = new List<Owner>();
 }
 
-[System.Serializable]
+[Serializable]
 public class Owner
 {
     [XmlAttribute("Name")] public string name;
@@ -129,11 +129,11 @@ public class EditorUtility
             {
                 if (!string.IsNullOrEmpty(talk.dialogue.talker))
                 {
-                    if (ownerDictionaries.ContainsKey(talk.dialogue.talker))
+                    if (ownerDictionaries.TryGetValue(talk.dialogue.talker, out var dictionary))
                     {
                         if (string.IsNullOrEmpty(talk.dialogue.owner))
                         {
-                            talk.dialogue.owner = ownerDictionaries[talk.dialogue.talker];
+                            talk.dialogue.owner = dictionary;
                         }
                     }
                     else

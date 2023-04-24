@@ -36,6 +36,12 @@ public class SoundManager : Singleton<SoundManager>
         AddAudioInfo(ESoundType.SFX).audioVolume = SaveManager.Instance.GameData.sfxSound;
     }
 
+    protected override void OnReset()
+    {
+        foreach (var audioInfo in audioInfos.Values)
+            audioInfo.audioSource.Stop();
+    }
+
     public void UpdateVolume(ESoundType soundType, float sound)
     {
         audioInfos[soundType].audioVolume = sound;

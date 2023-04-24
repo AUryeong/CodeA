@@ -11,7 +11,7 @@ public class ResourcesManager : Singleton<ResourcesManager>
 {
     protected override bool IsDontDestroying => true;
 
-    public bool isLoading;
+    public bool IsLoading { get; private set; }
     private readonly Dictionary<string, Sprite> backgroundSprites = new Dictionary<string, Sprite>();
     private readonly Dictionary<string, CharacterStanding> characters = new Dictionary<string, CharacterStanding>();
     private readonly Dictionary<string, Talks> talks = new Dictionary<string, Talks>();
@@ -41,7 +41,7 @@ public class ResourcesManager : Singleton<ResourcesManager>
     protected override void OnCreated()
     {
         Time.timeScale = 0;
-        isLoading = true;
+        IsLoading = true;
         loadingWindow.gameObject.SetActive(true);
 
         LoadCharacter();
@@ -55,16 +55,16 @@ public class ResourcesManager : Singleton<ResourcesManager>
         float loadingCooltime = 1f;
         float loadingDuration = 0;
         float loadingIdx = 0;
-        while (isLoading)
+        while (IsLoading)
         {
             loadingDuration += Time.unscaledDeltaTime;
             if (loadingDuration >= loadingCooltime)
             {
                 loadingDuration -= loadingCooltime;
-                loadingIdx = (loadingIdx + 1) % 4;
+                loadingIdx = (loadingIdx + 1) % 3;
 
                 if (loadingIdx == 0)
-                    loadingText.text = "로딩 중";
+                    loadingText.text = "로딩 중.";
                 else
                     loadingText.text += ".";
             }
@@ -94,26 +94,26 @@ public class ResourcesManager : Singleton<ResourcesManager>
             CheckDownloadSize;
     }
 
-    private void ForcedUpdate()
-    {
-        downloadWindow.gameObject.SetActive(true);
-
-        exitButton.onClick.RemoveAllListeners();
-        exitButton.onClick.AddListener(Application.Quit);
-
-        if (Application.internetReachability != NetworkReachability.NotReachable)
-        {
-            downloadingText.text = "업데이트 또는 버그가 발생했습니다.\n파일을 새로 다운로드 해주세요.";
-            downloadButton.gameObject.SetActive(true);
-
-            downloadButton.onClick.RemoveAllListeners();
-            downloadButton.onClick.AddListener(CheckWifi);
-        }
-        else
-        {
-            downloadingText.text = "와이파이에 연결되어 있지 않습니다.\n최초 또는 업데이트 파일 다운로드를 위해 와이파이를 연결해주세요.";
-        }
-    }
+    // private void ForcedUpdate()
+    // {
+    //     downloadWindow.gameObject.SetActive(true);
+    //
+    //     exitButton.onClick.RemoveAllListeners();
+    //     exitButton.onClick.AddListener(Application.Quit);
+    //
+    //     if (Application.internetReachability != NetworkReachability.NotReachable)
+    //     {
+    //         downloadingText.text = "업데이트 또는 버그가 발생했습니다.\n파일을 새로 다운로드 해주세요.";
+    //         downloadButton.gameObject.SetActive(true);
+    //
+    //         downloadButton.onClick.RemoveAllListeners();
+    //         downloadButton.onClick.AddListener(CheckWifi);
+    //     }
+    //     else
+    //     {
+    //         downloadingText.text = "와이파이에 연결되어 있지 않습니다.\n최초 또는 업데이트 파일 다운로드를 위해 와이파이를 연결해주세요.";
+    //     }
+    // }
 
     private void CheckDownloadSize(AsyncOperationHandle<long> sizeHandle)
     {
@@ -233,7 +233,7 @@ public class ResourcesManager : Singleton<ResourcesManager>
         {
             foreach (var tip in tipLists.tips)
                 tips.Add(tip.id, tip.lore);
-        }).Completed += (list) => { isLoading = false; };
+        }).Completed += (list) => { IsLoading = false; };
     }
 
     private void LoadCharacter()
@@ -262,7 +262,7 @@ public class ResourcesManager : Singleton<ResourcesManager>
 
     public Sprite GetBackground(string backgroundName)
     {
-        return backgroundSprites.ContainsKey(backgroundName) ? backgroundSprites[backgroundName] : null;
+        return backgroundSprites.TryGetValue(backgroundName, out var sprite) ? sprite : null;
     }
 
     public CharacterStanding GetCharacter(string characterName)
@@ -272,11 +272,11 @@ public class ResourcesManager : Singleton<ResourcesManager>
 
     public Talks GetTalk(string talkName)
     {
-        return talks.ContainsKey(talkName) ? talks[talkName] : null;
+        return talks.TryGetValue(talkName, out var talk) ? talk : null;
     }
 
     public string GetTip(string tipName)
     {
-        return tips.ContainsKey(tipName) ? tips[tipName] : null;
+        return tips.TryGetValue(tipName, out var tip) ? tip : null;
     }
 }
