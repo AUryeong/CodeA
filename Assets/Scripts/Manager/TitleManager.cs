@@ -76,13 +76,12 @@ public class TitleManager : Singleton<TitleManager>
 
 
         startSequence.Append(wallpaperDark.DOFade(0, 1))
-            .AppendInterval(0.5f)
-            .Append(downWindow.rectTransform.DOAnchorPosY(40, 0.5f).SetEase(Ease.InSine));
+            .Append(downWindow.rectTransform.DOAnchorPosY(40, 0.25f).SetEase(Ease.InSine));
 
         for (int i = 0; i < buttons.Length; i++)
         {
             var rect = buttons[i];
-            startSequence.Insert(1.5f + i * 0.5f, rect.DOAnchorPosX(75, 1).SetEase(Ease.OutBack));
+            startSequence.Insert(1.25f + i * 0.25f, rect.DOAnchorPosX(75, 1).SetEase(Ease.OutBack));
         }
 
         startSequence.OnComplete(() =>

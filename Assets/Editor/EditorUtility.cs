@@ -39,7 +39,6 @@ public class EditorUtility
     [MenuItem("Assets/Convert Xml To ScriptableObject Talk")]
     public static void CreateTalkScriptableObject()
     {
-        Debug.Log("난카이데모");
         var ownerDictionaries = new Dictionary<string, string>();
         var str = File.ReadAllText(Application.dataPath + "/Editor/Xmls/TalkOwners.xml");
         XMLTalkOwners talkOwners;
@@ -87,6 +86,7 @@ public class EditorUtility
 
     private static void CreateNewAsset(string assetName, List<Talk> talkList, string title, string skipText, Dictionary<string, string> ownerDictionaries)
     {
+        Debug.Log(assetName);
         var newTalks = ScriptableObject.CreateInstance<Talks>();
 
         ParsingTalks(assetName, ref talkList, ownerDictionaries);
@@ -203,7 +203,7 @@ public class EditorUtility
                             var tipEvent = talk.dialogue.tipEvent.Find((x) => !string.IsNullOrEmpty(x.eventName) && x.eventName == eventName);
                             if (tipEvent.dialogs != null)
                             {
-                                string tipEventDialogName = string.Format("{0}_TipEvent_{1}", assetName, i);
+                                string tipEventDialogName = $"{assetName}_TipEvent_{i}";
                                 ParsingTalks(tipEventDialogName, ref tipEvent.dialogs, ownerDictionaries);
                                 CreateNewAsset(tipEventDialogName, tipEvent.dialogs, string.Empty, tipEvent.skipText, ownerDictionaries);
                                 tipEvent.dialogs = null;
@@ -242,7 +242,7 @@ public class EditorUtility
                     Option option = talk.optionList[i];
                     if (option.dialogs != null && option.dialogs.Count > 0)
                     {
-                        string tipEventDialogName = string.Format("{0}_Option_{1}", assetName, i);
+                        string tipEventDialogName = $"{assetName}_Option_{i}";
                         ParsingTalks(tipEventDialogName, ref option.dialogs, ownerDictionaries);
                         CreateNewAsset(tipEventDialogName, option.dialogs, string.Empty, option.skipText, ownerDictionaries);
                         option.dialogs = null;
@@ -264,10 +264,7 @@ public class EditorUtility
                 }
                 else
                 {
-                    if (characterDictionary.ContainsKey(character.name))
-                        characterDictionary[character.name] = character.clothes;
-                    else
-                        characterDictionary.Add(character.name, character.clothes);
+                    characterDictionary[character.name] = character.clothes;
                 }
 
                 string face = character.face;
@@ -334,20 +331,11 @@ public class EditorUtility
                     }
                 }
 
-                if (faceDictionary.ContainsKey(character.name))
-                    faceDictionary[character.name] = face;
-                else
-                    faceDictionary.Add(character.name, face);
+                faceDictionary[character.name] = face;
 
-                if (posDictionary.ContainsKey(character.name))
-                    posDictionary[character.name] = pos;
-                else
-                    posDictionary.Add(character.name, pos);
+                posDictionary[character.name] = pos;
 
-                if (sizeDictionary.ContainsKey(character.name))
-                    sizeDictionary[character.name] = size;
-                else
-                    sizeDictionary.Add(character.name, size);
+                sizeDictionary[character.name] = size;
             }
         }
     }
