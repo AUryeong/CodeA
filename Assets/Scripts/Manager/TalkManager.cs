@@ -73,7 +73,11 @@ public class TalkManager : Singleton<TalkManager>
     private bool skipButtonClicking;
     private float skipDuration;
 
-
+    [Header("터치 이벤트")]
+    private bool isDragStarting;
+    private Vector2 dragStartPos;
+    private bool isDialogHide;
+    
     [Header("이벤트")] [SerializeField] private Image eventWindow;
     [SerializeField] private TextMeshProUGUI eventTitleText;
     [SerializeField] private TextMeshProUGUI eventDescriptionText;
@@ -208,13 +212,53 @@ public class TalkManager : Singleton<TalkManager>
         }
     }
 
+    public void PointerDown(BaseEventData data)
+    {
+        if (isEnding) return;
+        dragStartPos = (data as PointerEventData).position;
+        
+        if (string.IsNullOrEmpty(talkSkipText) || isHasOption) return;
 
-    public void PointerClick(BaseEventData data)
+        skipButtonClicking = true;
+    }
+
+    public void PointerUp(BaseEventData data)
     {
         if (isEnding) return;
 
-        if (skipDuration >= 1) return;
+        bool isSkipping = false;
+        if (!string.IsNullOrEmpty(talkSkipText) && !isHasOption)
+        {
+            isSkipping = skipDuration >= 1;
+            skipButtonClicking = false;
+            skipDuration = 0;
+
+            if (!skipWindow.gameObject.activeSelf)
+                SkipReset();
+            else
+                return;
+        }
+        
         if (dialogueImage.gameObject.activeSelf)
+        {
+            Vector2 subVector = dragStartPos - (data as PointerEventData).position;
+            if (subVector.y > 400)
+            {
+                dialogueImage.gameObject.SetActive(false);
+                isDialogHide = true;
+                return;
+            }
+        }
+        if (isDialogHide)
+        {
+            dialogueImage.gameObject.SetActive(true);
+            isDialogHide = false;
+            return;
+        }
+        
+        if (string.IsNullOrEmpty(talkSkipText) || isHasOption) return;
+
+        if (!isSkipping && dialogueImage.gameObject.activeSelf)
         {
             if (descriptionText.maxVisibleCharacters < descriptionText.textInfo.characterCount)
             {
@@ -246,6 +290,10 @@ public class TalkManager : Singleton<TalkManager>
         }
     }
 
+    public void PointerClick(BaseEventData data)
+    {
+    }
+
     private void CheckNextNoDialogue()
     {
         if (animations.Count > 0) return;
@@ -274,6 +322,7 @@ public class TalkManager : Singleton<TalkManager>
     {
         if (!talkWindow.gameObject.activeSelf) return;
         if (nowTalk == null) return;
+        if (isDialogHide) return;
 
         if (!dialogueImage.gameObject.activeSelf || nowTalk.dialogue == null)
         {
@@ -395,6 +444,7 @@ public class TalkManager : Singleton<TalkManager>
         endTextEffect.gameObject.SetActive(false);
         nowTalk = newTalk == null ? talkQueue.Dequeue() : newTalk;
         isHasEvent = false;
+        isDialogHide = false;
 
         isHasOption = nowTalk.optionList.Count > 0;
         optionActive = false;
@@ -539,25 +589,6 @@ public class TalkManager : Singleton<TalkManager>
 
     #region Skip
 
-    public void PointerDown(BaseEventData data)
-    {
-        if (isEnding) return;
-        if (string.IsNullOrEmpty(talkSkipText) || isHasOption) return;
-
-        skipButtonClicking = true;
-    }
-
-    public void PointerUp(BaseEventData data)
-    {
-        if (isEnding) return;
-        if (string.IsNullOrEmpty(talkSkipText) || isHasOption) return;
-
-        skipButtonClicking = false;
-        skipDuration = 0;
-
-        if (!skipWindow.gameObject.activeSelf)
-            SkipReset();
-    }
 
     private void SkipReset()
     {
@@ -967,6 +998,10 @@ public class TalkManager : Singleton<TalkManager>
                             LogManager.Instance.AddLog(nowTalk);
                         }
 
+                        break;
+                    case "Shake":
+                        dialogueImage.rectTransform.DOKill(true);
+                        dialogueImage.rectTransform.DOShakeAnchorPos(float.Parse(anim.parameter), anim.duration, 30, 90, false, false).SetRelative();
                         break;
                 }
 
