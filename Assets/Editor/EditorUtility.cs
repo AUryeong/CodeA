@@ -157,6 +157,7 @@ public class EditorUtility
 
                         if (commands[0] != "Tip")
                         {
+                            Debug.Log(match.Index - indexAnimAdd + 1);
                             var talkAnimation = new TalkAnimation
                             {
                                 startIndex = match.Index - indexAnimAdd + 1,
@@ -167,7 +168,7 @@ public class EditorUtility
                                 switch (talkAnimation.type)
                                 {
                                     case TalkAnimationType.WAIT:
-                                        talkAnimation.parameter = 1;
+                                        talkAnimation.parameter = 0.5f;
                                         break;
                                     case TalkAnimationType.ANIM:
                                         talkAnimation.parameter = 1;
@@ -180,7 +181,7 @@ public class EditorUtility
                             }
 
                             talk.dialogue.talkAnimations.Add(talkAnimation);
-                            indexAnimAdd += match.Groups["Tip"].Value.Length-1;
+                            indexAnimAdd += match.Groups["Tip"].Value.Length + 2;
                             continue;
                         }
 
@@ -218,9 +219,9 @@ public class EditorUtility
                             s = "<#FFEE00><link=" + eventName + ">" + name + "</color></link>";
                         talk.dialogue.text = talk.dialogue.text.Insert(match.Index + indexAdd, s);
                         indexAdd += s.Length;
-                        indexAnimAdd += match.Groups["Tip"].Value.Length -1;
+                        indexAnimAdd += match.Groups["Tip"].Value.Length + 2 -name.Length;
                     }
-                    
+
                     talk.dialogue.text = Regex.Replace(talk.dialogue.text, tipRegexString, "");
                 }
 
@@ -306,25 +307,57 @@ public class EditorUtility
 
                 character.size = size;
 
-                foreach (var animationList in talk.animationLists)
+                if (talk.animationLists.Count > 0)
                 {
-                    foreach (var anim in animationList.animations)
+                    var firstAnimation = talk.animationLists.Find((AnimationList anim) => anim.index == 0);
+                    if (firstAnimation == null) return;
+                    
+                    foreach (var anim in firstAnimation.animations)
                     {
-                        if (anim.type == AnimationType.CHAR)
+                        if (anim.type != AnimationType.CHAR) continue;
+                        
+                        if (anim.name == character.name)
                         {
-                            if (anim.name == character.name)
+                            switch (anim.effect)
                             {
-                                switch (anim.effect)
+                                case "Face":
+                                    face = anim.parameter;
+                                    break;
+                                case "Scale":
+                                    size = Utility.GetEnum<CharacterSize>(anim.parameter);
+                                    break;
+                                case "Move":
+                                    pos = Utility.GetEnum<CharacterPos>(anim.parameter);
+                                    break;
+                            }
+                        }
+                    }
+
+                    if (talk.dialogue.talkAnimations.Count > 0)
+                    {
+                        foreach (var talkAnimation in talk.dialogue.talkAnimations)
+                        {
+                            if (talkAnimation.type != TalkAnimationType.ANIM) continue;
+                            
+                            var animation = talk.animationLists.Find(animation => animation.index == Mathf.RoundToInt(talkAnimation.parameter));
+                            foreach (var anim in animation.animations)
+                            {
+                                if (anim.type != AnimationType.CHAR) continue;
+                                
+                                if (anim.name == character.name)
                                 {
-                                    case "Face":
-                                        face = anim.parameter;
-                                        break;
-                                    case "Scale":
-                                        size = Utility.GetEnum<CharacterSize>(anim.parameter);
-                                        break;
-                                    case "Move":
-                                        pos = Utility.GetEnum<CharacterPos>(anim.parameter);
-                                        break;
+                                    switch (anim.effect)
+                                    {
+                                        case "Face":
+                                            face = anim.parameter;
+                                            break;
+                                        case "Scale":
+                                            size = Utility.GetEnum<CharacterSize>(anim.parameter);
+                                            break;
+                                        case "Move":
+                                            pos = Utility.GetEnum<CharacterPos>(anim.parameter);
+                                            break;
+                                    }
                                 }
                             }
                         }

@@ -1,4 +1,4 @@
- using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Coffee.UIEffects;
@@ -219,6 +219,12 @@ public class TalkManager : Singleton<TalkManager>
             if (descriptionText.maxVisibleCharacters < descriptionText.textInfo.characterCount)
             {
                 descriptionText.maxVisibleCharacters = descriptionText.textInfo.characterCount;
+                if (nowTalk.dialogue.talkAnimations.Count <= 0) return;
+
+                var talkAnimations = nowTalk.dialogue.talkAnimations.OrderBy(talkAnimation => talkAnimation.parameter).ToList();
+                foreach (var talkAnimation in talkAnimations)
+                    if (talkAnimation.type == TalkAnimationType.ANIM)
+                        EffectSetting(Mathf.RoundToInt(talkAnimation.parameter));
             }
             else
             {
@@ -399,6 +405,7 @@ public class TalkManager : Singleton<TalkManager>
             talkerText.text = "> " + Utility.GetTalkerName(nowTalk.dialogue.talker);
             descriptionText.text = Utility.GetTalkerName(nowTalk.dialogue.text);
             dialogueImage.gameObject.SetActive(nowTalk.dialogue.active);
+            dialogueImage.color = nowTalk.dialogue.invisible ? Color.clear : new Color(0.08627451F, 0.08627451F, 0.08627451F, 0.9137255F);
             if (nowTalk.dialogue.active)
             {
                 LogManager.Instance.AddLog(nowTalk);
@@ -933,8 +940,15 @@ public class TalkManager : Singleton<TalkManager>
 
                         dialogueImage.DOKill();
                         dialogueImage.gameObject.SetActive(true);
-                        dialogueImage.color = new Color(0.08627451F, 0.08627451F, 0.08627451F, 0);
-                        dialogueImage.DOFade(0.9137255F, 0.2f);
+                        if (nowTalk.dialogue.invisible)
+                        {
+                            dialogueImage.color = Color.clear;
+                        }
+                        else
+                        {
+                            dialogueImage.color = new Color(0.08627451F, 0.08627451F, 0.08627451F, 0);
+                            dialogueImage.DOFade(0.9137255F, 0.2f);
+                        }
 
                         EventSetting();
 
@@ -1028,11 +1042,14 @@ public class TalkManager : Singleton<TalkManager>
 
     private void EffectSetting(int index = 0)
     {
-        if (nowTalk.animationLists.Count <= index || nowTalk.animationLists[0].animations.Count <= 0) return;
+        if (nowTalk.animationLists.Count <= 0) return;
+
+        var talkAnimation = nowTalk.animationLists.Find((anim) => anim.index == index);
+        if (talkAnimation == null) return;
 
         bool flag = animations.Count == 0;
 
-        foreach (var anim in nowTalk.animationLists[index].animations)
+        foreach (var anim in talkAnimation.animations)
         {
             animations.Enqueue(anim);
         }

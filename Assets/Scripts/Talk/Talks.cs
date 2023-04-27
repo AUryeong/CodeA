@@ -126,6 +126,9 @@ public class Dialogue
     [XmlAttribute("Active")] 
     public bool active = true;
 
+    [XmlAttribute("Invisible")] 
+    public bool invisible;
+
     [XmlAttribute("Owner")] 
     public string owner;
 

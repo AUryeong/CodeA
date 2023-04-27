@@ -17,7 +17,7 @@
     <Dialog>
         <Dialogue Active="false">
             <Talker>에이</Talker>
-            <Text>혹시 {Tip:원더랜드:앨리스}나{Anim:WAIT} {Tip:시공의 폭풍}을{Anim:WAIT} 아십니까?</Text>
+            <Text>혹시 {Tip:원더랜드:앨리스}나{Anim:ANIM:1}{Anim:WAIT:2} {Tip:시공의 폭풍}을{Anim:ANIM:2}{Anim:WAIT:2} 아십니까?</Text>
             <TipEvent Name="앨리스" Type="CHANGE">
                 <Dialogs>
                     <Dialog>
@@ -77,6 +77,14 @@
             <Animation Type="CHAR" Name="A" Effect="Face" Parameter="Smile"/>
             <Animation Type="CHAR" Name="A" Effect="Emotion" Parameter="Funny" Duration="0.4"/>
             <Animation Type="DIAL" Effect="On"/>
+        </Animations>
+        <Animations Index="1">
+            <Animation Type="CHAR" Name="A" Effect="Move" Parameter="R1" Duration="1"/>
+            <Animation Type="CHAR" Name="A" Effect="Bounce" Parameter="2" Duration="0.2"/>
+        </Animations>
+        <Animations Index="2">
+            <Animation Type="CHAR" Name="A" Effect="Move" Parameter="L1" Duration="1"/>
+            <Animation Type="CHAR" Name="A" Effect="Bounce" Parameter="2" Duration="0.2"/>
         </Animations>
     </Dialog>
     <Dialog>
