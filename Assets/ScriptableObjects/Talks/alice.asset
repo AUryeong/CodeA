@@ -19,6 +19,8 @@ MonoBehaviour:
     background:
       name: Class_Morning
       effect: 0
+      title: 
+      description: 
       effectDuration: 1
       scale: 1
     dialogue:
@@ -27,6 +29,7 @@ MonoBehaviour:
       tipEvent: []
       talkAnimations: []
       active: 0
+      invisible: 0
       owner: 
     eventList: []
     optionList: []
@@ -90,6 +93,8 @@ MonoBehaviour:
     background:
       name: Class_Morning
       effect: 0
+      title: 
+      description: 
       effectDuration: 1
       scale: 1
     dialogue:
@@ -98,6 +103,7 @@ MonoBehaviour:
       tipEvent: []
       talkAnimations: []
       active: 1
+      invisible: 0
       owner: 
     eventList: []
     optionList: []
@@ -119,6 +125,8 @@ MonoBehaviour:
     background:
       name: Class_Morning
       effect: 0
+      title: 
+      description: 
       effectDuration: 1
       scale: 1
     dialogue:
@@ -127,6 +135,7 @@ MonoBehaviour:
       tipEvent: []
       talkAnimations: []
       active: 1
+      invisible: 0
       owner: Loli
     eventList: []
     optionList: []

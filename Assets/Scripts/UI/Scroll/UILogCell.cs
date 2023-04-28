@@ -17,8 +17,8 @@ namespace UI
 
         public void SetData(LogCellData data)
         {
-            talkerText.text = "> " + data.name;
-            descriptionText.text = data.text;
+            talkerText.text = string.IsNullOrEmpty(data.name) ? " " : "> " + data.name;
+            descriptionText.text = (string.IsNullOrEmpty(data.text)) ? " " : data.text;
             if (string.IsNullOrEmpty(data.standingName))
             {
                 faceIcon.gameObject.SetActive(false);

@@ -8,9 +8,8 @@
     </Dialog>
     <Dialog>
         <Bgm>School</Bgm>
-        <BG Name="Class_Morning" Effect="FADE" Duration="3"/>
+        <BG Name="Class_Morning" Title="디지텍 고등학교" Description="조금 이른 아침" Effect="FADE" Duration="3"/>
         <Dialogue>
-            <Talker>{0}</Talker>
             <Text>그래서 이게 무슨 상황이지</Text>
         </Dialogue>
     </Dialog>
@@ -203,6 +202,7 @@
             <Animation Type="CHAR" Name="Loli" Effect="Emotion" Parameter="Worry" Duration="0.5"/>
             <Animation Type="UTIL" Effect="Wait" Duration="2"/>
             <Animation Type="DIAL" Effect="On"/>
+			<Animation Type="DIAL" Effect="Shake" Parameter="10" Duration="1"/>
         </Animations>
     </Dialog>
 </XMLDialogs>

@@ -12,6 +12,8 @@ namespace UI
         private List<LogCellData> datas;
         private readonly Dictionary<GameObject, UILogCell> cellDictionaries = new Dictionary<GameObject, UILogCell>();
 
+        private float quitPosY;
+
         public void SetLog(List<LogCellData> cellDatas)
         {
             datas = cellDatas;
@@ -22,7 +24,17 @@ namespace UI
         }
         private void DoAwake()
         {
-            scrollRect.content.anchoredPosition = new Vector2(scrollRect.content.anchoredPosition.x, Mathf.Max(0, scrollRect.content.sizeDelta.y - 730));
+            float startPosY = Mathf.Max(0, scrollRect.content.sizeDelta.y - 930);
+            quitPosY = startPosY + 300;
+            scrollRect.content.anchoredPosition = new Vector2(scrollRect.content.anchoredPosition.x, startPosY);
+        }
+
+        private void Update()
+        {
+            if(scrollRect.content.anchoredPosition.y >= quitPosY)
+            {
+                WindowManager.Instance.CloseAllWindow();
+            }
         }
 
         public int GetCellCount()

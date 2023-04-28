@@ -157,6 +157,12 @@ public class Background
     
     [XmlAttribute("Effect")]
     public BackgroundEffect effect = BackgroundEffect.NONE;
+
+    [XmlAttribute("Title")]
+    public string title;
+
+    [XmlAttribute("Description")]
+    public string description;
     
     [XmlAttribute("Duration")] 
     public float effectDuration = 1;

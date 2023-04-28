@@ -20,6 +20,8 @@ MonoBehaviour:
     background:
       name: Black
       effect: 0
+      title: 
+      description: 
       effectDuration: 1
       scale: 1
     dialogue:
@@ -28,6 +30,7 @@ MonoBehaviour:
       tipEvent: []
       talkAnimations: []
       active: 1
+      invisible: 0
       owner: 
     eventList: []
     optionList: []
@@ -37,14 +40,17 @@ MonoBehaviour:
     background:
       name: Class_Morning
       effect: 2
+      title: "\uB514\uC9C0\uD14D \uACE0\uB4F1\uD559\uAD50"
+      description: "\uC870\uAE08 \uC774\uB978 \uC544\uCE68"
       effectDuration: 3
       scale: 1
     dialogue:
-      talker: '{0}'
+      talker: 
       text: "\uADF8\uB798\uC11C \uC774\uAC8C \uBB34\uC2A8 \uC0C1\uD669\uC774\uC9C0"
       tipEvent: []
       talkAnimations: []
       active: 1
+      invisible: 0
       owner: 
     eventList: []
     optionList: []
@@ -54,6 +60,8 @@ MonoBehaviour:
     background:
       name: Class_Morning
       effect: 0
+      title: 
+      description: 
       effectDuration: 1
       scale: 1
     dialogue:
@@ -86,6 +94,7 @@ MonoBehaviour:
         type: 0
         parameter: 2
       active: 0
+      invisible: 0
       owner: A
     eventList: []
     optionList: []
@@ -163,6 +172,8 @@ MonoBehaviour:
     background:
       name: Class_Morning
       effect: 0
+      title: 
+      description: 
       effectDuration: 1
       scale: 1
     dialogue:
@@ -171,6 +182,7 @@ MonoBehaviour:
       tipEvent: []
       talkAnimations: []
       active: 1
+      invisible: 0
       owner: A
     eventList: []
     optionList: []
@@ -192,6 +204,8 @@ MonoBehaviour:
     background:
       name: Class_Morning
       effect: 0
+      title: 
+      description: 
       effectDuration: 1
       scale: 1
     dialogue:
@@ -200,6 +214,7 @@ MonoBehaviour:
       tipEvent: []
       talkAnimations: []
       active: 1
+      invisible: 0
       owner: A
     eventList: []
     optionList: []
@@ -221,6 +236,8 @@ MonoBehaviour:
     background:
       name: Class_Morning
       effect: 0
+      title: 
+      description: 
       effectDuration: 1
       scale: 1
     dialogue:
@@ -229,6 +246,7 @@ MonoBehaviour:
       tipEvent: []
       talkAnimations: []
       active: 1
+      invisible: 0
       owner: A
     eventList: []
     optionList: []
@@ -250,6 +268,8 @@ MonoBehaviour:
     background:
       name: Class_Morning
       effect: 0
+      title: 
+      description: 
       effectDuration: 1
       scale: 1
     dialogue:
@@ -258,6 +278,7 @@ MonoBehaviour:
       tipEvent: []
       talkAnimations: []
       active: 1
+      invisible: 0
       owner: A
     eventList: []
     optionList: []
@@ -279,6 +300,8 @@ MonoBehaviour:
     background:
       name: Class_Morning
       effect: 0
+      title: 
+      description: 
       effectDuration: 1
       scale: 1
     dialogue:
@@ -293,6 +316,7 @@ MonoBehaviour:
         eventType: 1
       talkAnimations: []
       active: 0
+      invisible: 0
       owner: A
     eventList: []
     optionList:
@@ -345,6 +369,8 @@ MonoBehaviour:
     background:
       name: Class_Morning
       effect: 0
+      title: 
+      description: 
       effectDuration: 1
       scale: 1
     dialogue:
@@ -353,6 +379,7 @@ MonoBehaviour:
       tipEvent: []
       talkAnimations: []
       active: 0
+      invisible: 0
       owner: Loli
     eventList:
     - name: "\uC568\uB9AC\uC2A4"
@@ -383,3 +410,8 @@ MonoBehaviour:
         name: 
         parameter: 
         duration: -1
+      - type: 2
+        effect: Shake
+        name: 
+        parameter: 10
+        duration: 1
