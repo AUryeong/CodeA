@@ -1,4 +1,6 @@
 using System;
+using System.Collections;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -15,19 +17,20 @@ public class GameManager : Singleton<GameManager>
     [SerializeField] protected Camera uiCamera;
     public Scene nowScene;
 
-    public Camera UICamera
-    {
-        get
-        {
-            return uiCamera;
-        }
-    }
+    public Camera UICamera => uiCamera;
     public SubGameData nowGameData;
+
+    [Header("Scene Transition")] 
+    [SerializeField] private SpriteRenderer sceneTransitionBlack;
+    [SerializeField] private MeshRenderer sceneTransitionSquare;
+    private bool sceneLoading;
 
     public void SceneLoad(Scene scene)
     {
+        if (sceneLoading) return;
+        
         nowScene = scene;
-        SceneManager.LoadScene((int)scene);
+        SceneLoadFadeIn(() => SceneManager.LoadScene((int)scene));
     }
 
     protected override void OnCreated()
@@ -78,6 +81,35 @@ public class GameManager : Singleton<GameManager>
         SetResolution(Camera.main);
         foreach (var canvas in FindObjectsOfType<Canvas>())
             canvas.worldCamera = uiCamera;
+
+        SceneLoadFadeOut();
+    }
+
+    public void SceneLoadFadeIn(Action action)
+    {
+        sceneTransitionBlack.gameObject.SetActive(true);
+        sceneTransitionSquare.gameObject.SetActive(true);
+
+        sceneTransitionSquare.DOKill();
+        sceneTransitionSquare.transform.localScale = Vector3.one * 20;
+        sceneTransitionSquare.transform.DOScale(Vector3.zero, 0.5f).OnComplete(() =>
+        {
+            action?.Invoke();
+        });
+    }
+
+    public void SceneLoadFadeOut()
+    {
+        sceneTransitionBlack.gameObject.SetActive(true);
+        sceneTransitionSquare.gameObject.SetActive(true);
+        
+        sceneTransitionSquare.DOKill();
+        sceneTransitionSquare.transform.localScale = Vector3.zero; 
+        sceneTransitionSquare.transform.DOScale(Vector3.one * 20, 0.5f).SetDelay(1).OnComplete(() =>
+        {
+            sceneTransitionBlack.gameObject.SetActive(false);
+            sceneTransitionSquare.gameObject.SetActive(false);
+        });
     }
 
     private void SetResolution(Camera changeCamera)

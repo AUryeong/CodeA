@@ -162,56 +162,33 @@ public class TalkManager : Singleton<TalkManager>
 
     private void Update()
     {
-        if (isEnding)
-        {
-            EndingUpdate();
-            return;
-        }
+        if (isEnding) return;
 
         TalkUpdate();
         AnimationWait();
     }
 
-    private void EndingUpdate()
+    private void EndingSetUp()
     {
-        if (endingBlackFadeIn.gameObject.activeSelf)
+        isEnding = true;
+        GameManager.Instance.SceneLoadFadeIn(() =>
         {
-            endingBlackFadeIn.effectFactor = Mathf.Min(1, endingBlackFadeIn.effectFactor + Time.deltaTime / 2);
-            if (endingBlackFadeIn.effectFactor >= 1 || Input.GetMouseButtonDown(0))
+            endingBlackFadeIn.gameObject.SetActive(false);
+            endingBlackFadeOut.gameObject.SetActive(true);
+            endingBlackFadeOut.effectFactor = 1;
+
+            foreach (var obj in uiStandings)
             {
-                endingBlackFadeIn.gameObject.SetActive(false);
-                endingBlackFadeOut.gameObject.SetActive(true);
-                endingBlackFadeOut.effectFactor = 1;
-
-                foreach (var obj in uiStandings)
-                {
-                    obj.gameObject.SetActive(false);
-                    obj.Init();
-                }
-
-                talkWindow.gameObject.SetActive(false);
-
-                endingDuration = 0;
-            }
-        }
-        else if (endingDuration < endingWaitTime)
-        {
-            if (Input.GetMouseButtonDown(0))
-            {
-                endingDuration = endingWaitTime;
+                obj.gameObject.SetActive(false);
+                obj.Init();
             }
 
-            endingDuration += Time.deltaTime;
-        }
-        else if (endingBlackFadeOut.gameObject.activeSelf)
-        {
-            endingBlackFadeOut.effectFactor = Mathf.Max(0, endingBlackFadeOut.effectFactor - Time.deltaTime / 2);
-            if (endingBlackFadeOut.effectFactor <= 0 || Input.GetMouseButtonDown(0))
-            {
-                endingBlackFadeOut.gameObject.SetActive(false);
-                isEnding = false;
-            }
-        }
+            talkWindow.gameObject.SetActive(false);
+
+            endingDuration = 0;
+            isEnding = false;
+            GameManager.Instance.SceneLoadFadeOut();
+        });
     }
 
     public void PointerDown(BaseEventData data)
@@ -432,9 +409,7 @@ public class TalkManager : Singleton<TalkManager>
     {
         if (talkQueue.Count <= 0)
         {
-            isEnding = true;
-            endingBlackFadeIn.gameObject.SetActive(true);
-            endingBlackFadeIn.effectFactor = 0;
+            EndingSetUp();
 
             animations.Clear();
 

@@ -153,6 +153,8 @@ Transform:
   m_Children:
   - {fileID: 775280444}
   - {fileID: 909302393}
+  - {fileID: 779575518}
+  - {fileID: 2136476982}
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -183,6 +185,8 @@ MonoBehaviour:
     leftTalkSkipText: 
     leftTalks: []
     saveTime: 
+  sceneTransitionBlack: {fileID: 779575517}
+  sceneTransitionSquare: {fileID: 2136476981}
 --- !u!1 &12445099
 GameObject:
   m_ObjectHideFlags: 0
@@ -3798,8 +3802,8 @@ GameObject:
   m_Component:
   - component: {fileID: 779575518}
   - component: {fileID: 779575517}
-  m_Layer: 0
-  m_Name: Square
+  m_Layer: 5
+  m_Name: Scene Transition Black
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3842,8 +3846,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 1398918003
+  m_SortingLayer: 1
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: e676b4c9f7635e24e8c8f46366a2ff53, type: 3}
   m_Color: {r: 0, g: 0, b: 0, a: 1}
@@ -3863,12 +3867,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 779575516}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_Father: {fileID: 7970594}
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &779665412
 GameObject:
@@ -10736,8 +10740,8 @@ GameObject:
   - component: {fileID: 2136476982}
   - component: {fileID: 2136476981}
   - component: {fileID: 2136476980}
-  m_Layer: 0
-  m_Name: Square (1)
+  m_Layer: 5
+  m_Name: Scene Transition Square
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10799,13 +10803,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2136476979}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.62, y: 0.31, z: 0}
-  m_LocalScale: {x: 3, y: 3, z: 3}
+  m_LocalRotation: {x: -0, y: -0, z: 0.38268343, w: 0.92387956}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 20, y: 20, z: 20}
   m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 10
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Father: {fileID: 7970594}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 45}
 --- !u!1 &2145871569 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4987723487009787009, guid: 13671a093da4b784ba3edca13df39963, type: 3}
