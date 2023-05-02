@@ -147,6 +147,7 @@ namespace UI
             face.DOColor(toColor, 0.5f);
 
             sideFace.gameObject.SetActive(false);
+            sideStanding.gameObject.SetActive(false);
             NowStanding = talkStanding;
         }
 
