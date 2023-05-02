@@ -98,14 +98,14 @@ public class GameManager : Singleton<GameManager>
         });
     }
 
-    public void SceneLoadFadeOut()
+    public void SceneLoadFadeOut(float delay = 0)
     {
         sceneTransitionBlack.gameObject.SetActive(true);
         sceneTransitionSquare.gameObject.SetActive(true);
         
         sceneTransitionSquare.DOKill();
         sceneTransitionSquare.transform.localScale = Vector3.zero; 
-        sceneTransitionSquare.transform.DOScale(Vector3.one * 20, 0.5f).SetDelay(1).OnComplete(() =>
+        sceneTransitionSquare.transform.DOScale(Vector3.one * 20, 0.5f).SetDelay(delay).OnComplete(() =>
         {
             sceneTransitionBlack.gameObject.SetActive(false);
             sceneTransitionSquare.gameObject.SetActive(false);

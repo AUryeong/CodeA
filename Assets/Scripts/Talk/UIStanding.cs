@@ -8,6 +8,7 @@ namespace UI
     public class UIStanding : MonoBehaviour
     {
         [SerializeField] private Image baseStanding;
+        [SerializeField] private Image sideStanding;
         [SerializeField] private Image face;
         [SerializeField] private Image sideFace;
 
@@ -15,18 +16,18 @@ namespace UI
 
         private RectTransform rectTransform;
 
-        [Header("감정 표현용")] [SerializeField] private Image emotionBase;
+        [Header("감정 표현용")][SerializeField] private Image emotionBase;
 
-        [Space(10)] [SerializeField] private Image[] thinkingTalks;
+        [Space(10)][SerializeField] private Image[] thinkingTalks;
 
-        [Space(10)] [SerializeField] private Image flushBase;
+        [Space(10)][SerializeField] private Image flushBase;
         [SerializeField] private Image flushLine;
 
-        [Space(10)] [SerializeField] private Image funnyNote;
+        [Space(10)][SerializeField] private Image funnyNote;
 
-        [Space(10)] [SerializeField] private Image worry;
+        [Space(10)][SerializeField] private Image worry;
 
-        [Space(10)] [SerializeField] private Image tiredSweat;
+        [Space(10)][SerializeField] private Image tiredSweat;
         [SerializeField] private Image tiredSmallSweat;
 
         protected void Awake()
@@ -57,15 +58,23 @@ namespace UI
         {
             if (!talkStanding.dark)
                 rectTransform.SetAsLastSibling();
+
+            var character = ResourcesManager.Instance.GetCharacter(talkStanding.name);
+            Standing standing;
+            if (character.standings.ContainsKey(talkStanding.clothes))
+                standing = character.standings[talkStanding.clothes];
+            else
+                standing = character.standings.Values.ToArray()[0];
+
             if (NowStanding != null)
             {
-                if (NowStanding.name.Equals(talkStanding.name) && NowStanding.clothes.Equals(talkStanding.clothes))
+                if (NowStanding.name.Equals(talkStanding.name))
                 {
-                    var sprite = ResourcesManager.Instance.GetCharacter(talkStanding.name).standings[talkStanding.clothes].faces[talkStanding.face];
                     var toColor2 = talkStanding.dark ? Utility.darkColor : Color.white;
                     var toFadeColor = talkStanding.dark ? Utility.fadeDarkColor : Utility.fadeWhite;
-                    if (sprite != face.sprite)
+                    if (!NowStanding.face.Equals(talkStanding.face))
                     {
+                        var sprite = standing.faces[talkStanding.face];
                         var duration = 0.4f;
 
                         sideFace.DOKill();
@@ -85,8 +94,27 @@ namespace UI
                         face.DOColor(toColor2, 0.3f);
                     }
 
-                    baseStanding.DOKill();
-                    baseStanding.DOColor(toColor2, 0.3f);
+                    if (!NowStanding.clothes.Equals(talkStanding.clothes))
+                    {
+                        var sprite = standing.baseStanding;
+                        var duration = 0.4f;
+
+                        sideStanding.DOKill();
+                        sideStanding.sprite = baseStanding.sprite;
+                        sideStanding.color = toColor2;
+                        sideStanding.gameObject.SetActive(true);
+                        sideStanding.DOFade(0, duration).SetEase(Ease.Linear).OnComplete(() => { sideStanding.gameObject.SetActive(false); });
+
+                        baseStanding.color = toFadeColor;
+                        baseStanding.sprite = sprite;
+                        baseStanding.DOKill();
+                        baseStanding.DOFade(1, duration).SetEase(Ease.Linear);
+                    }
+                    else
+                    {
+                        baseStanding.DOKill();
+                        baseStanding.DOColor(toColor2, 0.3f);
+                    }
 
                     rectTransform.DOKill(true);
 
@@ -100,14 +128,6 @@ namespace UI
                     return;
                 }
             }
-
-            var character = ResourcesManager.Instance.GetCharacter(talkStanding.name);
-            Standing standing;
-            if (character.standings.ContainsKey(talkStanding.clothes))
-                standing = character.standings[talkStanding.clothes];
-            else
-                standing = character.standings.Values.ToArray()[0];
-
             var toScale = Utility.SizeToScale(talkStanding.size);
             var toPos = Utility.PosToVector2(talkStanding.pos);
 
@@ -309,7 +329,7 @@ namespace UI
 
                     tiredSmallSweat.rectTransform.anchoredPosition = new Vector2(-32.9f, 34.7f);
                     tiredSmallSweat.rectTransform.DOAnchorPosY(24.7f, fadeOutDelay);
-                    
+
                     tiredSweat.gameObject.SetActive(true);
                     tiredSweat.color = Utility.fadeWhite;
                     tiredSweat.DOFade(1, duration / 10);

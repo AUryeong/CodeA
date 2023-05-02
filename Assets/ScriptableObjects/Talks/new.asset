@@ -94,7 +94,7 @@ MonoBehaviour:
         type: 0
         parameter: 2
       active: 0
-      invisible: 0
+      invisible: 1
       owner: A
     eventList: []
     optionList: []

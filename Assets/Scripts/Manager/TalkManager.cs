@@ -30,8 +30,6 @@ public class TalkManager : Singleton<TalkManager>
     [SerializeField] private UITransitionEffect blackFadeOut;
     [SerializeField] private TextMeshProUGUI endTextEffect;
 
-    [Space(10)] [SerializeField] private UITransitionEffect endingBlackFadeIn;
-    [SerializeField] private UITransitionEffect endingBlackFadeOut;
     private bool isEnding;
     private float endingDuration;
     private const float endingWaitTime = 1;
@@ -144,9 +142,6 @@ public class TalkManager : Singleton<TalkManager>
         blackFadeIn.gameObject.SetActive(false);
         blackFadeOut.gameObject.SetActive(false);
 
-        endingBlackFadeIn.gameObject.SetActive(false);
-        endingBlackFadeOut.gameObject.SetActive(false);
-
         talkSkipText = string.Empty;
         isEnding = false;
 
@@ -173,10 +168,6 @@ public class TalkManager : Singleton<TalkManager>
         isEnding = true;
         GameManager.Instance.SceneLoadFadeIn(() =>
         {
-            endingBlackFadeIn.gameObject.SetActive(false);
-            endingBlackFadeOut.gameObject.SetActive(true);
-            endingBlackFadeOut.effectFactor = 1;
-
             foreach (var obj in uiStandings)
             {
                 obj.gameObject.SetActive(false);
@@ -187,7 +178,7 @@ public class TalkManager : Singleton<TalkManager>
 
             endingDuration = 0;
             isEnding = false;
-            GameManager.Instance.SceneLoadFadeOut();
+            GameManager.Instance.SceneLoadFadeOut(1);
         });
     }
 
@@ -249,8 +240,6 @@ public class TalkManager : Singleton<TalkManager>
             isDialogHide = false;
             return;
         }
-
-        if (string.IsNullOrEmpty(talkSkipText) || isHasOption) return;
 
         if (dialogueImage.gameObject.activeSelf)
         {
@@ -436,7 +425,6 @@ public class TalkManager : Singleton<TalkManager>
         animations.Clear();
 
         optionParent.gameObject.SetActive(true);
-        OptionReset();
 
         endTextEffect.gameObject.SetActive(false);
         nowTalk = newTalk == null ? talkQueue.Dequeue() : newTalk;
@@ -780,7 +768,7 @@ public class TalkManager : Singleton<TalkManager>
 
         bool isHaveTips = SaveManager.Instance.GameData.getTips.Contains(eventName);
         var tipEvent = nowTalk.dialogue.tipEvent.Find((tip) => tip.eventName == eventName);
-        bool isDialogTips = !string.IsNullOrEmpty(tipEvent.talkName);
+        bool isDialogTips = !string.IsNullOrEmpty(tipEvent.talkName) && !isHasOption;
 
         eventTitleText.text = eventName + "에 대해";
         eventDescriptionText.text = isHaveTips ? ResourcesManager.Instance.GetTip(eventName) : "정보가 없다...";
@@ -827,6 +815,7 @@ public class TalkManager : Singleton<TalkManager>
     private void EventSetting()
     {
         if (nowTalk.eventList == null || nowTalk.eventList.Count <= 0) return;
+        if (GameManager.Instance.nowScene == Scene.TITLE) return;
 
         foreach (var getEvent in nowTalk.eventList)
             EventInteract(getEvent);
