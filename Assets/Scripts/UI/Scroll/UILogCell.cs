@@ -1,4 +1,4 @@
-using GamesTan.UI;
+using EnhancedUI.EnhancedScroller;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -6,14 +6,13 @@ using UnityEngine.UI;
 
 namespace UI
 {
-    public class UILogCell : MonoBehaviour, IScrollCell, IPointerClickHandler
+    public class UILogCell : EnhancedScrollerCellView, IPointerClickHandler
     {
-        [SerializeField] UILogWindow logWindow;
-        [SerializeField] TextMeshProUGUI talkerText;
-        [SerializeField] TextMeshProUGUI descriptionText;
-        [SerializeField] Image faceIcon;
-        [SerializeField] Image faceSprite;
-
+        [HideInInspector] public UILogWindow logWindow;
+        [SerializeField] private TextMeshProUGUI talkerText;
+        [SerializeField] private TextMeshProUGUI descriptionText;
+        [SerializeField] private Image faceIcon;
+        [SerializeField] private Image faceSprite;
 
         public void SetData(LogCellData data)
         {
@@ -32,12 +31,10 @@ namespace UI
         public void OnPointerClick(PointerEventData eventData)
         {
             int linkIndex = TMP_TextUtilities.FindIntersectingLink(descriptionText, Input.mousePosition, GameManager.Instance.UICamera);
-
-            if (linkIndex != -1)
-            {
-                var linkInfo = descriptionText.textInfo.linkInfo[linkIndex];
-                logWindow.EventOpen(linkInfo.GetLinkID(), eventData.position);
-            }
+            if (linkIndex == -1) return;
+            
+            var linkInfo = descriptionText.textInfo.linkInfo[linkIndex];
+            logWindow.EventOpen(linkInfo.GetLinkID(), eventData.position);
         }
     }
 }

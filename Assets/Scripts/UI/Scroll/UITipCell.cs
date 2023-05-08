@@ -1,17 +1,17 @@
-using GamesTan.UI;
+using EnhancedUI.EnhancedScroller;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace UI
 {
-    public class UITipCell : MonoBehaviour, IScrollCell
+    public class UITipCell : EnhancedScrollerCellView
     {
         [HideInInspector] public UIExtraWindow extraWindow;
-        [SerializeField] TextMeshProUGUI tipNameText;
-        Button button;
+        [SerializeField] private TextMeshProUGUI tipNameText;
+        private Button button;
 
-        void Awake()
+        private void Awake()
         {
             button = GetComponent<Button>();
         }

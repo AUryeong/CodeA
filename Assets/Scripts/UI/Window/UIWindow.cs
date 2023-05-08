@@ -1,6 +1,5 @@
 ﻿using DG.Tweening;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace UI
 {
@@ -39,7 +38,7 @@ namespace UI
             rectTransform.DOAnchorPos(Vector2.zero, 0.2f).SetUpdate(true);
         }
 
-        public virtual void Disable()
+        public void Disable()
         {
             rectTransform.DOKill();
             rectTransform.localScale = Vector3.one;

@@ -1,40 +1,43 @@
-using GamesTan.UI;
 using System.Collections.Generic;
+using EnhancedUI.EnhancedScroller;
 using UnityEngine;
 
 namespace UI
 {
-    public class UITipVerticalScroll : MonoBehaviour, ISuperScrollRectDataProvider
+    public class UITipVerticalScroll : MonoBehaviour, IEnhancedScrollerDelegate
     {
-        [SerializeField] SuperScrollRect scrollRect;
-        private List<string> getTips;
-        private readonly Dictionary<GameObject, UITipCell> cellDictionaries = new Dictionary<GameObject, UITipCell>();
+        [SerializeField] private EnhancedScroller scroller;
+        [SerializeField] private EnhancedScrollerCellView tipCellPrefab;
+        private List<string> datas;
+        private float tipCellSizeY;
+
+        private void Awake()
+        {
+            scroller.Delegate = this;
+            
+            tipCellSizeY = tipCellPrefab.GetComponent<RectTransform>().sizeDelta.y;
+        }
 
         public void SetLog(List<string> cellDatas)
         {
-            getTips = cellDatas;
-            cellDictionaries.Clear();
-
-            scrollRect.DoAwake(this);
+            datas = cellDatas;
+            scroller.ReloadData();
         }
-        public int GetCellCount()
+        public int GetNumberOfCells(EnhancedScroller enhancedScroller)
         {
-            return getTips.Count;
+            return datas.Count;
         }
 
-        public void SetCell(GameObject cell, int index)
+        public float GetCellViewSize(EnhancedScroller enhancedScroller, int dataIndex)
         {
-            UITipCell tipCell;
-            if (cellDictionaries.ContainsKey(cell))
-            {
-                tipCell = cellDictionaries[cell];
-            }
-            else
-            {
-                tipCell = cell.GetComponent<UITipCell>();
-                cellDictionaries.Add(cell, tipCell);
-            }
-            tipCell.SetData(getTips[index]);
+            return tipCellSizeY;
+        }
+
+        public EnhancedScrollerCellView GetCellView(EnhancedScroller enhancedScroller, int dataIndex, int cellIndex)
+        {
+            var tipCell = scroller.GetCellView(tipCellPrefab) as UITipCell;
+            tipCell.SetData(datas[dataIndex]);
+            return tipCell;
         }
     }
 }

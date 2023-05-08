@@ -1,60 +1,45 @@
-using GamesTan.UI;
-using System.Collections;
 using System.Collections.Generic;
+using EnhancedUI.EnhancedScroller;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace UI
 {
-    public class UILogVerticalScroll : MonoBehaviour, ISuperScrollRectDataProvider
+    public class UILogVerticalScroll : MonoBehaviour, IEnhancedScrollerDelegate
     {
-        [SerializeField] SuperScrollRect scrollRect;
+        [SerializeField] private EnhancedScroller scroller;
+        [SerializeField] private EnhancedScrollerCellView logCellPrefab;
         private List<LogCellData> datas;
-        private readonly Dictionary<GameObject, UILogCell> cellDictionaries = new Dictionary<GameObject, UILogCell>();
 
-        private float quitPosY;
+        private float logCellSizeY;
+
+        private void Awake()
+        {
+            scroller.Delegate = this;
+
+            logCellSizeY = logCellPrefab.GetComponent<RectTransform>().sizeDelta.y;
+        }
 
         public void SetLog(List<LogCellData> cellDatas)
         {
             datas = cellDatas;
-            cellDictionaries.Clear();
-
-            scrollRect.DoAwake(this);
-            DoAwake();
-        }
-        private void DoAwake()
-        {
-            float startPosY = Mathf.Max(0, scrollRect.content.sizeDelta.y - 930);
-            quitPosY = startPosY + 300;
-            scrollRect.content.anchoredPosition = new Vector2(scrollRect.content.anchoredPosition.x, startPosY);
+            scroller.ReloadData();
         }
 
-        private void Update()
-        {
-            if(scrollRect.content.anchoredPosition.y >= quitPosY)
-            {
-                WindowManager.Instance.CloseAllWindow();
-            }
-        }
-
-        public int GetCellCount()
+        public int GetNumberOfCells(EnhancedScroller enhancedScroller)
         {
             return datas.Count;
         }
 
-        public void SetCell(GameObject cell, int index)
+        public float GetCellViewSize(EnhancedScroller enhancedScroller, int dataIndex)
         {
-            UILogCell logCell;
-            if (cellDictionaries.ContainsKey(cell))
-            {
-                logCell = cellDictionaries[cell];
-            }
-            else
-            {
-                logCell = cell.GetComponent<UILogCell>();
-                cellDictionaries.Add(cell, logCell);
-            }
-            logCell.SetData(datas[index]);
+            return logCellSizeY;
+        }
+
+        public EnhancedScrollerCellView GetCellView(EnhancedScroller enhancedScroller, int dataIndex, int cellIndex)
+        {
+            var logCell = scroller.GetCellView(logCellPrefab) as UILogCell;
+            logCell.SetData(datas[dataIndex]);
+            return logCell;
         }
     }
 }

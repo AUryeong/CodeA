@@ -12,13 +12,15 @@ namespace UI
         [SerializeField] private Button exitButton;
         [SerializeField] private UILogVerticalScroll logScroll;
 
+        [SerializeField] private UILogCell logCell;
+
         [Header("¿Ã∫•∆Æ")][SerializeField] private Image eventWindow;
         [SerializeField] private TextMeshProUGUI eventTitleText;
         [SerializeField] private TextMeshProUGUI eventDescriptionText;
         [SerializeField] private Button eventExitButton;
 
-        Vector3 nowPos;
-        Vector3 defaultPos;
+        private Vector3 nowPos;
+        private Vector3 defaultPos;
 
         public override void OnCreated()
         {
@@ -27,12 +29,12 @@ namespace UI
             exitButton.onClick.RemoveAllListeners();
             exitButton.onClick.AddListener(WindowManager.Instance.CloseAllWindow);
 
-            defaultPos = eventWindow.rectTransform.anchoredPosition;
             eventWindow.gameObject.SetActive(false);
 
             eventExitButton.onClick.RemoveAllListeners();
             eventExitButton.onClick.AddListener(EventExit);
 
+            logCell.logWindow = this;
             defaultPos = eventWindow.rectTransform.anchoredPosition;
         }
 

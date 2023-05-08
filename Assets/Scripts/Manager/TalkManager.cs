@@ -550,7 +550,7 @@ public class TalkManager : Singleton<TalkManager>
                 standing.Init();
             }
 
-            GameManager.Instance.ViewCG(nowTalk.background.name);
+            GameManager.Instance.AddCgData(nowTalk.background.name);
             EffectSetting();
             return;
         }

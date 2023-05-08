@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -66,7 +65,7 @@ public class GameManager : Singleton<GameManager>
         SaveManager.Instance.GameData.getTips.Sort();
     }
 
-    public void ViewCG(string cgName)
+    public void AddCgData(string cgName)
     {
         SaveManager.Instance.GameData.saigoCg = cgName;
 
