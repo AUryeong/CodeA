@@ -31,8 +31,6 @@ public class TalkManager : Singleton<TalkManager>
     [SerializeField] private TextMeshProUGUI endTextEffect;
 
     private bool isEnding;
-    private float endingDuration;
-    private const float endingWaitTime = 1;
 
     [Space(20)] [SerializeField] private Image backgroundTitle;
     [SerializeField] private TextMeshProUGUI backgroundTitleText;
@@ -134,7 +132,6 @@ public class TalkManager : Singleton<TalkManager>
 
         talkDuration = 0;
         autoDuration = 0;
-        endingDuration = 0;
 
         talkWindow.gameObject.SetActive(false);
         eventWindow.gameObject.SetActive(false);
@@ -176,7 +173,6 @@ public class TalkManager : Singleton<TalkManager>
 
             talkWindow.gameObject.SetActive(false);
 
-            endingDuration = 0;
             isEnding = false;
             GameManager.Instance.SceneLoadFadeOut(1);
         });
@@ -823,6 +819,8 @@ public class TalkManager : Singleton<TalkManager>
 
     private void EventInteract(Event getEvent)
     {
+        if (GameManager.Instance.nowScene == Scene.TITLE) return;
+
         switch (getEvent.type)
         {
             case Event.Type.ADD_TIP:

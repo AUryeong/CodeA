@@ -43,6 +43,7 @@ namespace UI
         [SerializeField] private TextMeshProUGUI videoPageText;
 
         private int videosIdx;
+        private bool isLoadingVideos;
 
         [Header("팁 관련")] [SerializeField] private Button tipsButton;
 
@@ -100,6 +101,8 @@ namespace UI
 
             eventExitButton.onClick.RemoveAllListeners();
             eventExitButton.onClick.AddListener(EventExit);
+
+            isLoadingVideos = false;
         }
 
         private void Escape()
@@ -263,7 +266,14 @@ namespace UI
 
         private void ShowTalk(Talks talks)
         {
-            TalkManager.Instance.AddTalk(talks);
+            if (isLoadingVideos) return;
+
+            isLoadingVideos = true;
+            GameManager.Instance.SceneLoadFadeIn(()=> {
+                TalkManager.Instance.AddTalk(talks);
+                GameManager.Instance.SceneLoadFadeOut(0.1f);
+                isLoadingVideos = false;
+            });
         }
 
 

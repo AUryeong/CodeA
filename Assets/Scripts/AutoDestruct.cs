@@ -14,9 +14,7 @@ public class AutoDestruct : MonoBehaviour
     private void Update()
     {
         leftDuration -= Time.deltaTime;
-        if(leftDuration <= 0)
-        {
+        if (leftDuration <= 0)
             gameObject.SetActive(false);
-        }
     }
 }

@@ -123,8 +123,6 @@ public class WindowManager : Singleton<WindowManager>
             return;
         }
 
-        var button = windowButtons[(int)type - 1];
-
         if (!selectType.Equals(WindowType.NONE))
         {
             var prevButton = windowButtons[(int)selectType - 1];
@@ -136,7 +134,9 @@ public class WindowManager : Singleton<WindowManager>
                 prevWindow.Disable();
         }
 
+        var button = windowButtons[(int)type - 1];
         button.image.sprite = buttonSelectSprite;
+
         selectType = type;
 
         var uiWindow = windows.Find((window => window.type == selectType));

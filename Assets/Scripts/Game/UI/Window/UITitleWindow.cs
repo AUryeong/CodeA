@@ -18,7 +18,7 @@ namespace UI
 
             warningCancelButton.onClick.RemoveAllListeners();
             warningCancelButton.onClick.AddListener(WindowManager.Instance.CloseAllWindow);
-            
+
             blockButton.onClick.RemoveAllListeners();
             blockButton.onClick.AddListener(WindowManager.Instance.CloseAllWindow);
         }
@@ -33,7 +33,7 @@ namespace UI
             {
                 warningDescription.text = "정말로 종료하시겠습니까?";
                 warningDescription2.gameObject.SetActive(false);
-                warningOkayButton.onClick.AddListener(Application.Quit);
+                warningOkayButton.onClick.AddListener(() => GameManager.Instance.SceneLoadFadeIn(Application.Quit));
             }
             else
             {

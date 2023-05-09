@@ -156,6 +156,12 @@ public static class Utility
     {
         return tList[UnityEngine.Random.Range(0, tList.Length)];
     }
+    
+    public static Color GetFadeColor(Color color, float alpha)
+    {
+        color.a = alpha;
+        return color;
+    }
 
     public static Color fadeWhite = new Color(1, 1, 1, 0);
     public static Color fadeOutBlack = new Color(0.16f, 0.16f, 0.16f, 0);
