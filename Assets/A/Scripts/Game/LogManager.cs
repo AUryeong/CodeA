@@ -12,7 +12,7 @@ public class LogCellData
 public class LogManager : Singleton<LogManager>
 {
     protected override bool IsDontDestroying => true;
-    private Queue<LogCellData> datas = new Queue<LogCellData>();
+    private readonly Queue<LogCellData> datas = new Queue<LogCellData>();
 
     protected override void OnReset()
     {

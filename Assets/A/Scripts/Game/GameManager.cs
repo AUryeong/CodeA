@@ -1,5 +1,6 @@
 using System;
 using DG.Tweening;
+using Ingame;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -36,7 +37,6 @@ public class GameManager : Singleton<GameManager>
     {
         Application.targetFrameRate = Application.platform == RuntimePlatform.Android ? 30 : 120;
         SetResolution(uiCamera);
-        OnReset();
     }
 
     private void Update()
@@ -77,6 +77,8 @@ public class GameManager : Singleton<GameManager>
 
     protected override void OnReset()
     {
+        if(nowScene == Scene.LOADING) return;
+        
         SetResolution(Camera.main);
         foreach (var canvas in FindObjectsOfType<Canvas>())
             canvas.worldCamera = uiCamera;
@@ -110,7 +112,7 @@ public class GameManager : Singleton<GameManager>
             sceneTransitionSquare.gameObject.SetActive(false);
         });
     }
-
+    
     private void SetResolution(Camera changeCamera)
     {
         if (changeCamera == null) return;

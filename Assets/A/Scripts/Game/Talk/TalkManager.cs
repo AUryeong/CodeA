@@ -1022,7 +1022,7 @@ public class TalkManager : Singleton<TalkManager>
                             power = 6;
                         dialogueImage.rectTransform.DOKill(true);
                         dialogueImage.rectTransform
-                            .DOShakeAnchorPos(anim.duration, float.Parse(anim.parameter), 30, 90, false, false)
+                            .DOShakeAnchorPos(anim.duration, power, 30, 90, false, false)
                             .SetRelative();
                         break;
                 }

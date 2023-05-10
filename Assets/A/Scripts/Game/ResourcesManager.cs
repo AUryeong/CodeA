@@ -21,7 +21,8 @@ public class ResourcesManager : Singleton<ResourcesManager>
 
     #region 서버
 
-    [Header("어드레서블용")] [SerializeField] private AssetLabelReference backgroundLabel;
+    [Header("어드레서블용")] 
+    [SerializeField] private AssetLabelReference backgroundLabel;
     [SerializeField] private AssetLabelReference talkLabel;
     [SerializeField] private AssetLabelReference tipLabel;
     [Space(20)] [SerializeField] private Canvas downloadWindow;
@@ -155,7 +156,10 @@ public class ResourcesManager : Singleton<ResourcesManager>
     private void DisableDownloadWindow()
     {
         downloadButton.gameObject.SetActive(false);
-        downloadWarningWindow.gameObject.SetActive(false);
+        downloadWindow.gameObject.SetActive(true);
+        downloadingText.gameObject.SetActive(true);
+        downloadWarningWindow.gameObject.SetActive(true);
+        loadingWindow.gameObject.SetActive(false);
         exitButton.gameObject.SetActive(true);
 
         downloadingText.text = "와이파이에 연결되어 있지 않습니다.\n최초 또는 업데이트 파일 다운로드를 위해 와이파이를 연결해주세요.";
