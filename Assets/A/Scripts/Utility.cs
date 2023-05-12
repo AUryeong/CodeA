@@ -19,9 +19,10 @@ public static class Utility
         return (vector + vector2) / 2;
     }
 
-    public static Color ChangeColorFade(Color color, float fade)
+    public static Color GetFadeColor(Color color, float fade)
     {
-        return new Color(color.r, color.g, color.b, fade);
+        color.a = fade;
+        return color;
     }
 
     public static EventType GetStringToEventType(string eventType)
@@ -157,14 +158,6 @@ public static class Utility
         return tList[UnityEngine.Random.Range(0, tList.Length)];
     }
     
-    public static Color GetFadeColor(Color color, float alpha)
-    {
-        color.a = alpha;
-        return color;
-    }
-
-    public static Color fadeWhite = new Color(1, 1, 1, 0);
-    public static Color fadeOutBlack = new Color(0.16f, 0.16f, 0.16f, 0);
-    public static Color fadeDarkColor = new Color(0.75f, 0.75f, 0.75f, 0);
+    public static Color fadeBlackColor = new Color(0.16f, 0.16f, 0.16f, 0);
     public static Color darkColor = new Color(0.75f, 0.75f, 0.75f, 1);
 }

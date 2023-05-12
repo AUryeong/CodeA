@@ -53,7 +53,7 @@ namespace UI
             if ((setOption.eventList != null && setOption.eventList.Count > 0) || setOption.special)
                 color = specialTextColor;
             
-            scriptText.color = Utility.ChangeColorFade(color, 0);
+            scriptText.color = Utility.GetFadeColor(color, 0);
             scriptText.DOFade(1, 0.5f);
 
             rectTransform.DOKill();
@@ -61,11 +61,11 @@ namespace UI
             rectTransform.DOScale(1, 0.3f).SetEase(Ease.OutBack);
 
             image.DOKill();
-            image.color = Utility.ChangeColorFade(image.color, 0);
+            image.color = Utility.GetFadeColor(image.color, 0);
             image.DOFade(1, 0.3f);
 
             effectText.DOKill();
-            effectText.color = Utility.ChangeColorFade(effectText.color, 0);
+            effectText.color = Utility.GetFadeColor(effectText.color, 0);
             effectText.DOFade(1, 0.3f);
         }
 

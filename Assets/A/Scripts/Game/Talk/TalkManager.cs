@@ -18,29 +18,30 @@ public class TalkManager : Singleton<TalkManager>
     private Talk nowTalk;
     private Talk prevTalk;
 
-    [Header("대화문")] [SerializeField] private GameObject talkWindow;
+    [Header("대화문")][SerializeField] private GameObject talkWindow;
 
     [SerializeField] private Image dialogueImage;
     [SerializeField] private TextMeshProUGUI talkerText;
 
-    [FormerlySerializedAs("descreptionText")] [SerializeField]
+    [FormerlySerializedAs("descreptionText")]
+    [SerializeField]
     private TextMeshProUGUI descriptionText;
 
-    [Header("연출")] [SerializeField] private UITransitionEffect blackFadeIn;
+    [Header("연출")][SerializeField] private UITransitionEffect blackFadeIn;
     [SerializeField] private UITransitionEffect blackFadeOut;
     [SerializeField] private TextMeshProUGUI endTextEffect;
 
     private bool isEnding;
 
-    [Space(20)] [SerializeField] private Image backgroundTitle;
+    [Space(20)][SerializeField] private Image backgroundTitle;
     [SerializeField] private TextMeshProUGUI backgroundTitleText;
     [SerializeField] private TextMeshProUGUI backgroundTitleLore;
 
-    [Header("배경")] [SerializeField] private Image backgroundImage;
+    [Header("배경")][SerializeField] private Image backgroundImage;
     [SerializeField] private Image subBackgroundImage;
     private UITransitionEffect subBackgroundEffect;
 
-    [Header("스탠딩")] [SerializeField] private UIStanding uiStanding;
+    [Header("스탠딩")][SerializeField] private UIStanding uiStanding;
     [SerializeField] private RectTransform standingParent;
     private readonly List<UIStanding> uiStandings = new List<UIStanding>();
 
@@ -53,17 +54,17 @@ public class TalkManager : Singleton<TalkManager>
     private float autoDuration;
     private const float autoWaitTime = 2f;
 
-    [Header("선택지")] [SerializeField] private UIOption uiOption;
+    [Header("선택지")][SerializeField] private UIOption uiOption;
     [SerializeField] private RectTransform optionParent;
     private readonly List<UIOption> uiOptions = new List<UIOption>();
     private bool isHasOption;
     private bool optionActive;
 
-    [Header("스킵")] [SerializeField] private Image skipBackground;
+    [Header("스킵")][SerializeField] private Image skipBackground;
     [SerializeField] private Image skipGaugeBackground;
     [SerializeField] private Image skipGaugeImage;
 
-    [Space(10)] [SerializeField] private Image skipWindow;
+    [Space(10)][SerializeField] private Image skipWindow;
     [SerializeField] private Button skipOkayButton;
     [SerializeField] private TextMeshProUGUI skipText;
     [SerializeField] private Button skipExitButton;
@@ -76,7 +77,7 @@ public class TalkManager : Singleton<TalkManager>
     [Header("터치 이벤트")] private Vector2 dragStartPos;
     private bool isDialogHide;
 
-    [Header("이벤트")] [SerializeField] private Image eventWindow;
+    [Header("이벤트")][SerializeField] private Image eventWindow;
     [SerializeField] private TextMeshProUGUI eventTitleText;
     [SerializeField] private TextMeshProUGUI eventDescriptionText;
     [SerializeField] private Button eventOkayButton;
@@ -270,11 +271,6 @@ public class TalkManager : Singleton<TalkManager>
             }
         }
     }
-
-    public void PointerClick(BaseEventData data)
-    {
-    }
-
     private void CheckNextNoDialogue()
     {
         if (animations.Count > 0) return;
@@ -347,7 +343,7 @@ public class TalkManager : Singleton<TalkManager>
             {
                 endTextEffect.gameObject.SetActive(true);
                 endTextEffect.DOKill();
-                endTextEffect.color = Utility.ChangeColorFade(endTextEffect.color, 1);
+                endTextEffect.color = Utility.GetFadeColor(endTextEffect.color, 1);
                 endTextEffect.DOFade(0, 0.8f).SetLoops(-1, LoopType.Yoyo);
             }
 
@@ -496,7 +492,7 @@ public class TalkManager : Singleton<TalkManager>
                             subBackgroundImage.gameObject.SetActive(true);
                             subBackgroundImage.sprite = background;
                             subBackgroundImage.rectTransform.localScale = Vector3.one * nowTalk.background.scale;
-                            subBackgroundImage.color = Utility.fadeWhite;
+                            subBackgroundImage.color = Utility.GetFadeColor(Color.white, 0);
 
                             subBackgroundImage.DOFade(1, nowTalk.background.effectDuration).OnComplete(() =>
                             {
@@ -623,7 +619,7 @@ public class TalkManager : Singleton<TalkManager>
             skipWindow.rectTransform.DOScale(Vector3.one, 0.3f).SetEase(Ease.OutBack);
 
             skipOkayButtonText.DOKill();
-            skipOkayButtonText.color = Utility.ChangeColorFade(eventOkayButtonText.color, 1);
+            skipOkayButtonText.color = Utility.GetFadeColor(eventOkayButtonText.color, 1);
             skipOkayButtonText.DOFade(0, 0.8f).SetLoops(-1, LoopType.Yoyo);
 
             skipText.text = Utility.GetTalkerName(talkSkipText);
@@ -633,7 +629,7 @@ public class TalkManager : Singleton<TalkManager>
             if (!skipBackground.gameObject.activeSelf)
             {
                 skipBackground.gameObject.SetActive(true);
-                skipBackground.color = Utility.ChangeColorFade(skipBackground.color, 0);
+                skipBackground.color = Utility.GetFadeColor(skipBackground.color, 0);
                 skipBackground.DOFade(0.3f, 1.5f);
 
                 skipGaugeBackground.rectTransform.localScale = Vector3.zero;
@@ -824,10 +820,10 @@ public class TalkManager : Singleton<TalkManager>
         switch (getEvent.type)
         {
             case Event.Type.ADD_TIP:
-            {
-                GameManager.Instance.AddTip(getEvent.name);
-                break;
-            }
+                {
+                    GameManager.Instance.AddTip(getEvent.name);
+                    break;
+                }
         }
     }
 
@@ -887,36 +883,36 @@ public class TalkManager : Singleton<TalkManager>
         switch (eventType)
         {
             case EventType.BEFORE:
-            {
-                var leftTalks = talkQueue.ToList();
-                talkQueue.Clear();
+                {
+                    var leftTalks = talkQueue.ToList();
+                    talkQueue.Clear();
 
-                foreach (var talk in talks)
-                    talkQueue.Enqueue(talk);
+                    foreach (var talk in talks)
+                        talkQueue.Enqueue(talk);
 
-                foreach (var talk in leftTalks)
-                    talkQueue.Enqueue(talk);
+                    foreach (var talk in leftTalks)
+                        talkQueue.Enqueue(talk);
 
-                if (talks.Count != 0 && leftTalks.Count != 0)
-                    NewTalk();
-                break;
-            }
+                    if (talks.Count != 0 && leftTalks.Count != 0)
+                        NewTalk();
+                    break;
+                }
             case EventType.AFTER:
-            {
-                bool flag = talkQueue.Count <= 0;
+                {
+                    bool flag = talkQueue.Count <= 0;
 
-                AddTalk(talks);
-                if (!flag)
-                    NewTalk();
-                break;
-            }
+                    AddTalk(talks);
+                    if (!flag)
+                        NewTalk();
+                    break;
+                }
             default:
             case EventType.CHANGE:
-            {
-                talkQueue.Clear();
-                AddTalk(talks);
-                break;
-            }
+                {
+                    talkQueue.Clear();
+                    AddTalk(talks);
+                    break;
+                }
         }
     }
 
@@ -944,121 +940,121 @@ public class TalkManager : Singleton<TalkManager>
         switch (anim.type)
         {
             case AnimationType.CHAR:
-            {
-                var findStanding = uiStandings.Find((standing) =>
-                    standing.gameObject.activeSelf && standing.NowStanding != null &&
-                    standing.NowStanding.name == anim.name);
-                if (findStanding != null)
+                {
+                    var findStanding = uiStandings.Find((standing) =>
+                        standing.gameObject.activeSelf && standing.NowStanding != null &&
+                        standing.NowStanding.name == anim.name);
+                    if (findStanding != null)
+                    {
+                        switch (anim.effect)
+                        {
+                            case "Move":
+                                findStanding.Move(Utility.PosToVector2(anim.parameter), anim.duration);
+                                break;
+                            case "Face":
+                                findStanding.FaceChange(anim.parameter);
+                                break;
+                            case "Bounce":
+                                findStanding.Bounce(int.Parse(anim.parameter), anim.duration);
+                                break;
+                            case "Shake":
+                                findStanding.Shake(float.Parse(anim.parameter), anim.duration);
+                                break;
+                            case "Scale":
+                                findStanding.Scale(Utility.SizeToScale(anim.parameter), anim.duration);
+                                break;
+                            case "Emotion":
+                                findStanding.Emotion(anim.parameter, anim.duration);
+                                break;
+                            case "Dark":
+                                findStanding.SetDark(bool.Parse(anim.parameter));
+                                break;
+                        }
+                    }
+
+                    break;
+                }
+            case AnimationType.DIAL:
                 {
                     switch (anim.effect)
                     {
-                        case "Move":
-                            findStanding.Move(Utility.PosToVector2(anim.parameter), anim.duration);
-                            break;
-                        case "Face":
-                            findStanding.FaceChange(anim.parameter);
-                            break;
-                        case "Bounce":
-                            findStanding.Bounce(int.Parse(anim.parameter), anim.duration);
+                        case "On":
+                            if (nowTalk.dialogue == null) break;
+
+                            dialogueImage.DOKill();
+                            dialogueImage.gameObject.SetActive(true);
+                            if (nowTalk.dialogue.invisible)
+                            {
+                                dialogueImage.color = Color.clear;
+                            }
+                            else
+                            {
+                                dialogueImage.color = new Color(0.08627451F, 0.08627451F, 0.08627451F, 0);
+                                dialogueImage.DOFade(0.9137255F, 0.2f);
+                            }
+
+                            EventSetting();
+
+                            if (!string.IsNullOrEmpty(nowTalk.dialogue.owner))
+                            {
+                                foreach (var standing in uiStandings)
+                                {
+                                    if (!standing.gameObject.activeSelf) continue;
+
+                                    standing.SetDark(standing.NowStanding.name != nowTalk.dialogue.owner);
+                                }
+                            }
+
+                            if (!nowTalk.dialogue.active)
+                            {
+                                LogManager.Instance.AddLog(nowTalk);
+                            }
+
                             break;
                         case "Shake":
-                            findStanding.Shake(float.Parse(anim.parameter), anim.duration);
-                            break;
-                        case "Scale":
-                            findStanding.Scale(Utility.SizeToScale(anim.parameter), anim.duration);
-                            break;
-                        case "Emotion":
-                            findStanding.Emotion(anim.parameter, anim.duration);
-                            break;
-                        case "Dark":
-                            findStanding.SetDark(bool.Parse(anim.parameter));
+                            float power = float.Parse(anim.parameter);
+
+                            if (power < 0)
+                                power = 6;
+                            dialogueImage.rectTransform.DOKill(true);
+                            dialogueImage.rectTransform
+                                .DOShakeAnchorPos(anim.duration, power, 30, 90, false, false)
+                                .SetRelative();
                             break;
                     }
+
+                    break;
                 }
-
-                break;
-            }
-            case AnimationType.DIAL:
-            {
-                switch (anim.effect)
-                {
-                    case "On":
-                        if (nowTalk.dialogue == null) break;
-
-                        dialogueImage.DOKill();
-                        dialogueImage.gameObject.SetActive(true);
-                        if (nowTalk.dialogue.invisible)
-                        {
-                            dialogueImage.color = Color.clear;
-                        }
-                        else
-                        {
-                            dialogueImage.color = new Color(0.08627451F, 0.08627451F, 0.08627451F, 0);
-                            dialogueImage.DOFade(0.9137255F, 0.2f);
-                        }
-
-                        EventSetting();
-
-                        if (!string.IsNullOrEmpty(nowTalk.dialogue.owner))
-                        {
-                            foreach (var standing in uiStandings)
-                            {
-                                if (!standing.gameObject.activeSelf) continue;
-
-                                standing.SetDark(standing.NowStanding.name != nowTalk.dialogue.owner);
-                            }
-                        }
-
-                        if (!nowTalk.dialogue.active)
-                        {
-                            LogManager.Instance.AddLog(nowTalk);
-                        }
-
-                        break;
-                    case "Shake":
-                        float power = float.Parse(anim.parameter);
-
-                        if (power < 0)
-                            power = 6;
-                        dialogueImage.rectTransform.DOKill(true);
-                        dialogueImage.rectTransform
-                            .DOShakeAnchorPos(anim.duration, power, 30, 90, false, false)
-                            .SetRelative();
-                        break;
-                }
-
-                break;
-            }
             case AnimationType.CAM:
-            {
-                switch (anim.effect)
                 {
-                    case "Black_FadeIn":
-                        blackFadeIn.gameObject.SetActive(true);
-                        blackFadeIn.effectFactor = 0;
-                        break;
-                    case "Black_FadeOut":
-                        if (blackFadeIn.gameObject.activeSelf)
-                            blackFadeIn.gameObject.SetActive(false);
-                        blackFadeOut.gameObject.SetActive(true);
-                        blackFadeOut.effectFactor = 1;
-                        break;
-                }
+                    switch (anim.effect)
+                    {
+                        case "Black_FadeIn":
+                            blackFadeIn.gameObject.SetActive(true);
+                            blackFadeIn.effectFactor = 0;
+                            break;
+                        case "Black_FadeOut":
+                            if (blackFadeIn.gameObject.activeSelf)
+                                blackFadeIn.gameObject.SetActive(false);
+                            blackFadeOut.gameObject.SetActive(true);
+                            blackFadeOut.effectFactor = 1;
+                            break;
+                    }
 
-                break;
-            }
+                    break;
+                }
             default:
             case AnimationType.UTIL:
-            {
-                switch (anim.effect)
                 {
-                    case "Wait":
-                        animationWaitTime = anim.duration;
-                        return;
-                }
+                    switch (anim.effect)
+                    {
+                        case "Wait":
+                            animationWaitTime = anim.duration;
+                            return;
+                    }
 
-                break;
-            }
+                    break;
+                }
         }
 
         AnimationUpdate();

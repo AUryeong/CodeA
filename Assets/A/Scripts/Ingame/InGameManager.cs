@@ -123,7 +123,7 @@ namespace Ingame
             //TODO SOUND
             SaveManager.Instance.GameData.name = string.IsNullOrEmpty(namingInput.text) ? "김준우" : namingInput.text;
             fadeInBlack.gameObject.SetActive(true);
-            fadeInBlack.color = Utility.ChangeColorFade(Color.black, 0);
+            fadeInBlack.color = Utility.GetFadeColor(Color.black, 0);
             fadeInBlack.DOFade(1, 1).OnComplete(() =>
             {
                 namingCanvas.gameObject.SetActive(false);

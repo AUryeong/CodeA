@@ -16,21 +16,23 @@ namespace UI
 
         private RectTransform rectTransform;
 
-        [Header("감정 표현용")] [SerializeField] private Image emotionBase;
+        [Header("감정 표현용")][SerializeField] private Image emotionBase;
 
-        [Space(10)] [SerializeField] private Image[] thinkingTalks;
+        [Space(10)][SerializeField] private Image[] thinkingTalks;
 
-        [Space(10)] [SerializeField] private Image flushBase;
+        [Space(10)][SerializeField] private Image flushBase;
         [SerializeField] private Image flushLine;
 
-        [Space(10)] [SerializeField] private Image funnyNote;
+        [Space(10)][SerializeField] private Image funnyNote;
 
-        [Space(10)] [SerializeField] private Image worry;
+        [Space(10)][SerializeField] private Image worry;
 
-        [Space(10)] [SerializeField] private Image tiredSweat;
+        [Space(10)][SerializeField] private Image tiredSweat;
         [SerializeField] private Image tiredSmallSweat;
 
-        [Space(10)] [SerializeField] private Image surprise;
+        [Space(10)][SerializeField] private Image surprise;
+
+        [Space(10)][SerializeField] private Image question;
 
         protected void Awake()
         {
@@ -50,11 +52,11 @@ namespace UI
             if (!gameObject.activeSelf) return;
 
             baseStanding.DOKill();
-            baseStanding.DOColor(Utility.fadeOutBlack, 0.5f).OnComplete(() => { gameObject.SetActive(false); });
+            baseStanding.DOColor(Utility.fadeBlackColor, 0.5f).OnComplete(() => { gameObject.SetActive(false); });
 
             face.DOKill();
-            face.DOColor(Utility.fadeOutBlack, 0.5f);
-            
+            face.DOColor(Utility.fadeBlackColor, 0.5f);
+
             emotionBase.gameObject.SetActive(false);
         }
 
@@ -70,10 +72,14 @@ namespace UI
             NowStanding = talkStanding;
 
             var toColor = NowStanding.dark ? Utility.darkColor : Color.white;
+            var toScale = Utility.SizeToScale(NowStanding.size);
+            var toPos = Utility.PosToVector2(NowStanding.pos);
 
             bool isStandingEqual = prevStanding != null && prevStanding.name.Equals(NowStanding.name);
             if (isStandingEqual)
             {
+                rectTransform.DOKill(true);
+
                 if (!prevStanding.face.Equals(NowStanding.face))
                 {
                     FaceChange(NowStanding.face, true);
@@ -94,31 +100,26 @@ namespace UI
                     baseStanding.DOColor(toColor, 0.5f);
                 }
 
-                rectTransform.DOKill(true);
-
                 if (!prevStanding.size.Equals(NowStanding.size))
-                    Scale(Utility.SizeToScale(NowStanding.size), 1, true);
+                    Scale(toScale, 1, true);
 
                 if (!prevStanding.pos.Equals(NowStanding.pos))
-                    Move(Utility.PosToVector2(NowStanding.pos), 1);
+                    Move(toPos, 1);
                 return;
             }
 
-            var toScale = Utility.SizeToScale(NowStanding.size);
-            var toPos = Utility.PosToVector2(NowStanding.pos);
-
             rectTransform.DOKill(true);
             rectTransform.localScale = toScale;
-            rectTransform.anchoredPosition = new Vector2(toPos, 431.5f);
+            rectTransform.anchoredPosition = new Vector2(toPos, rectTransform.anchoredPosition.y);
 
             baseStanding.DOKill();
             baseStanding.sprite = standing.baseStanding;
-            baseStanding.color = Utility.fadeOutBlack;
+            baseStanding.color = Utility.fadeBlackColor;
             baseStanding.DOColor(toColor, 0.5f);
 
             face.DOKill();
             face.sprite = standing.faces[talkStanding.face];
-            face.color = Utility.fadeOutBlack;
+            face.color = Utility.fadeBlackColor;
             face.DOColor(toColor, 0.5f);
 
             sideFace.gameObject.SetActive(false);
@@ -131,6 +132,8 @@ namespace UI
                 transform.SetAsLastSibling();
             var toColor = dark ? Utility.darkColor : Color.white;
 
+            NowStanding.dark = dark;
+
             baseStanding.DOKill();
             baseStanding.DOColor(toColor, 0.5f);
 
@@ -141,15 +144,18 @@ namespace UI
         public void FaceChange(string faceName, bool isSet = false)
         {
             var duration = 0.4f;
+            var toColor = NowStanding.dark ? Utility.darkColor : Color.white;
+
+            NowStanding.face = faceName;
 
             sideFace.DOKill();
             sideFace.sprite = face.sprite;
-            sideFace.color = Color.white;
+            sideFace.color = toColor;
             sideFace.gameObject.SetActive(true);
             sideFace.DOFade(0, duration).SetEase(Ease.Linear).OnComplete(() => { sideFace.gameObject.SetActive(false); });
 
             face.DOKill();
-            face.color = Utility.fadeWhite;
+            face.color = Utility.GetFadeColor(toColor, 0);
             face.sprite = ResourcesManager.Instance.GetCharacter(NowStanding.name).standings[NowStanding.clothes].faces[faceName];
             face.DOFade(1, duration).SetEase(Ease.Linear);
 
@@ -160,15 +166,18 @@ namespace UI
         public void ClothesChange(string clothesName, bool isSet = false)
         {
             var duration = 0.4f;
+            var toColor = NowStanding.dark ? Utility.darkColor : Color.white;
+
+            NowStanding.face = clothesName;
 
             sideStanding.DOKill();
             sideStanding.sprite = baseStanding.sprite;
-            sideStanding.color = Color.white;
+            sideStanding.color = toColor;
             sideStanding.gameObject.SetActive(true);
             sideStanding.DOFade(0, duration).SetEase(Ease.Linear).OnComplete(() => { sideStanding.gameObject.SetActive(false); });
 
             baseStanding.DOKill();
-            baseStanding.color = Utility.fadeWhite;
+            baseStanding.color = Utility.GetFadeColor(toColor, 0);
             baseStanding.sprite = ResourcesManager.Instance.GetCharacter(NowStanding.name).standings[clothesName].baseStanding;
             baseStanding.DOFade(1, duration).SetEase(Ease.Linear);
 
@@ -178,7 +187,6 @@ namespace UI
 
         public void Move(float posX, float duration)
         {
-            rectTransform.DOKill(true);
             rectTransform.DOAnchorPosX(posX, duration);
         }
 
@@ -188,26 +196,26 @@ namespace UI
             if (!isSet && !NowStanding.dark)
                 rectTransform.SetAsLastSibling();
         }
-        
-        public void Bounce(int repeat, float duration, bool isSet = false)
+
+        public void Bounce(int repeat, float duration)
         {
             rectTransform.DOAnchorPosY(-50, duration).SetRelative().SetLoops(repeat * 2, LoopType.Yoyo).SetEase(Ease.InOutQuad);
-            if (!isSet && !NowStanding.dark)
+            if (!NowStanding.dark)
                 rectTransform.SetAsLastSibling();
         }
 
-        public void Shake(float power, float duration, bool isSet = false)
+        public void Shake(float power, float duration)
         {
             if (power < 0)
                 power = 6;
             rectTransform.DOShakeAnchorPos(duration, power, 30, 90, false, false).SetRelative();
-            if (!isSet && !NowStanding.dark)
+            if (!NowStanding.dark)
                 rectTransform.SetAsLastSibling();
         }
 
-        public void Emotion(string emotionName, float duration, bool isSet = false)
+        public void Emotion(string emotionName, float duration)
         {
-            if (!isSet && !NowStanding.dark)
+            if (!NowStanding.dark)
                 rectTransform.SetAsLastSibling();
 
             if (duration < 0)
@@ -255,6 +263,10 @@ namespace UI
             surprise.rectTransform.DOKill();
             surprise.gameObject.SetActive(false);
 
+            question.DOKill();
+            question.rectTransform.DOKill();
+            question.gameObject.SetActive(false);
+
             switch (emotionName)
             {
                 case "Thinking":
@@ -262,7 +274,7 @@ namespace UI
                     {
                         var image = thinkingTalks[index];
                         image.gameObject.SetActive(true);
-                        image.color = Utility.fadeWhite;
+                        image.color = Utility.GetFadeColor(Color.white, 0);
                         image.DOFade(1, duration / 6).SetDelay(duration / 4 * index);
                         image.DOFade(0, fadeOutDuration).SetDelay(fadeOutDelay);
                     }
@@ -270,7 +282,7 @@ namespace UI
                     break;
                 case "Flush":
                     flushBase.gameObject.SetActive(true);
-                    flushBase.color = Utility.fadeWhite;
+                    flushBase.color = Utility.GetFadeColor(Color.white, 0);
                     flushBase.DOFade(1, duration / 10);
                     flushBase.DOFade(0, fadeOutDuration).SetDelay(fadeOutDelay);
 
@@ -286,7 +298,7 @@ namespace UI
                     break;
                 case "Funny":
                     funnyNote.gameObject.SetActive(true);
-                    funnyNote.color = Utility.fadeWhite;
+                    funnyNote.color = Utility.GetFadeColor(Color.white, 0);
                     funnyNote.DOFade(1, duration / 10);
                     funnyNote.DOFade(0, fadeOutDuration).SetDelay(fadeOutDelay);
 
@@ -304,7 +316,7 @@ namespace UI
                     break;
                 case "Worry":
                     worry.gameObject.SetActive(true);
-                    worry.color = Utility.fadeWhite;
+                    worry.color = Utility.GetFadeColor(Color.white, 0);
                     worry.DOFade(1, duration / 10);
                     worry.DOFade(0, fadeOutDuration).SetDelay(fadeOutDelay);
 
@@ -321,7 +333,7 @@ namespace UI
                     break;
                 case "Sweat":
                     tiredSmallSweat.gameObject.SetActive(true);
-                    tiredSmallSweat.color = Utility.fadeWhite;
+                    tiredSmallSweat.color = Utility.GetFadeColor(Color.white, 0);
                     tiredSmallSweat.DOFade(1, duration / 10);
                     tiredSmallSweat.DOFade(0, fadeOutDuration).SetDelay(fadeOutDelay);
 
@@ -329,7 +341,7 @@ namespace UI
                     tiredSmallSweat.rectTransform.DOAnchorPosY(24.7f, fadeOutDelay);
 
                     tiredSweat.gameObject.SetActive(true);
-                    tiredSweat.color = Utility.fadeWhite;
+                    tiredSweat.color = Utility.GetFadeColor(Color.white, 0);
                     tiredSweat.DOFade(1, duration / 10);
                     tiredSweat.DOFade(0, fadeOutDuration).SetDelay(fadeOutDelay);
 
@@ -338,12 +350,25 @@ namespace UI
                     break;
                 case "Surprise":
                     surprise.gameObject.SetActive(true);
-                    surprise.color = Utility.fadeWhite;
+                    surprise.color = Utility.GetFadeColor(Color.white, 0);
                     surprise.DOFade(1, duration / 10);
                     surprise.DOFade(0, fadeOutDuration).SetDelay(fadeOutDelay);
 
-                    surprise.rectTransform.anchoredPosition = new Vector2(-32.9f, 34.7f);
-                    surprise.rectTransform.DOAnchorPosY(24.7f, fadeOutDelay);
+                    surprise.rectTransform.localScale = Vector3.zero;
+                    surprise.rectTransform.DOScale(1, duration).SetEase(Ease.OutBack);
+                    break;
+                case "Question":
+                    question.gameObject.SetActive(true);
+                    question.color = Utility.GetFadeColor(Color.white, 0);
+                    question.DOFade(1, duration / 10);
+                    question.DOFade(0, fadeOutDuration).SetDelay(fadeOutDelay);
+
+                    question.rectTransform.localScale = Vector3.zero;
+                    question.rectTransform.DOScale(1, duration).SetEase(Ease.OutBack);
+                    question.rectTransform.DOLocalRotate(new Vector3(0, 0, Random.Range(0, 15f)), duration).OnComplete(() =>
+                    {
+                        question.rectTransform.DOLocalRotate(new Vector3(0, 0, Random.Range(-15f, 0)), fadeOutDuration).SetRelative();
+                    });
                     break;
             }
         }

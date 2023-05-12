@@ -101,7 +101,7 @@ MonoBehaviour:
     characters:
     - name: A
       clothes: Default
-      face: Default
+      face: Smile
       pos: 2
       size: 2
       dark: 0
@@ -114,11 +114,6 @@ MonoBehaviour:
     animationLists:
     - index: 0
       animations:
-      - type: 0
-        effect: Move
-        name: A
-        parameter: C
-        duration: 1
       - type: 1
         effect: Wait
         name: 
@@ -137,7 +132,7 @@ MonoBehaviour:
       - type: 0
         effect: Emotion
         name: A
-        parameter: Funny
+        parameter: Question
         duration: 0.4
       - type: 2
         effect: On
@@ -147,22 +142,12 @@ MonoBehaviour:
     - index: 1
       animations:
       - type: 0
-        effect: Move
-        name: A
-        parameter: R1
-        duration: 1
-      - type: 0
         effect: Bounce
         name: A
         parameter: 2
         duration: 0.2
     - index: 2
       animations:
-      - type: 0
-        effect: Move
-        name: A
-        parameter: L1
-        duration: 1
       - type: 0
         effect: Bounce
         name: A
