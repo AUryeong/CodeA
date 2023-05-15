@@ -94,14 +94,14 @@ MonoBehaviour:
         type: 0
         parameter: 2
       active: 0
-      invisible: 1
+      invisible: 0
       owner: A
     eventList: []
     optionList: []
     characters:
     - name: A
       clothes: Default
-      face: Smile
+      face: Default
       pos: 2
       size: 2
       dark: 0
@@ -114,6 +114,11 @@ MonoBehaviour:
     animationLists:
     - index: 0
       animations:
+      - type: 0
+        effect: Move
+        name: A
+        parameter: C
+        duration: 1
       - type: 1
         effect: Wait
         name: 
@@ -132,7 +137,7 @@ MonoBehaviour:
       - type: 0
         effect: Emotion
         name: A
-        parameter: Question
+        parameter: Funny
         duration: 0.4
       - type: 2
         effect: On
@@ -142,12 +147,22 @@ MonoBehaviour:
     - index: 1
       animations:
       - type: 0
+        effect: Move
+        name: A
+        parameter: R1
+        duration: 1
+      - type: 0
         effect: Bounce
         name: A
         parameter: 2
         duration: 0.2
     - index: 2
       animations:
+      - type: 0
+        effect: Move
+        name: A
+        parameter: L1
+        duration: 1
       - type: 0
         effect: Bounce
         name: A
@@ -291,10 +306,10 @@ MonoBehaviour:
       scale: 1
     dialogue:
       talker: "\uC5D0\uC774"
-      text: "\uADF8... \uADF8\uB7FC <#FFEE00><link=\uB85C\uBCF4\uD1A0\uBBF8>\uB85C\uBCF4\uD1A0\uBBF8</color></link>\uB294
+      text: "\uADF8... \uADF8\uB7FC <#FFEE00><link=\u3141\u3134\u3147\u3139>\u3141\u3134\u3147\u3139</color></link>\uB294
         \uC54C\uC9C0?"
       tipEvent:
-      - eventName: "\uB85C\uBCF4\uD1A0\uBBF8"
+      - eventName: "\u3141\u3134\u3147\u3139"
         skipText: 
         talkName: 
         dialogs: []

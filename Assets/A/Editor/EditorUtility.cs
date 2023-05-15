@@ -40,7 +40,7 @@ public class EditorUtility
     public static void CreateTalkScriptableObject()
     {
         var ownerDictionaries = new Dictionary<string, string>();
-        var str = File.ReadAllText(Application.dataPath + "/Editor/Xmls/TalkOwners.xml");
+        var str = File.ReadAllText(Application.dataPath + "/A/Editor/Xmls/TalkOwners.xml");
         XMLTalkOwners talkOwners;
         using (var stringReader = new StringReader(str))
         {
@@ -50,7 +50,7 @@ public class EditorUtility
         foreach (var owner in talkOwners.owners)
             ownerDictionaries.Add(owner.name, owner.ownerName);
 
-        const string xmlPath = "/Editor/Xmls/Talk";
+        const string xmlPath = "/A/Editor/Xmls/Talk";
         var dir = new DirectoryInfo(Application.dataPath + xmlPath);
         ConvertXmlTalk(dir, ownerDictionaries);
 
@@ -94,7 +94,7 @@ public class EditorUtility
         newTalks.cgTitle = title;
         newTalks.skipText = string.IsNullOrEmpty(skipText) ? null : skipText.Replace("\\n", "\n");
 
-        AssetDatabase.CreateAsset(newTalks, $"Assets/ScriptableObjects/Talks/{assetName}.asset");
+        AssetDatabase.CreateAsset(newTalks, $"Assets/A/ScriptableObjects/Talks/{assetName}.asset");
     }
 
     private static void ParsingTalks(string assetName, ref List<Talk> talkList, Dictionary<string, string> ownerDictionaries)
@@ -377,7 +377,7 @@ public class EditorUtility
     [MenuItem("Assets/Convert Tsv To ScriptableObject Tip")]
     public static void CreateTipScriptableObject()
     {
-        const string csvPath = "/Editor/Csvs/Tip";
+        const string csvPath = "/A/Editor/Csvs/Tip";
         var dir = new DirectoryInfo(Application.dataPath + csvPath);
         foreach (FileInfo fileInfo in dir.GetFiles())
         {
@@ -403,7 +403,7 @@ public class EditorUtility
 
             var newTips = ScriptableObject.CreateInstance<Tips>();
             newTips.tips = tipList;
-            AssetDatabase.CreateAsset(newTips, $"Assets/ScriptableObjects/Tips/{Path.GetFileNameWithoutExtension(fileInfo.FullName)}.asset");
+            AssetDatabase.CreateAsset(newTips, $"Assets/A/ScriptableObjects/Tips/{Path.GetFileNameWithoutExtension(fileInfo.FullName)}.asset");
         }
 
         AssetDatabase.SaveAssets();
