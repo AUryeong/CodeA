@@ -192,6 +192,13 @@ public class ResourcesManager : Singleton<ResourcesManager>
 
     private void DownloadBundle()
     {
+        downloadWindow.gameObject.SetActive(true);
+        downloadWarningWindow.gameObject.SetActive(true);
+        downloadWarningButton.gameObject.SetActive(false);
+        downloadingText.gameObject.SetActive(true);
+        downloadButton.gameObject.SetActive(false);
+        exitButton.gameObject.SetActive(false);
+        exitWarningButton.gameObject.SetActive(false);
         if (Application.internetReachability == NetworkReachability.NotReachable)
         {
             DisableDownloadWindow();
