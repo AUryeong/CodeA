@@ -10,27 +10,27 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0ea4cc8aacb5484389845b651f03202d, type: 3}
-  m_Name: alice
+  m_Name: new_TipEvent_0
   m_EditorClassIdentifier: 
   cgTitle: 
   skipText: 
-  talks:
+  dialogs:
   - bgm: School
-    background:
+    dialogBackground:
       name: Class_Morning
       effect: 0
       title: 
       description: 
       effectDuration: 1
       scale: 1
-    dialogue:
-      talker: 
-      text: 
+    dialogText:
+      name: "\uC5D0\uC774"
+      text: "\uC568\uB9AC\uC2A4 \uC544\uC2DC\uB294\uAD6C\uB098!"
       tipEvent: []
-      talkAnimations: []
+      dialogAnimations: []
       active: 0
       invisible: 0
-      owner: 
+      owner: A
     eventList: []
     optionList: []
     characters:
@@ -79,6 +79,11 @@ MonoBehaviour:
         name: 
         parameter: 
         duration: 0.5
+      - type: 2
+        effect: On
+        name: 
+        parameter: 
+        duration: -1
       - type: 0
         effect: Move
         name: A
@@ -90,18 +95,18 @@ MonoBehaviour:
         parameter: 3
         duration: 0.2
   - bgm: School
-    background:
+    dialogBackground:
       name: Class_Morning
       effect: 0
       title: 
       description: 
       effectDuration: 1
       scale: 1
-    dialogue:
-      talker: '{0}'
+    dialogText:
+      name: '{0}'
       text: "\uC774\uAC74 \uBAA8\uB97C \uC218\uAC00 \uC5C6\uAE34\uD574"
       tipEvent: []
-      talkAnimations: []
+      dialogAnimations: []
       active: 1
       invisible: 0
       owner: 
@@ -122,18 +127,18 @@ MonoBehaviour:
       dark: 1
     animationLists: []
   - bgm: School
-    background:
+    dialogBackground:
       name: Class_Morning
       effect: 0
       title: 
       description: 
       effectDuration: 1
       scale: 1
-    dialogue:
-      talker: "\uC774\uB85C\uB9AC"
+    dialogText:
+      name: "\uC774\uB85C\uB9AC"
       text: "\uD788\uD788 \uC54C\uC544\uC11C \uB2E4\uD589\uC774\uB2E4"
       tipEvent: []
-      talkAnimations: []
+      dialogAnimations: []
       active: 1
       invisible: 0
       owner: Loli

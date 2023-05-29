@@ -1,6 +1,4 @@
 using DG.Tweening;
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -27,7 +25,7 @@ namespace UI
             base.OnCreated();
 
             exitButton.onClick.RemoveAllListeners();
-            exitButton.onClick.AddListener(WindowManager.Instance.CloseAllWindow);
+            exitButton.onClick.AddListener(GameManager.Instance.windowManager.CloseAllWindow);
 
             eventWindow.gameObject.SetActive(false);
 
@@ -41,7 +39,7 @@ namespace UI
         public override void Init(Vector3 pos)
         {
             base.Init(pos);
-            logScroll.SetLog(LogManager.Instance.GetDatas());
+            logScroll.SetLog(GameManager.Instance.dialogManager.dialogLogDetail.GetDatas());
         }
 
         public void EventOpen(string eventName, Vector2 pos)
@@ -51,7 +49,7 @@ namespace UI
             bool isHaveTips = GameManager.Instance.saveManager.GameData.getTips.Contains(eventName);
 
             eventTitleText.text = eventName + "에 대해";
-            eventDescriptionText.text = isHaveTips ? ResourcesManager.Instance.GetTip(eventName) : "정보가 없다...";
+            eventDescriptionText.text = isHaveTips ? GameManager.Instance.resourcesManager.GetTip(eventName) : "정보가 없다...";
 
             eventWindow.gameObject.SetActive(true);
             eventWindow.rectTransform.DOKill();

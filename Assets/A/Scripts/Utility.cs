@@ -9,7 +9,7 @@ public static class Utility
         return (T)Enum.Parse(typeof(T), enumName);
     }
 
-    public static string GetTalkerName(string talkerName)
+    public static string GetDialogName(string talkerName)
     {
         return string.Format(talkerName, GameManager.Instance.saveManager.GameData.name);
     }
@@ -25,7 +25,7 @@ public static class Utility
         return color;
     }
 
-    public static EventType GetStringToEventType(string eventType)
+    public static DialogEventType GetStringToEventType(string eventType)
     {
         if (!string.IsNullOrEmpty(eventType))
         {
@@ -34,16 +34,16 @@ public static class Utility
 
                 case "Before":
                 case "BEFORE":
-                    return EventType.BEFORE;
+                    return DialogEventType.BEFORE;
                 case "Change":
                 case "CHANGE":
-                    return EventType.CHANGE;
+                    return DialogEventType.CHANGE;
                 case "After":
                 case "AFTER":
-                    return EventType.AFTER;
+                    return DialogEventType.AFTER;
             }
         }
-        return EventType.CHANGE;
+        return DialogEventType.CHANGE;
     }
 
     public static string GetTimeToString(TimeType timeType)
@@ -90,27 +90,27 @@ public static class Utility
         }
     }
 
-    public static float PosToVector2(CharacterPos pos)
+    public static float PosToVector2(DialogCharacterPos pos)
     {
         switch (pos)
         {
-            case CharacterPos.LEND:
+            case DialogCharacterPos.LEND:
                 return -1580;
-            case CharacterPos.L3:
+            case DialogCharacterPos.L3:
                 return -540f;
-            case CharacterPos.L2:
+            case DialogCharacterPos.L2:
                 return -360f;
-            case CharacterPos.L1:
+            case DialogCharacterPos.L1:
                 return -180;
-            case CharacterPos.C:
+            case DialogCharacterPos.C:
                 return 0;
-            case CharacterPos.R1:
+            case DialogCharacterPos.R1:
                 return 180;
-            case CharacterPos.R2:
+            case DialogCharacterPos.R2:
                 return 360;
-            case CharacterPos.R3:
+            case DialogCharacterPos.R3:
                 return 540;
-            case CharacterPos.REND:
+            case DialogCharacterPos.REND:
                 return 1580;
             default:
                 return 0;
@@ -132,18 +132,18 @@ public static class Utility
         }
     }
 
-    public static Vector3 SizeToScale(CharacterSize size)
+    public static Vector3 SizeToScale(DialogCharacterSize size)
     {
         switch (size)
         {
             default:
-            case CharacterSize.S:
+            case DialogCharacterSize.S:
                 return new Vector3(0.6f, 0.6f, 0.6f);
-            case CharacterSize.M:
+            case DialogCharacterSize.M:
                 return new Vector3(0.7f, 0.7f, 0.7f);
-            case CharacterSize.L:
+            case DialogCharacterSize.L:
                 return new Vector3(0.8f, 0.8f, 0.8f);
-            case CharacterSize.XL:
+            case DialogCharacterSize.XL:
                 return new Vector3(1f, 1f, 1f);
         }
     }

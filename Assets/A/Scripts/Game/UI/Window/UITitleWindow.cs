@@ -17,10 +17,10 @@ namespace UI
             base.OnCreated();
 
             warningCancelButton.onClick.RemoveAllListeners();
-            warningCancelButton.onClick.AddListener(WindowManager.Instance.CloseAllWindow);
+            warningCancelButton.onClick.AddListener(GameManager.Instance.windowManager.CloseAllWindow);
 
             blockButton.onClick.RemoveAllListeners();
-            blockButton.onClick.AddListener(WindowManager.Instance.CloseAllWindow);
+            blockButton.onClick.AddListener(GameManager.Instance.windowManager.CloseAllWindow);
         }
 
         public override void Init(Vector3 pos)
@@ -29,7 +29,7 @@ namespace UI
 
             warningOkayButton.onClick.RemoveAllListeners();
 
-            if (GameManager.Instance.saveManager.nowGameData == null && TalkManager.Instance.GetLeftTalks().Count <= 0)
+            if (GameManager.Instance.saveManager.nowGameData == null && GameManager.Instance.dialogManager.GetLeftDialogs().Count <= 0)
             {
                 warningDescription.text = "정말로 종료하시겠습니까?";
                 warningDescription2.gameObject.SetActive(false);

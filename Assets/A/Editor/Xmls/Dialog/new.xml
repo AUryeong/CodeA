@@ -4,28 +4,28 @@
     <SkipText>신 학기에 앨리스 보고 싶다 하 시발\n와하하하</SkipText>
     <Dialog>
         <BG Name="Black"/>
-        <Dialogue/>
+        <Text/>
     </Dialog>
     <Dialog>
         <Bgm>School</Bgm>
         <BG Name="Class_Morning" Title="디지텍 고등학교" Description="조금 이른 아침" Effect="FADE" Duration="3"/>
-        <Dialogue>
+        <Text>
             <Text>그래서 이게 무슨 상황이지</Text>
-        </Dialogue>
+        </Text>
     </Dialog>
     <Dialog>
-        <Dialogue Active="false">
-            <Talker>에이</Talker>
+        <Text Active="false">
+            <Name>에이</Name>
             <Text>혹시 {Tip:원더랜드:앨리스}나{Anim:ANIM:1}{Anim:WAIT:2} {Tip:시공의 폭풍}을{Anim:ANIM:2}{Anim:WAIT:2} 아십니까?</Text>
             <TipEvent Name="앨리스" Type="CHANGE">
                 <Dialogs>
                     <Dialog>
                         <Bgm>School</Bgm>
                         <BG Name="Class_Morning"/>
-                        <Dialogue Active="false">
-                            <Talker>에이</Talker>
+                        <Text Active="false">
+                            <Name>에이</Name>
                             <Text>앨리스 아시는구나!</Text>
-                        </Dialogue>
+                        </Text>
                         <Characters>
                             <Character Name="A" Face="Smile" Pos="C" Size="M" Dark="false"/>
                             <Character Name="Loli" Face="DefaultLight" Pos="L2" Size="M" Dark="false"/>
@@ -43,20 +43,20 @@
                         </Animations>
                     </Dialog>
                     <Dialog>
-                        <Dialogue>
-                            <Talker>{0}</Talker>
+                        <Text>
+                            <Name>{0}</Name>
                             <Text>이건 모를 수가 없긴해</Text>
-                        </Dialogue>
+                        </Text>
                         <Characters>
                             <Character Name="Loli"/>
                             <Character Name="A"/>
                         </Characters>
                     </Dialog>
                     <Dialog>
-                        <Dialogue>
-                            <Talker>이로리</Talker>
+                        <Text>
+                            <Name>이로리</Name>
                             <Text>히히 알아서 다행이다</Text>
-                        </Dialogue>
+                        </Text>
                         <Characters>
                             <Character Name="A"/>
                             <Character Name="Loli" Pos="L3"/>
@@ -64,7 +64,7 @@
                     </Dialog>
                 </Dialogs>
             </TipEvent>
-        </Dialogue>
+        </Text>
         <Characters>
             <Character Name="A" Clothes="Default" Face="Default" Pos="R2" Size="M" Dark="false"/>
             <Character Name="Loli" Face="DefaultLight" Pos="L2" Size="M"/>
@@ -87,59 +87,59 @@
         </Animations>
     </Dialog>
     <Dialog>
-        <Dialogue>
-            <Talker>에이</Talker>
+        <Text>
+            <Name>에이</Name>
             <Text>나는 유해한 인간이야</Text>
-        </Dialogue>
+        </Text>
         <Characters>
             <Character Name="Loli"/>
             <Character Name="A" Dark="false"/>
         </Characters>
     </Dialog>
     <Dialog>
-        <Dialogue>
-            <Talker>에이</Talker>
+        <Text>
+            <Name>에이</Name>
             <Text>나는 유해한 인간이야</Text>
-        </Dialogue>
+        </Text>
         <Characters>
             <Character Name="Loli"/>
             <Character Name="A" Dark="false"/>
         </Characters>
     </Dialog>
     <Dialog>
-        <Dialogue>
-            <Talker>에이</Talker>
+        <Text>
+            <Name>에이</Name>
             <Text>나는 유해한 인간이야</Text>
-        </Dialogue>
+        </Text>
         <Characters>
             <Character Name="Loli"/>
             <Character Name="A" Dark="false"/>
         </Characters>
     </Dialog>
     <Dialog>
-        <Dialogue>
-            <Talker>에이</Talker>
+        <Text>
+            <Name>에이</Name>
             <Text>나는 유해한 인간이야</Text>
-        </Dialogue>
+        </Text>
         <Characters>
             <Character Name="Loli"/>
             <Character Name="A" Dark="false"/>
         </Characters>
     </Dialog>
     <Dialog>
-        <Dialogue Active="false">
-            <Talker>에이</Talker>
+        <Text Active="false">
+            <Name>에이</Name>
             <Text>그... 그럼 {Tip:ㅁㄴㅇㄹ}는 알지?</Text>
-        </Dialogue>
+        </Text>
         <Option Script="에이 그건 알지 ㅋㅋ" Special="true">
             <Dialogs>
                 <Dialog>
                     <Bgm>School</Bgm>
                     <BG Name="Class_Morning"/>
-                    <Dialogue Active="false">
-                        <Talker>에이</Talker>
+                    <Text Active="false">
+                        <Name>에이</Name>
                         <Text>아 ㅋㅋ 이건 알아야지</Text>
-                    </Dialogue>
+                    </Text>
                     <Characters>
                         <Character Name="A" Face="Smile" Pos="C" Size="M" Dark="false"/>
                         <Character Name="Loli" Face="DefaultLight" Pos="L2" Size="M" Dark="false"/>
@@ -157,20 +157,20 @@
                     </Animations>
                 </Dialog>
                 <Dialog>
-                    <Dialogue>
-                        <Talker>{0}</Talker>
+                    <Text>
+                        <Name>{0}</Name>
                         <Text>이건 모를 수가 없긴해</Text>
-                    </Dialogue>
+                    </Text>
                     <Characters>
                         <Character Name="Loli"/>
                         <Character Name="A"/>
                     </Characters>
                 </Dialog>
                 <Dialog>
-                    <Dialogue>
-                        <Talker>이로리</Talker>
+                    <Text>
+                        <Name>이로리</Name>
                         <Text>히히 알아서 다행이다</Text>
-                    </Dialogue>
+                    </Text>
                     <Characters>
                         <Character Name="A"/>
                         <Character Name="Loli" Pos="L3"/>
@@ -190,10 +190,10 @@
         </Animations>
     </Dialog>
     <Dialog>
-        <Dialogue Active="false">
-            <Talker>이로리</Talker>
+        <Text Active="false">
+            <Name>이로리</Name>
             <Text>이걸 가버리네...</Text>
-        </Dialogue>
+        </Text>
         <Event Type="ADD_TIP" Name="앨리스"/>
         <Characters>
             <Character Name="Loli" Face="Default" Dark="false"/>

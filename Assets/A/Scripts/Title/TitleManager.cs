@@ -32,17 +32,17 @@ public class TitleManager : Singleton<TitleManager>
 
         gameLoadButton.onClick.RemoveAllListeners();
         gameLoadButton.onClick.AddListener(() =>
-            WindowManager.Instance.ClickWindow(WindowType.LOAD, gameLoadButton.transform.position));
+            GameManager.Instance.windowManager.ClickWindow(WindowType.LOAD, gameLoadButton.transform.position));
 
         settingButton.onClick.RemoveAllListeners();
         settingButton.onClick.AddListener(() =>
-            WindowManager.Instance.ClickWindow(WindowType.SETTING, settingButton.transform.position));
+            GameManager.Instance.windowManager.ClickWindow(WindowType.SETTING, settingButton.transform.position));
 
         explorerButton.onClick.RemoveAllListeners();
         explorerButton.onClick.AddListener(() => extraWindow.Init(explorerButton.transform.position));
 
         sideTextButton.onClick.RemoveAllListeners();
-        sideTextButton.onClick.AddListener(WindowManager.Instance.WindowOpen);
+        sideTextButton.onClick.AddListener(GameManager.Instance.windowManager.WindowOpen);
 
         warningOkayButton.onClick.RemoveAllListeners();
         warningOkayButton.onClick.AddListener(() => GameManager.Instance.sceneManager.SceneLoad(Scene.INGAME));
@@ -52,10 +52,10 @@ public class TitleManager : Singleton<TitleManager>
 
         GameManager.Instance.saveManager.nowGameData = null;
 
-        if (string.IsNullOrEmpty(GameManager.Instance.saveManager.GameData.saigoCg)) return;
+        if (string.IsNullOrEmpty(GameManager.Instance.saveManager.GameData.lastCg)) return;
 
         wallpaperImage.color = new Color(0.8f, 0.8f, 0.8f);
-        wallpaperImage.sprite = ResourcesManager.Instance.GetBackground(GameManager.Instance.saveManager.GameData.saigoCg);
+        wallpaperImage.sprite = GameManager.Instance.resourcesManager.GetBackground(GameManager.Instance.saveManager.GameData.lastCg);
     }
 
     private void Start()

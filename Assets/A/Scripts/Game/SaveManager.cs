@@ -7,15 +7,17 @@ using static TimeType;
 public enum LoveLevelType
 {
     A,
+    LOLI,
+    SISTER
 }
 
 public enum StatType
 {
-    NOTMAJOR,
+    NON_MAJOR,
     PROGRAMMING,
     GRAPHIC,
-    WRITING,
-    ATTRACTION
+    DIRECTOR,
+    COMMUNICATION
 }
 
 public enum SkillType
@@ -39,19 +41,18 @@ public class GameData
 {
     public bool isDownloadFile;
 
-    public string name = string.Empty; // 이름
-    public float sfxSound = 1; // 효과음 배율
-    public float bgmSound = 1; // BGM 배율
-    public float textSpeed = 0.5f; // 대화 속도 배율
+    public string name = string.Empty;
+    
+    public float sfxSoundMultiplier = 1;
+    public float bgmSoundMultiplier = 1;
 
+    public float textSpeed = 0.5f;
     public bool textAuto;
 
-    public string saigoCg = string.Empty;
+    public string lastCg = string.Empty;
 
-    public List<string> getCg = new List<string>(); // 얻은 CG
-
-    public List<string> getVideo = new List<string>(); // 얻은 w
-
+    public List<string> getCg = new List<string>();
+    public List<string> getScenes = new List<string>();
     public List<string> getTips = new List<string>();
 
 
@@ -91,24 +92,21 @@ public class SubGameData
 {
     public int idx = -1;
 
+    public string saveTime;
+
     public int year = 1;
     public int month = 3;
     public int week = 1;
     public TimeType time = MORNING;
 
-    public List<int> loveLevel = new List<int>();
-
+    public List<int> loveLevels = new List<int>();
     public List<int> statLevels = new List<int>();
 
     public List<SkillType> hasSkills = new List<SkillType>();
-
     public List<Item> hasItems = new List<Item>();
 
-    public string leftTalkSkipText = string.Empty;
-
-    public List<Talk> leftTalks = new List<Talk>();
-
-    public string saveTime;
+    public string leftDialogSkipText = string.Empty;
+    public List<Dialog> leftDialogList = new List<Dialog>();
 
     public SubGameData Copy()
     {
@@ -119,12 +117,12 @@ public class SubGameData
             month = month,
             week = week,
             time = time,
-            loveLevel = loveLevel,
+            loveLevels = loveLevels,
             statLevels = statLevels,
             hasSkills = hasSkills,
             hasItems = hasItems,
-            leftTalks = leftTalks,
-            leftTalkSkipText = leftTalkSkipText,
+            leftDialogList = leftDialogList,
+            leftDialogSkipText = leftDialogSkipText,
             saveTime = saveTime
         };
     }
@@ -163,7 +161,7 @@ public class SaveManager : Manager
 
     public void AddCgData(string cgName)
     {
-       GameData.saigoCg = cgName;
+       GameData.lastCg = cgName;
 
         if (GameData.getCg.Contains(cgName)) return;
 
@@ -175,8 +173,8 @@ public class SaveManager : Manager
     {
         if (nowGameData == null) return;
 
-        nowGameData.leftTalks = TalkManager.Instance.GetLeftTalks();
-        nowGameData.leftTalkSkipText = TalkManager.Instance.talkSkipText;
+        nowGameData.leftDialogList = GameManager.Instance.dialogManager.GetLeftDialogs();
+        nowGameData.leftDialogSkipText = GameManager.Instance.dialogManager.dialogSkipText;
         nowGameData.saveTime = DateTime.Now.ToString("yyyy/MM/dd HH:mm");
 
         nowGameData.year = InGameManager.Instance.year;
@@ -184,7 +182,7 @@ public class SaveManager : Manager
         nowGameData.week = InGameManager.Instance.week;
         nowGameData.time = InGameManager.Instance.time;
 
-        nowGameData.loveLevel = InGameManager.Instance.loveLevel;
+        nowGameData.loveLevels = InGameManager.Instance.loveLevel;
         nowGameData.statLevels = InGameManager.Instance.statLevels;
         nowGameData.hasSkills = InGameManager.Instance.hasSkills;
         nowGameData.hasItems = InGameManager.Instance.hasItems;

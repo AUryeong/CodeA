@@ -52,7 +52,7 @@ namespace Ingame
             week = gameData.week;
             time = gameData.time;
 
-            loveLevel = gameData.loveLevel;
+            loveLevel = gameData.loveLevels;
             statLevels = gameData.statLevels;
             hasSkills = gameData.hasSkills;
             hasItems = gameData.hasItems;
@@ -74,10 +74,11 @@ namespace Ingame
 
         private void AddLeftTalks()
         {
-            if (GameManager.Instance.saveManager.nowGameData.leftTalks.Count > 0)
-                TalkManager.Instance.AddTalk(GameManager.Instance.saveManager.nowGameData.leftTalks);
+            if (GameManager.Instance.saveManager.nowGameData.leftDialogList.Count > 0)
+                GameManager.Instance.dialogManager.AddDialog(GameManager.Instance.saveManager.nowGameData.leftDialogList);
 
-            TalkManager.Instance.talkSkipText = GameManager.Instance.saveManager.nowGameData.leftTalkSkipText;
+            
+            GameManager.Instance.dialogManager.dialogSkipText = GameManager.Instance.saveManager.nowGameData.leftDialogSkipText;
         }
 
         private void NewSaveData()
@@ -93,7 +94,7 @@ namespace Ingame
             if (!string.IsNullOrEmpty(GameManager.Instance.saveManager.GameData.name))
             {
                 StartFadeOut();
-                TalkManager.Instance.AddTalk("new");
+                GameManager.Instance.dialogManager.AddDialog("new");
                 return;
             }
 
@@ -130,7 +131,7 @@ namespace Ingame
                 fadeInBlack.DOFade(0, 1).SetDelay(1).OnComplete(() => { fadeInBlack.gameObject.SetActive(false); });
             });
 
-            TalkManager.Instance.AddTalk("new");
+            GameManager.Instance.dialogManager.AddDialog("new");
         }
 
         #endregion

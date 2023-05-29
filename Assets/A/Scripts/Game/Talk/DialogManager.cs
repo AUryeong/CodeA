@@ -10,26 +10,23 @@ using UnityEngine.Serialization;
 using UnityEngine.UI;
 using UI;
 
-public class TalkManager : Singleton<TalkManager>
+public class DialogManager : Manager
 {
-    protected override bool IsDontDestroying => true;
+    private readonly Queue<Dialog> dialogQueue = new Queue<Dialog>();
+    private Dialog nowDialog;
+    private Dialog prevDialog;
 
-    private readonly Queue<Talk> talkQueue = new Queue<Talk>();
-    private Talk nowTalk;
-    private Talk prevTalk;
-
-    [Header("대화문")]
+    [Header("대화문")] 
     
-    [SerializeField] private GameObject talkWindow;
+    [SerializeField] private GameObject dialogWindow;
 
     [SerializeField] private Image dialogueImage;
-    [SerializeField] private TextMeshProUGUI talkerText;
+    [SerializeField] private TextMeshProUGUI dialogOwnerNameText;
 
-    [FormerlySerializedAs("descreptionText")]
-    [SerializeField]
+    [FormerlySerializedAs("descreptionText")] [SerializeField]
     private TextMeshProUGUI descriptionText;
 
-    [Header("연출")]
+    [Header("연출")] 
     
     [SerializeField] private UITransitionEffect blackFadeIn;
     [SerializeField] private UITransitionEffect blackFadeOut;
@@ -37,43 +34,41 @@ public class TalkManager : Singleton<TalkManager>
 
     private bool isEnding;
 
-    [Space(20)]
-    
-    [SerializeField] private Image backgroundTitle;
+    [Space(20)] [SerializeField] private Image backgroundTitle;
     [SerializeField] private TextMeshProUGUI backgroundTitleText;
     [SerializeField] private TextMeshProUGUI backgroundTitleLore;
 
     private const float backgroundTitleDuration = 1.5f;
 
-    [Header("배경")]
+    [Header("배경")] 
     
     [SerializeField] private Image backgroundImage;
     [SerializeField] private Image subBackgroundImage;
     private UITransitionEffect subBackgroundEffect;
 
-    [Header("스탠딩")]
+    [Header("스탠딩")] 
     
     [SerializeField] private UIStanding uiStanding;
     [SerializeField] private RectTransform standingParent;
     private readonly List<UIStanding> uiStandings = new List<UIStanding>();
 
-    [Header("애니메이션")] 
+    [Header("애니메이션")]
     
-    private Queue<Animation> animations = new Queue<Animation>();
+    private readonly Queue<DialogAnimation> animations = new Queue<DialogAnimation>();
     private float animationWaitTime;
 
-    private float talkDuration;
-    private const float defaultTalkCooltime = 0.05f;
+    private float dialogDuration;
+    private const float defaultDialogCooltime = 0.05f;
 
     private float autoDuration;
     private const float autoWaitTime = 2f;
 
-    private Dictionary<string, Action<UIStanding, Animation>> charAnimationPairs = new Dictionary<string, Action<UIStanding, Animation>>();
-    private Dictionary<string, Action<Animation>> camAnimationPairs = new Dictionary<string, Action<Animation>>();
-    private Dictionary<string, Action<Animation>> dialAnimationPairs = new Dictionary<string, Action<Animation>>();
-    private Dictionary<string, Action<Animation>> utilAnimationPairs = new Dictionary<string, Action<Animation>>();
+    private readonly Dictionary<string, Action<UIStanding, DialogAnimation>> charAnimationPairs = new Dictionary<string, Action<UIStanding, DialogAnimation>>();
+    private readonly Dictionary<string, Action<DialogAnimation>> camAnimationPairs = new Dictionary<string, Action<DialogAnimation>>();
+    private readonly Dictionary<string, Action<DialogAnimation>> dialAnimationPairs = new Dictionary<string, Action<DialogAnimation>>();
+    private readonly Dictionary<string, Action<DialogAnimation>> utilAnimationPairs = new Dictionary<string, Action<DialogAnimation>>();
 
-    [Header("선택지")]
+    [Header("선택지")] 
     
     [SerializeField] private UIOption uiOption;
     [SerializeField] private RectTransform optionParent;
@@ -81,35 +76,33 @@ public class TalkManager : Singleton<TalkManager>
     private bool isHasOption;
     private bool optionActive;
 
-    [Header("스킵")]
+    [Header("스킵")] 
     
     [SerializeField] private Image skipBackground;
     [SerializeField] private Image skipGaugeBackground;
     [SerializeField] private Image skipGaugeImage;
 
-    [Space(10)]
-    
-    [SerializeField] private Image skipWindow;
+    [Space(10)] [SerializeField] private Image skipWindow;
     [SerializeField] private Button skipOkayButton;
     [SerializeField] private TextMeshProUGUI skipText;
     [SerializeField] private Button skipExitButton;
     private TextMeshProUGUI skipOkayButtonText;
 
-    [HideInInspector] public string talkSkipText;
+    [HideInInspector] public string dialogSkipText;
     private bool skipButtonClicking;
     private float skipDuration;
 
     private const float skipGaugeTime = 1;
     private const float skipWindowTime = 2.5f;
 
-    [Header("터치 이벤트")] 
+    [Header("터치 이벤트")]
     
     private Vector2 dragStartPos;
     private bool isDialogHide;
 
     private const float dragMinPower = 400;
 
-    [Header("이벤트")]
+    [Header("이벤트")] 
     
     [SerializeField] private Image eventWindow;
     [SerializeField] private TextMeshProUGUI eventTitleText;
@@ -124,8 +117,14 @@ public class TalkManager : Singleton<TalkManager>
     private Vector2 nowPos;
     private Vector2 defaultPos;
 
-    protected override void OnCreated()
+    [Header("디테일들")] 
+    
+    public LogDetail dialogLogDetail;
+
+    public override void OnCreated()
     {
+        dialogLogDetail = GetComponent<LogDetail>();
+
         subBackgroundEffect = subBackgroundImage.GetComponent<UITransitionEffect>();
         eventOkayButtonText = eventOkayButton.GetComponent<TextMeshProUGUI>();
         skipOkayButtonText = skipOkayButton.GetComponent<TextMeshProUGUI>();
@@ -136,31 +135,33 @@ public class TalkManager : Singleton<TalkManager>
         foreach (RectTransform rect in optionParent)
             uiOptions.Add(rect.GetComponent<UIOption>());
 
-        talkWindow.gameObject.SetActive(false);
+        dialogWindow.gameObject.SetActive(false);
 
         EventInit();
         SkipInit();
         AnimationInit();
     }
 
-    protected override void OnReset()
+    public override void OnReset()
     {
-        nowTalk = null;
-        prevTalk = null;
+        dialogLogDetail.OnReset();
 
-        talkQueue.Clear();
+        nowDialog = null;
+        prevDialog = null;
+
+        dialogQueue.Clear();
         animations.Clear();
 
-        talkDuration = 0;
+        dialogDuration = 0;
         autoDuration = 0;
 
-        talkWindow.gameObject.SetActive(false);
+        dialogWindow.gameObject.SetActive(false);
         eventWindow.gameObject.SetActive(false);
 
         blackFadeIn.gameObject.SetActive(false);
         blackFadeOut.gameObject.SetActive(false);
 
-        talkSkipText = string.Empty;
+        dialogSkipText = string.Empty;
         isEnding = false;
 
         SkipReset();
@@ -177,7 +178,7 @@ public class TalkManager : Singleton<TalkManager>
     {
         if (isEnding) return;
 
-        TalkUpdate();
+        DialogUpdate();
         AnimationWait();
     }
 
@@ -192,7 +193,7 @@ public class TalkManager : Singleton<TalkManager>
                 obj.Init();
             }
 
-            talkWindow.gameObject.SetActive(false);
+            dialogWindow.gameObject.SetActive(false);
 
             isEnding = false;
             GameManager.Instance.sceneManager.SceneLoadFadeOut(1);
@@ -204,7 +205,7 @@ public class TalkManager : Singleton<TalkManager>
         if (isEnding) return;
         dragStartPos = (data as PointerEventData).position;
 
-        if (string.IsNullOrEmpty(talkSkipText) || isHasOption) return;
+        if (string.IsNullOrEmpty(dialogSkipText) || isHasOption) return;
 
         skipButtonClicking = true;
     }
@@ -214,7 +215,7 @@ public class TalkManager : Singleton<TalkManager>
         if (isEnding) return;
 
         bool isSkipping = false;
-        if (!string.IsNullOrEmpty(talkSkipText) && !isHasOption)
+        if (!string.IsNullOrEmpty(dialogSkipText) && !isHasOption)
         {
             isSkipping = skipDuration >= skipGaugeTime;
             skipButtonClicking = false;
@@ -240,12 +241,12 @@ public class TalkManager : Singleton<TalkManager>
             }
             else if (subVector.y < -dragMinPower)
             {
-                WindowManager.Instance.ClickWindow(WindowType.LOG);
+                GameManager.Instance.windowManager.ClickWindow(WindowType.LOG);
                 return;
             }
             else if (subVector.x > dragMinPower)
             {
-                WindowManager.Instance.WindowOpen();
+                GameManager.Instance.windowManager.WindowOpen();
                 return;
             }
         }
@@ -263,13 +264,13 @@ public class TalkManager : Singleton<TalkManager>
         if (descriptionText.maxVisibleCharacters < descriptionText.textInfo.characterCount)
         {
             descriptionText.maxVisibleCharacters = descriptionText.textInfo.characterCount;
-            if (nowTalk.dialogue.talkAnimations.Count <= 0) return;
+            if (nowDialog.dialogText.dialogAnimations.Count <= 0) return;
 
-            var talkAnimations = nowTalk.dialogue.talkAnimations.OrderBy(talkAnimation => talkAnimation.parameter)
+            var dialogAnimations = nowDialog.dialogText.dialogAnimations.OrderBy(dialogAnimation => dialogAnimation.parameter)
                 .ToList();
-            foreach (var talkAnimation in talkAnimations)
-                if (talkAnimation.type == TalkAnimationType.ANIM)
-                    EffectSetting(Mathf.RoundToInt(talkAnimation.parameter));
+            foreach (var dialogAnimation in dialogAnimations)
+                if (dialogAnimation.type == DialogTextAnimationType.ANIM)
+                    EffectSetting(Mathf.RoundToInt(dialogAnimation.parameter));
         }
         else
         {
@@ -281,10 +282,11 @@ public class TalkManager : Singleton<TalkManager>
                 var linkInfo = descriptionText.textInfo.linkInfo[linkIndex];
                 EventOpen(linkInfo.GetLinkID(), (data as PointerEventData).position);
             }
-            else if (nowTalk.optionList == null || nowTalk.optionList.Count <= 0)
-                NewTalk();
+            else if (nowDialog.optionList == null || nowDialog.optionList.Count <= 0)
+                NewDialog();
         }
     }
+
     private void CheckNextNoDialogue()
     {
         if (animations.Count > 0) return;
@@ -305,17 +307,17 @@ public class TalkManager : Singleton<TalkManager>
         {
             autoDuration -= autoWaitTime;
 
-            NewTalk();
+            NewDialog();
         }
     }
 
-    private void TalkUpdate()
+    private void DialogUpdate()
     {
-        if (!talkWindow.gameObject.activeSelf) return;
-        if (nowTalk == null) return;
+        if (!dialogWindow.gameObject.activeSelf) return;
+        if (nowDialog == null) return;
         if (isDialogHide) return;
 
-        if (!dialogueImage.gameObject.activeSelf || nowTalk.dialogue == null)
+        if (!dialogueImage.gameObject.activeSelf || nowDialog.dialogText == null)
         {
             CheckNextNoDialogue();
             return;
@@ -328,23 +330,23 @@ public class TalkManager : Singleton<TalkManager>
         if (skipWindow.gameObject.activeSelf) return;
         if (descriptionText.maxVisibleCharacters < descriptionText.textInfo.characterCount)
         {
-            talkDuration += Time.deltaTime;
-            float nextDuration = defaultTalkCooltime * GameManager.Instance.saveManager.GameData.textSpeed;
-            if (talkDuration >= nextDuration)
+            dialogDuration += Time.deltaTime;
+            float nextDuration = defaultDialogCooltime * GameManager.Instance.saveManager.GameData.textSpeed;
+            if (dialogDuration >= nextDuration)
             {
-                talkDuration -= nextDuration;
+                dialogDuration -= nextDuration;
                 descriptionText.maxVisibleCharacters++;
-                foreach (var talkAnimation in nowTalk.dialogue.talkAnimations)
+                foreach (var dialogAnimation in nowDialog.dialogText.dialogAnimations)
                 {
-                    if (talkAnimation.startIndex == descriptionText.maxVisibleCharacters)
+                    if (dialogAnimation.startIndex == descriptionText.maxVisibleCharacters)
                     {
-                        switch (talkAnimation.type)
+                        switch (dialogAnimation.type)
                         {
-                            case TalkAnimationType.WAIT:
-                                talkDuration -= talkAnimation.parameter;
+                            case DialogTextAnimationType.WAIT:
+                                dialogDuration -= dialogAnimation.parameter;
                                 break;
-                            case TalkAnimationType.ANIM:
-                                EffectSetting(Mathf.RoundToInt(talkAnimation.parameter));
+                            case DialogTextAnimationType.ANIM:
+                                EffectSetting(Mathf.RoundToInt(dialogAnimation.parameter));
                                 break;
                         }
                     }
@@ -392,7 +394,7 @@ public class TalkManager : Singleton<TalkManager>
                 if (autoDuration >= autoWaitTime)
                 {
                     autoDuration -= autoWaitTime;
-                    NewTalk();
+                    NewDialog();
                 }
             }
         }
@@ -400,18 +402,18 @@ public class TalkManager : Singleton<TalkManager>
         EffectUpdate();
     }
 
-    private void NewTalk(Talk newTalk = null)
+    private void NewDialog(Dialog newDialog = null)
     {
-        if (talkQueue.Count <= 0)
+        if (dialogQueue.Count <= 0)
         {
             EndingSetUp();
 
             animations.Clear();
 
-            talkSkipText = string.Empty;
+            dialogSkipText = string.Empty;
 
-            prevTalk = null;
-            nowTalk = null;
+            prevDialog = null;
+            nowDialog = null;
 
             EventExit();
             SkipReset();
@@ -420,12 +422,12 @@ public class TalkManager : Singleton<TalkManager>
             return;
         }
 
-        prevTalk = nowTalk;
-        talkWindow.gameObject.SetActive(true);
+        prevDialog = nowDialog;
+        dialogWindow.gameObject.SetActive(true);
         dialogueImage.DOKill();
 
         descriptionText.maxVisibleCharacters = 0;
-        talkDuration = 0;
+        dialogDuration = 0;
         autoDuration = 0;
         animationWaitTime = 0;
         animations.Clear();
@@ -433,30 +435,30 @@ public class TalkManager : Singleton<TalkManager>
         optionParent.gameObject.SetActive(true);
 
         endTextEffect.gameObject.SetActive(false);
-        nowTalk = newTalk == null ? talkQueue.Dequeue() : newTalk;
+        nowDialog = newDialog == null ? dialogQueue.Dequeue() : newDialog;
         isHasEvent = false;
         isDialogHide = false;
 
-        isHasOption = nowTalk.optionList.Count > 0;
+        isHasOption = nowDialog.optionList.Count > 0;
         optionActive = false;
 
-        if (nowTalk.dialogue != null)
+        if (nowDialog.dialogText != null)
         {
-            isHasEvent = nowTalk.dialogue.tipEvent != null && nowTalk.dialogue.tipEvent.Exists((tipEvent) =>
+            isHasEvent = nowDialog.dialogText.tipEvent != null && nowDialog.dialogText.tipEvent.Exists((tipEvent) =>
                 GameManager.Instance.saveManager.GameData.getTips.Contains(tipEvent.eventName));
-            talkerText.text = string.IsNullOrEmpty(nowTalk.dialogue.talker)
+            dialogOwnerNameText.text = string.IsNullOrEmpty(nowDialog.dialogText.name)
                 ? " "
-                : "> " + Utility.GetTalkerName(nowTalk.dialogue.talker);
-            descriptionText.text = string.IsNullOrEmpty(nowTalk.dialogue.text)
+                : "> " + Utility.GetDialogName(nowDialog.dialogText.name);
+            descriptionText.text = string.IsNullOrEmpty(nowDialog.dialogText.text)
                 ? " "
-                : Utility.GetTalkerName(nowTalk.dialogue.text);
-            dialogueImage.gameObject.SetActive(nowTalk.dialogue.active);
-            dialogueImage.color = nowTalk.dialogue.invisible
+                : Utility.GetDialogName(nowDialog.dialogText.text);
+            dialogueImage.gameObject.SetActive(nowDialog.dialogText.active);
+            dialogueImage.color = nowDialog.dialogText.invisible
                 ? Color.clear
                 : new Color(0.08627451F, 0.08627451F, 0.08627451F, 0.9137255F);
-            if (nowTalk.dialogue.active)
+            if (nowDialog.dialogText.active)
             {
-                LogManager.Instance.AddLog(nowTalk);
+                dialogLogDetail.AddLog(nowDialog);
                 EventSetting();
             }
         }
@@ -465,50 +467,50 @@ public class TalkManager : Singleton<TalkManager>
             dialogueImage.gameObject.SetActive(false);
         }
 
-        if (!string.IsNullOrEmpty(nowTalk.bgm))
+        if (!string.IsNullOrEmpty(nowDialog.bgm))
         {
-            if (prevTalk == null || !nowTalk.bgm.Equals(prevTalk.bgm))
+            if (prevDialog == null || !nowDialog.bgm.Equals(prevDialog.bgm))
             {
-                SoundManager.Instance.PlaySound(nowTalk.bgm);
+                GameManager.Instance.soundManager.PlaySound(nowDialog.bgm);
             }
         }
 
-        var background = ResourcesManager.Instance.GetBackground(nowTalk.background.name);
-        if (prevTalk != null)
+        var background = GameManager.Instance.resourcesManager.GetBackground(nowDialog.dialogBackground.name);
+        if (prevDialog != null)
         {
-            if (prevTalk.background.name != nowTalk.background.name ||
-                Math.Abs(prevTalk.background.scale - nowTalk.background.scale) > 0.01f ||
-                prevTalk.background.title != nowTalk.background.title)
+            if (prevDialog.dialogBackground.name != nowDialog.dialogBackground.name ||
+                Math.Abs(prevDialog.dialogBackground.scale - nowDialog.dialogBackground.scale) > 0.01f ||
+                prevDialog.dialogBackground.title != nowDialog.dialogBackground.title)
             {
-                if (!string.IsNullOrEmpty(nowTalk.background.name))
+                if (!string.IsNullOrEmpty(nowDialog.dialogBackground.name))
                 {
                     subBackgroundImage.DOKill(true);
-                    switch (nowTalk.background.effect)
+                    switch (nowDialog.dialogBackground.effect)
                     {
                         default:
-                        case BackgroundEffect.NONE:
+                        case DialogBackgroundEffect.NONE:
                             backgroundImage.sprite = background;
-                            backgroundImage.rectTransform.localScale = Vector3.one * nowTalk.background.scale;
+                            backgroundImage.rectTransform.localScale = Vector3.one * nowDialog.dialogBackground.scale;
                             subBackgroundImage.gameObject.SetActive(false);
                             break;
-                        case BackgroundEffect.TRANS:
+                        case DialogBackgroundEffect.TRANS:
                             subBackgroundImage.gameObject.SetActive(true);
                             subBackgroundImage.sprite = background;
-                            backgroundImage.rectTransform.localScale = Vector3.one * prevTalk.background.scale;
-                            subBackgroundImage.rectTransform.localScale = Vector3.one * nowTalk.background.scale;
+                            backgroundImage.rectTransform.localScale = Vector3.one * prevDialog.dialogBackground.scale;
+                            subBackgroundImage.rectTransform.localScale = Vector3.one * nowDialog.dialogBackground.scale;
                             subBackgroundEffect.effectFactor = 0;
                             break;
-                        case BackgroundEffect.FADE:
+                        case DialogBackgroundEffect.FADE:
                             subBackgroundEffect.effectFactor = 1;
 
-                            backgroundImage.rectTransform.localScale = Vector3.one * prevTalk.background.scale;
+                            backgroundImage.rectTransform.localScale = Vector3.one * prevDialog.dialogBackground.scale;
 
                             subBackgroundImage.gameObject.SetActive(true);
                             subBackgroundImage.sprite = background;
-                            subBackgroundImage.rectTransform.localScale = Vector3.one * nowTalk.background.scale;
+                            subBackgroundImage.rectTransform.localScale = Vector3.one * nowDialog.dialogBackground.scale;
                             subBackgroundImage.color = Utility.GetFadeColor(Color.white, 0);
 
-                            subBackgroundImage.DOFade(1, nowTalk.background.effectDuration).OnComplete(() =>
+                            subBackgroundImage.DOFade(1, nowDialog.dialogBackground.effectDuration).OnComplete(() =>
                             {
                                 backgroundImage.sprite = subBackgroundImage.sprite;
                                 backgroundImage.rectTransform.localScale = subBackgroundImage.rectTransform.localScale;
@@ -523,11 +525,11 @@ public class TalkManager : Singleton<TalkManager>
         {
             subBackgroundImage.DOKill(true);
             backgroundImage.sprite = background;
-            backgroundImage.rectTransform.localScale = Vector3.one * nowTalk.background.scale;
+            backgroundImage.rectTransform.localScale = Vector3.one * nowDialog.dialogBackground.scale;
             subBackgroundImage.gameObject.SetActive(false);
         }
 
-        if (!string.IsNullOrEmpty(nowTalk.background.title))
+        if (!string.IsNullOrEmpty(nowDialog.dialogBackground.title))
         {
             backgroundTitle.rectTransform.DOKill();
             backgroundTitle.rectTransform.anchoredPosition =
@@ -536,11 +538,11 @@ public class TalkManager : Singleton<TalkManager>
             {
                 backgroundTitle.rectTransform.DOAnchorPosX(1377, backgroundTitleDuration).SetEase(Ease.InQuart);
             });
-            backgroundTitleText.text = nowTalk.background.title;
-            if (!string.IsNullOrEmpty(nowTalk.background.description))
+            backgroundTitleText.text = nowDialog.dialogBackground.title;
+            if (!string.IsNullOrEmpty(nowDialog.dialogBackground.description))
             {
                 backgroundTitleLore.gameObject.SetActive(true);
-                backgroundTitleLore.text = nowTalk.background.description;
+                backgroundTitleLore.text = nowDialog.dialogBackground.description;
             }
             else
             {
@@ -548,7 +550,7 @@ public class TalkManager : Singleton<TalkManager>
             }
         }
 
-        if (nowTalk.background.name.StartsWith("CG_"))
+        if (nowDialog.dialogBackground.name.StartsWith("CG_"))
         {
             foreach (var standing in uiStandings)
             {
@@ -556,14 +558,14 @@ public class TalkManager : Singleton<TalkManager>
                 standing.Init();
             }
 
-            GameManager.Instance.saveManager.AddCgData(nowTalk.background.name);
+            GameManager.Instance.saveManager.AddCgData(nowDialog.dialogBackground.name);
             EffectSetting();
             return;
         }
 
-        if (uiStandings.Count < nowTalk.characters.Count)
+        if (uiStandings.Count < nowDialog.characters.Count)
         {
-            int repeatCount = nowTalk.characters.Count - uiStandings.Count;
+            int repeatCount = nowDialog.characters.Count - uiStandings.Count;
             for (int i = 0; i < repeatCount; i++)
             {
                 var temp = Instantiate(uiStanding, standingParent);
@@ -573,9 +575,9 @@ public class TalkManager : Singleton<TalkManager>
         }
 
         var standings = new List<UIStanding>(uiStandings);
-        var talkStandings = new List<Character>(nowTalk.characters);
+        var dialogStandings = new List<DialogCharacter>(nowDialog.characters);
 
-        foreach (var standing in nowTalk.characters)
+        foreach (var standing in nowDialog.characters)
         {
             var prevStanding = standings.Find(x =>
                 x.NowStanding != null && x.NowStanding.name.Equals(standing.name) &&
@@ -586,10 +588,10 @@ public class TalkManager : Singleton<TalkManager>
             standings.Remove(prevStanding);
             prevStanding.gameObject.SetActive(true);
             prevStanding.ShowCharacter(standing);
-            talkStandings.Remove(standing);
+            dialogStandings.Remove(standing);
         }
 
-        foreach (var standing in talkStandings)
+        foreach (var standing in dialogStandings)
         {
             var newStanding = standings[0];
 
@@ -609,6 +611,7 @@ public class TalkManager : Singleton<TalkManager>
     }
 
     #region Skip
+
     private void SkipInit()
     {
         skipOkayButton.onClick.RemoveAllListeners();
@@ -630,7 +633,7 @@ public class TalkManager : Singleton<TalkManager>
 
     private void SkipUpdate()
     {
-        if (!skipButtonClicking || skipWindow.gameObject.activeSelf || talkQueue.Count <= 0) return;
+        if (!skipButtonClicking || skipWindow.gameObject.activeSelf || dialogQueue.Count <= 0) return;
         skipDuration += Time.deltaTime;
         if (skipDuration >= skipWindowTime)
         {
@@ -644,7 +647,7 @@ public class TalkManager : Singleton<TalkManager>
             skipOkayButtonText.color = Utility.GetFadeColor(eventOkayButtonText.color, 1);
             skipOkayButtonText.DOFade(0, 0.8f).SetLoops(-1, LoopType.Yoyo);
 
-            skipText.text = Utility.GetTalkerName(talkSkipText);
+            skipText.text = Utility.GetDialogName(dialogSkipText);
         }
         else if (skipDuration >= skipGaugeTime)
         {
@@ -667,34 +670,34 @@ public class TalkManager : Singleton<TalkManager>
     {
         SkipExit();
 
-        while (talkQueue.Count > 0)
+        while (dialogQueue.Count > 0)
         {
-            Talk talk = talkQueue.Dequeue();
+            Dialog dialog = dialogQueue.Dequeue();
 
-            if (talk.optionList != null && talk.optionList.Count > 0)
+            if (dialog.optionList != null && dialog.optionList.Count > 0)
             {
-                if (talk.optionList.Exists((x) => (x.eventList != null && x.eventList.Count > 0) || x.special))
+                if (dialog.optionList.Exists((x) => (x.eventList != null && x.eventList.Count > 0) || x.special))
                 {
-                    NewTalk(talk);
+                    NewDialog(dialog);
                     return;
                 }
 
-                DialogAdd(talk.optionList[0].eventType,
-                    ResourcesManager.Instance.GetTalk(talk.optionList[0].dialog).talks);
+                DialogAdd(dialog.optionList[0].dialogEventType,
+                    GameManager.Instance.resourcesManager.GetDialog(dialog.optionList[0].dialog).dialogs);
             }
 
-            if (talk.eventList != null && talk.eventList.Count > 0)
+            if (dialog.eventList != null && dialog.eventList.Count > 0)
             {
-                foreach (var getEvent in talk.eventList)
+                foreach (var getEvent in dialog.eventList)
                 {
                     EventInteract(getEvent);
                 }
             }
 
-            LogManager.Instance.AddLog(talk);
+            dialogLogDetail.AddLog(dialog);
         }
 
-        NewTalk();
+        NewDialog();
     }
 
     private void SkipExit()
@@ -716,11 +719,11 @@ public class TalkManager : Singleton<TalkManager>
 
     private void OptionSetting()
     {
-        if (nowTalk == null || nowTalk.optionList == null || nowTalk.optionList.Count <= 0) return;
+        if (nowDialog == null || nowDialog.optionList == null || nowDialog.optionList.Count <= 0) return;
 
-        if (uiOptions.Count < nowTalk.optionList.Count)
+        if (uiOptions.Count < nowDialog.optionList.Count)
         {
-            int repeatCount = nowTalk.optionList.Count - uiOptions.Count;
+            int repeatCount = nowDialog.optionList.Count - uiOptions.Count;
             for (int i = 0; i < repeatCount; i++)
             {
                 var temp = Instantiate(uiOption, optionParent);
@@ -729,9 +732,9 @@ public class TalkManager : Singleton<TalkManager>
         }
 
         var options = new List<UIOption>(uiOptions);
-        var talkOptions = new List<Option>(nowTalk.optionList);
+        var dialogOptions = new List<DialogOption>(nowDialog.optionList);
 
-        foreach (var option in talkOptions)
+        foreach (var option in dialogOptions)
         {
             var changeOption = options[0];
 
@@ -766,14 +769,15 @@ public class TalkManager : Singleton<TalkManager>
             }
         }
 
-        var talks = ResourcesManager.Instance.GetTalk(setOption.Option.dialog);
+        var dialogs = GameManager.Instance.resourcesManager.GetDialog(setOption.DialogOption.dialog);
 
-        DialogAdd(setOption.Option.eventType, talks == null ? null : talks.talks);
+        DialogAdd(setOption.DialogOption.dialogEventType, dialogs == null ? null : dialogs.dialogs);
     }
 
     #endregion
 
     #region Event
+
     private void EventInit()
     {
         defaultPos = eventWindow.rectTransform.anchoredPosition;
@@ -792,11 +796,11 @@ public class TalkManager : Singleton<TalkManager>
         selectEvent = eventName;
 
         bool isHaveTips = GameManager.Instance.saveManager.GameData.getTips.Contains(eventName);
-        var tipEvent = nowTalk.dialogue.tipEvent.Find((tip) => tip.eventName == eventName);
-        bool isDialogTips = !string.IsNullOrEmpty(tipEvent.talkName) && !isHasOption;
+        var tipEvent = nowDialog.dialogText.tipEvent.Find((tip) => tip.eventName == eventName);
+        bool isDialogTips = !string.IsNullOrEmpty(tipEvent.dialogName) && !isHasOption;
 
         eventTitleText.text = eventName + "에 대해";
-        eventDescriptionText.text = isHaveTips ? ResourcesManager.Instance.GetTip(eventName) : "정보가 없다...";
+        eventDescriptionText.text = isHaveTips ? GameManager.Instance.resourcesManager.GetTip(eventName) : "정보가 없다...";
 
         eventWindow.gameObject.SetActive(true);
         eventWindow.rectTransform.DOKill();
@@ -820,10 +824,10 @@ public class TalkManager : Singleton<TalkManager>
     private void EventOkay()
     {
         EventExit();
-        var tipEvent = nowTalk.dialogue.tipEvent.Find((tip) => tip.eventName == selectEvent);
-        var talks = ResourcesManager.Instance.GetTalk(tipEvent.talkName).talks;
+        var tipEvent = nowDialog.dialogText.tipEvent.Find((tip) => tip.eventName == selectEvent);
+        var dialogs = GameManager.Instance.resourcesManager.GetDialog(tipEvent.dialogName).dialogs;
 
-        DialogAdd(tipEvent.eventType, talks);
+        DialogAdd(tipEvent.dialogEventType, dialogs);
     }
 
     private void EventExit()
@@ -839,113 +843,113 @@ public class TalkManager : Singleton<TalkManager>
 
     private void EventSetting()
     {
-        if (nowTalk.eventList == null || nowTalk.eventList.Count <= 0) return;
-        if (GameManager.Instance.sceneManager.nowScene == Scene.TITLE) return;
+        if (nowDialog.eventList == null || nowDialog.eventList.Count <= 0) return;
+        if (GameManager.Instance.sceneManager.NowScene == Scene.TITLE) return;
 
-        foreach (var getEvent in nowTalk.eventList)
+        foreach (var getEvent in nowDialog.eventList)
             EventInteract(getEvent);
     }
 
-    private void EventInteract(Event getEvent)
+    private void EventInteract(DialogEvent getDialogEvent)
     {
-        if (GameManager.Instance.sceneManager.nowScene == Scene.TITLE) return;
+        if (GameManager.Instance.sceneManager.NowScene == Scene.TITLE) return;
 
-        switch (getEvent.type)
+        switch (getDialogEvent.type)
         {
-            case Event.Type.ADD_TIP:
-                {
-                    GameManager.Instance.saveManager.AddTip(getEvent.name);
-                    break;
-                }
+            case DialogEvent.Type.ADD_TIP:
+            {
+                GameManager.Instance.saveManager.AddTip(getDialogEvent.name);
+                break;
+            }
         }
     }
 
     #endregion
 
-    #region Add / Save Talk
+    #region Add / Save Dialog
 
-    public void AddTalk(string talkName)
+    public void AddDialog(string dialogName)
     {
-        var talks = ResourcesManager.Instance.GetTalk(talkName);
+        var dialogs = GameManager.Instance.resourcesManager.GetDialog(dialogName);
 
-        if (!string.IsNullOrEmpty(talks.cgTitle))
-            if (!GameManager.Instance.saveManager.GameData.getVideo.Contains(talkName))
-                GameManager.Instance.saveManager.GameData.getVideo.Add(talkName);
+        if (!string.IsNullOrEmpty(dialogs.cgTitle))
+            if (!GameManager.Instance.saveManager.GameData.getScenes.Contains(dialogName))
+                GameManager.Instance.saveManager.GameData.getScenes.Add(dialogName);
 
-        AddTalk(talks);
+        AddDialog(dialogs);
     }
 
-    public void AddTalk(Talks talks)
+    public void AddDialog(Dialogs dialogs)
     {
-        bool flag = talkQueue.Count <= 0;
-        foreach (var talk in talks.talks)
-            talkQueue.Enqueue(talk);
+        bool flag = dialogQueue.Count <= 0;
+        foreach (var dialog in dialogs.dialogs)
+            dialogQueue.Enqueue(dialog);
 
-        if (!string.IsNullOrEmpty(talks.skipText))
-            talkSkipText = talks.skipText;
+        if (!string.IsNullOrEmpty(dialogs.skipText))
+            dialogSkipText = dialogs.skipText;
 
-        if (flag) NewTalk();
+        if (flag) NewDialog();
     }
 
-    public void AddTalk(List<Talk> talks)
+    public void AddDialog(List<Dialog> dialogs)
     {
-        bool flag = talkQueue.Count <= 0;
-        foreach (var talk in talks)
-            talkQueue.Enqueue(talk);
+        bool flag = dialogQueue.Count <= 0;
+        foreach (var dialog in dialogs)
+            dialogQueue.Enqueue(dialog);
 
-        if (flag) NewTalk();
+        if (flag) NewDialog();
     }
 
-    public List<Talk> GetLeftTalks()
+    public List<Dialog> GetLeftDialogs()
     {
-        var talkList = new List<Talk>();
-        if (nowTalk != null)
-            talkList.Add(nowTalk);
-        talkList.AddRange(talkQueue);
-        return talkList;
+        var dialogList = new List<Dialog>();
+        if (nowDialog != null)
+            dialogList.Add(nowDialog);
+        dialogList.AddRange(dialogQueue);
+        return dialogList;
     }
 
-    private void DialogAdd(EventType eventType, List<Talk> talks)
+    private void DialogAdd(DialogEventType dialogEventType, List<Dialog> dialogs)
     {
-        if (talks == null || talks.Count <= 0)
+        if (dialogs == null || dialogs.Count <= 0)
         {
-            NewTalk();
+            NewDialog();
             return;
         }
 
-        switch (eventType)
+        switch (dialogEventType)
         {
-            case EventType.BEFORE:
-                {
-                    var leftTalks = talkQueue.ToList();
-                    talkQueue.Clear();
+            case DialogEventType.BEFORE:
+            {
+                var leftDialogs = dialogQueue.ToList();
+                dialogQueue.Clear();
 
-                    foreach (var talk in talks)
-                        talkQueue.Enqueue(talk);
+                foreach (var dialog in dialogs)
+                    dialogQueue.Enqueue(dialog);
 
-                    foreach (var talk in leftTalks)
-                        talkQueue.Enqueue(talk);
+                foreach (var dialog in leftDialogs)
+                    dialogQueue.Enqueue(dialog);
 
-                    if (talks.Count != 0 && leftTalks.Count != 0)
-                        NewTalk();
-                    break;
-                }
-            case EventType.AFTER:
-                {
-                    bool flag = talkQueue.Count <= 0;
+                if (dialogs.Count != 0 && leftDialogs.Count != 0)
+                    NewDialog();
+                break;
+            }
+            case DialogEventType.AFTER:
+            {
+                bool flag = dialogQueue.Count <= 0;
 
-                    AddTalk(talks);
-                    if (!flag)
-                        NewTalk();
-                    break;
-                }
+                AddDialog(dialogs);
+                if (!flag)
+                    NewDialog();
+                break;
+            }
             default:
-            case EventType.CHANGE:
-                {
-                    talkQueue.Clear();
-                    AddTalk(talks);
-                    break;
-                }
+            case DialogEventType.CHANGE:
+            {
+                dialogQueue.Clear();
+                AddDialog(dialogs);
+                break;
+            }
         }
     }
 
@@ -984,11 +988,11 @@ public class TalkManager : Singleton<TalkManager>
 
         dialAnimationPairs.Add("On", (anim) =>
         {
-            if (nowTalk.dialogue == null) return;
+            if (nowDialog.dialogText == null) return;
 
             dialogueImage.DOKill();
             dialogueImage.gameObject.SetActive(true);
-            if (nowTalk.dialogue.invisible)
+            if (nowDialog.dialogText.invisible)
             {
                 dialogueImage.color = Color.clear;
             }
@@ -1000,18 +1004,18 @@ public class TalkManager : Singleton<TalkManager>
 
             EventSetting();
 
-            if (!string.IsNullOrEmpty(nowTalk.dialogue.owner))
+            if (!string.IsNullOrEmpty(nowDialog.dialogText.owner))
             {
                 foreach (var standing in uiStandings)
                 {
                     if (!standing.gameObject.activeSelf) continue;
 
-                    standing.SetDark(standing.NowStanding.name != nowTalk.dialogue.owner);
+                    standing.SetDark(standing.NowStanding.name != nowDialog.dialogText.owner);
                 }
             }
 
-            if (!nowTalk.dialogue.active)
-                LogManager.Instance.AddLog(nowTalk);
+            if (!nowDialog.dialogText.active)
+                dialogLogDetail.AddLog(nowDialog);
         });
 
         dialAnimationPairs.Add("Shake", (anim) =>
@@ -1039,14 +1043,14 @@ public class TalkManager : Singleton<TalkManager>
 
     private void AnimationUpdate()
     {
-        if (!talkWindow.gameObject.activeSelf) return;
-        if (nowTalk == null) return;
+        if (!dialogWindow.gameObject.activeSelf) return;
+        if (nowDialog == null) return;
         if (animations.Count <= 0) return;
 
         var anim = animations.Dequeue();
         switch (anim.type)
         {
-            case AnimationType.CHAR:
+            case DialogAnimationType.CHAR:
                 var findStanding = uiStandings.Find((standing) =>
                     standing.gameObject.activeSelf && standing.NowStanding != null &&
                     standing.NowStanding.name == anim.name);
@@ -1054,14 +1058,14 @@ public class TalkManager : Singleton<TalkManager>
 
                 charAnimationPairs[anim.effect]?.Invoke(findStanding, anim);
                 break;
-            case AnimationType.DIAL:
+            case DialogAnimationType.DIAL:
                 dialAnimationPairs[anim.effect]?.Invoke(anim);
                 break;
-            case AnimationType.CAM:
+            case DialogAnimationType.CAM:
                 camAnimationPairs[anim.effect]?.Invoke(anim);
                 break;
             default:
-            case AnimationType.UTIL:
+            case DialogAnimationType.UTIL:
                 utilAnimationPairs[anim.effect]?.Invoke(anim);
                 return;
         }
@@ -1080,7 +1084,7 @@ public class TalkManager : Singleton<TalkManager>
             if (subBackgroundEffect.effectFactor < 1)
             {
                 subBackgroundEffect.effectFactor = Mathf.Min(1,
-                    subBackgroundEffect.effectFactor + Time.deltaTime / nowTalk.background.effectDuration);
+                    subBackgroundEffect.effectFactor + Time.deltaTime / nowDialog.dialogBackground.effectDuration);
                 if (subBackgroundEffect.effectFactor >= 1)
                 {
                     backgroundImage.sprite = subBackgroundImage.sprite;
@@ -1105,14 +1109,14 @@ public class TalkManager : Singleton<TalkManager>
 
     private void EffectSetting(int index = 0)
     {
-        if (nowTalk.animationLists.Count <= 0) return;
+        if (nowDialog.animationLists.Count <= 0) return;
 
-        var talkAnimation = nowTalk.animationLists.Find((anim) => anim.index == index);
-        if (talkAnimation == null) return;
+        var dialogAnimation = nowDialog.animationLists.Find((anim) => anim.index == index);
+        if (dialogAnimation == null) return;
 
         bool flag = animations.Count == 0;
 
-        foreach (var anim in talkAnimation.animations)
+        foreach (var anim in dialogAnimation.animations)
         {
             animations.Enqueue(anim);
         }

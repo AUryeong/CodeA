@@ -183,7 +183,7 @@ namespace UI
             {
                 if (getCgs.Count > (picturesIdx * 6) + i)
                 {
-                    Sprite sprite = ResourcesManager.Instance.GetBackground(getCgs[(picturesIdx * 6) + i]);
+                    Sprite sprite = GameManager.Instance.resourcesManager.GetBackground(getCgs[(picturesIdx * 6) + i]);
                     cgs[i].image.sprite = sprite;
                     cgs[i].onClick.RemoveAllListeners();
                     cgs[i].onClick.AddListener(() => ShowFullscreenCg(sprite));
@@ -232,26 +232,26 @@ namespace UI
 
         private void ReloadVideos()
         {
-            var getVideos = GameManager.Instance.saveManager.GameData.getVideo;
+            var getVideos = GameManager.Instance.saveManager.GameData.getScenes;
             for (int i = 0; i < videos.Length; i++)
             {
                 if (getVideos.Count > (videosIdx * 6) + i)
                 {
-                    var talks = ResourcesManager.Instance.GetTalk(getVideos[(videosIdx * 6) + i]);
+                    var dialogs = GameManager.Instance.resourcesManager.GetDialog(getVideos[(videosIdx * 6) + i]);
 
                     string spriteName = "Black";
-                    foreach (var talk in talks.talks)
+                    foreach (var dialog in dialogs.dialogs)
                     {
-                        if (talk.background != null && !string.IsNullOrEmpty(talk.background.name) && talk.background.name != spriteName)
+                        if (dialog.dialogBackground != null && !string.IsNullOrEmpty(dialog.dialogBackground.name) && dialog.dialogBackground.name != spriteName)
                         {
-                            spriteName = talk.background.name;
+                            spriteName = dialog.dialogBackground.name;
                             break;
                         }
                     }
-                    videos[i].image.sprite = ResourcesManager.Instance.GetBackground(spriteName);
+                    videos[i].image.sprite = GameManager.Instance.resourcesManager.GetBackground(spriteName);
                     videos[i].onClick.RemoveAllListeners();
-                    videos[i].onClick.AddListener(() => ShowTalk(talks));
-                    videoTitles[i].text = talks.cgTitle;
+                    videos[i].onClick.AddListener(() => ShowDialog(dialogs));
+                    videoTitles[i].text = dialogs.cgTitle;
                 }
                 else
                 {
@@ -264,14 +264,15 @@ namespace UI
             videoNextButton.gameObject.SetActive(getVideos.Count > ((videosIdx + 1) * 6));
         }
 
-        private void ShowTalk(Talks talks)
+        private void ShowDialog(Dialogs dialogs)
         {
             if (isLoadingVideos) return;
 
             isLoadingVideos = true;
             GameManager.Instance.sceneManager.SceneLoadFadeIn(()=> {
-                TalkManager.Instance.AddTalk(talks);
+                GameManager.Instance.dialogManager.AddDialog(dialogs);
                 GameManager.Instance.sceneManager.SceneLoadFadeOut(0.1f);
+                
                 isLoadingVideos = false;
             });
         }
@@ -305,7 +306,7 @@ namespace UI
         public void EventOpen(string eventName)
         {
             eventTitleText.text = eventName + "에 대해";
-            eventDescriptionText.text = ResourcesManager.Instance.GetTip(eventName);
+            eventDescriptionText.text = GameManager.Instance.resourcesManager.GetTip(eventName);
 
             eventWindow.gameObject.SetActive(true);
             eventWindow.rectTransform.DOKill();

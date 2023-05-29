@@ -4,10 +4,8 @@ using UI;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class WindowManager : Singleton<WindowManager>
+public class WindowManager : Manager
 {
-    protected override bool IsDontDestroying => true;
-
     [SerializeField] private Button scrollButton;
     private bool isScrolling;
     private Image scrollImage;
@@ -22,7 +20,7 @@ public class WindowManager : Singleton<WindowManager>
 
     [Space(20)] [SerializeField] private List<UIWindow> windows;
 
-    protected override void OnReset()
+    public override void OnReset()
     {
         CloseScrollAndWindow();
     }
@@ -47,7 +45,7 @@ public class WindowManager : Singleton<WindowManager>
             CloseAllWindow();
     }
 
-    protected override void OnCreated()
+    public override void OnCreated()
     {
         scrollButton.onClick.RemoveAllListeners();
         scrollButton.onClick.AddListener(WindowScroll);

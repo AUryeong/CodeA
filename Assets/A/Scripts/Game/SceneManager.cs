@@ -6,9 +6,8 @@ using UnityEngine;
 
 public class SceneManager : Manager
 {
-    public Scene nowScene { get; private set; }
+    public Scene NowScene { get; private set; }
 
-    [Header("¾À ÀüÈ¯")]
     [SerializeField] private SpriteRenderer sceneTransitionBlack;
     [SerializeField] private MeshRenderer sceneTransitionSquare;
     private bool sceneLoading;
@@ -18,7 +17,7 @@ public class SceneManager : Manager
     }
     public override void OnReset()
     {
-        if (nowScene == Scene.LOADING) return;
+        if (NowScene == Scene.LOADING) return;
 
         SetResolution(Camera.main);
         foreach (var canvas in FindObjectsOfType<Canvas>())
@@ -31,11 +30,11 @@ public class SceneManager : Manager
     {
         if (sceneLoading) return;
 
-        nowScene = scene;
+        NowScene = scene;
         SceneLoadFadeIn(() => UnityEngine.SceneManagement.SceneManager.LoadScene((int)scene));
     }
 
-    public void SceneLoadFadeIn(Action action)
+    public void SceneLoadFadeIn(Action action = null)
     {
         sceneTransitionBlack.gameObject.SetActive(true);
         sceneTransitionSquare.gameObject.SetActive(true);

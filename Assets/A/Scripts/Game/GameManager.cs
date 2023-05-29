@@ -2,6 +2,7 @@ using System;
 using DG.Tweening;
 using Ingame;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public enum Scene
 {
@@ -17,20 +18,36 @@ public class GameManager : Singleton<GameManager>
     public Camera UICamera => uiCamera;
     [SerializeField] private Camera uiCamera;
 
+    [Header("매니저들")]
     public SceneManager sceneManager;
     public SaveManager saveManager;
+    public PoolManager poolManager;
+    public DialogManager dialogManager;
+    public SoundManager soundManager;
+    public ResourcesManager resourcesManager;
+    public WindowManager windowManager;
     protected override void OnCreated()
     {
         Application.targetFrameRate = Application.platform == RuntimePlatform.Android ? 30 : 120;
         
         sceneManager.OnCreated();
         saveManager.OnCreated();
+        dialogManager.OnCreated();
+        soundManager.OnCreated();
+        poolManager.OnCreated();
+        resourcesManager.OnCreated();
+        windowManager.OnCreated();
     }
 
     protected override void OnReset()
     {
         sceneManager.OnReset();
         saveManager.OnReset();
+        dialogManager.OnReset();
+        soundManager.OnReset();
+        poolManager.OnReset();
+        resourcesManager.OnReset();
+        windowManager.OnReset();
     }
 
     private void Update()
@@ -42,9 +59,9 @@ public class GameManager : Singleton<GameManager>
     {
         if (Input.GetMouseButtonDown(0))
         {
-            if (ResourcesManager.Instance.IsLoading) return;
+            if (resourcesManager.IsLoading) return;
 
-            GameObject obj = PoolManager.Instance.Init("Click Effect");
+            GameObject obj = poolManager.Init("Click Effect");
             var vector = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             vector.z = 0;
             obj.transform.position = vector;

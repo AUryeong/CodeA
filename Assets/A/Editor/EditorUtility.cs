@@ -13,11 +13,11 @@ public class XMLDialogs
 
     [XmlElement("SkipText")] public string skipText;
 
-    [XmlElement("Dialog")] public List<Talk> talks = new List<Talk>();
+    [XmlElement("Dialog")] public List<Dialog> dialogs = new List<Dialog>();
 }
 
 [Serializable]
-public class XMLTalkOwners
+public class XMLDialogOwners
 {
     [XmlElement("Owner")] public List<Owner> owners = new List<Owner>();
 }
@@ -36,35 +36,35 @@ public class EditorUtility
     private const string tipRegexString = "{(?<Tip>" + remainderRegex + ")}";
     private static readonly Regex tipRegex = new Regex(tipRegexString);
 
-    [MenuItem("Assets/Convert Xml To ScriptableObject Talk")]
-    public static void CreateTalkScriptableObject()
+    [MenuItem("Assets/Convert Xml To ScriptableObject Dialog")]
+    public static void CreateDialogScriptableObject()
     {
         var ownerDictionaries = new Dictionary<string, string>();
-        var str = File.ReadAllText(Application.dataPath + "/A/Editor/Xmls/TalkOwners.xml");
-        XMLTalkOwners talkOwners;
+        var str = File.ReadAllText(Application.dataPath + "/A/Editor/Xmls/DialogOwners.xml");
+        XMLDialogOwners dialogOwners;
         using (var stringReader = new StringReader(str))
         {
-            talkOwners = (XMLTalkOwners)new XmlSerializer(typeof(XMLTalkOwners)).Deserialize(stringReader);
+            dialogOwners = (XMLDialogOwners)new XmlSerializer(typeof(XMLDialogOwners)).Deserialize(stringReader);
         }
 
-        foreach (var owner in talkOwners.owners)
+        foreach (var owner in dialogOwners.owners)
             ownerDictionaries.Add(owner.name, owner.ownerName);
 
-        const string xmlPath = "/A/Editor/Xmls/Talk";
+        const string xmlPath = "/A/Editor/Xmls/Dialog";
         var dir = new DirectoryInfo(Application.dataPath + xmlPath);
-        ConvertXmlTalk(dir, ownerDictionaries);
+        ConvertXmlDialog(dir, ownerDictionaries);
 
         AssetDatabase.SaveAssets();
     }
 
-    private static void ConvertXmlTalk(DirectoryInfo dir, Dictionary<string, string> ownerDictionaries)
+    private static void ConvertXmlDialog(DirectoryInfo dir, Dictionary<string, string> ownerDictionaries)
     {
         var directories = dir.GetDirectories();
         if (directories.Length > 0)
         {
             foreach (var directory in directories)
             {
-                ConvertXmlTalk(directory, ownerDictionaries);
+                ConvertXmlDialog(directory, ownerDictionaries);
             }
         }
 
@@ -74,30 +74,30 @@ public class EditorUtility
 
             string str = File.ReadAllText(fileInfo.FullName);
 
-            XMLDialogs talks;
+            XMLDialogs dialogs;
             using (var stringReader = new StringReader(str))
             {
-                talks = (XMLDialogs)new XmlSerializer(typeof(XMLDialogs)).Deserialize(stringReader);
+                dialogs = (XMLDialogs)new XmlSerializer(typeof(XMLDialogs)).Deserialize(stringReader);
             }
 
-            CreateNewAsset(Path.GetFileNameWithoutExtension(fileInfo.FullName), talks.talks, talks.cgTitle, talks.skipText, ownerDictionaries);
+            CreateNewAsset(Path.GetFileNameWithoutExtension(fileInfo.FullName), dialogs.dialogs, dialogs.cgTitle, dialogs.skipText, ownerDictionaries);
         }
     }
 
-    private static void CreateNewAsset(string assetName, List<Talk> talkList, string title, string skipText, Dictionary<string, string> ownerDictionaries)
+    private static void CreateNewAsset(string assetName, List<Dialog> dialogList, string title, string skipText, Dictionary<string, string> ownerDictionaries)
     {
         Debug.Log(assetName);
-        var newTalks = ScriptableObject.CreateInstance<Talks>();
+        var newDialogs = ScriptableObject.CreateInstance<Dialogs>();
 
-        ParsingTalks(assetName, ref talkList, ownerDictionaries);
-        newTalks.talks = talkList;
-        newTalks.cgTitle = title;
-        newTalks.skipText = string.IsNullOrEmpty(skipText) ? null : skipText.Replace("\\n", "\n");
+        ParsingDialogs(assetName, ref dialogList, ownerDictionaries);
+        newDialogs.dialogs = dialogList;
+        newDialogs.cgTitle = title;
+        newDialogs.skipText = string.IsNullOrEmpty(skipText) ? null : skipText.Replace("\\n", "\n");
 
-        AssetDatabase.CreateAsset(newTalks, $"Assets/A/ScriptableObjects/Talks/{assetName}.asset");
+        AssetDatabase.CreateAsset(newDialogs, $"Assets/A/ScriptableObjects/Dialogs/{assetName}.asset");
     }
 
-    private static void ParsingTalks(string assetName, ref List<Talk> talkList, Dictionary<string, string> ownerDictionaries)
+    private static void ParsingDialogs(string assetName, ref List<Dialog> dialogList, Dictionary<string, string> ownerDictionaries)
     {
         string background = string.Empty;
         float backgroundScale = 1;
@@ -105,49 +105,49 @@ public class EditorUtility
 
         var characterDictionary = new Dictionary<string, string>();
         var faceDictionary = new Dictionary<string, string>();
-        var posDictionary = new Dictionary<string, CharacterPos>();
-        var sizeDictionary = new Dictionary<string, CharacterSize>();
-        foreach (var talk in talkList)
+        var posDictionary = new Dictionary<string, DialogCharacterPos>();
+        var sizeDictionary = new Dictionary<string, DialogCharacterSize>();
+        foreach (var dialog in dialogList)
         {
-            if (string.IsNullOrEmpty(talk.background.name))
+            if (string.IsNullOrEmpty(dialog.dialogBackground.name))
             {
-                talk.background.name = background;
-                talk.background.scale = backgroundScale;
+                dialog.dialogBackground.name = background;
+                dialog.dialogBackground.scale = backgroundScale;
             }
             else
             {
-                background = talk.background.name;
-                backgroundScale = talk.background.scale;
+                background = dialog.dialogBackground.name;
+                backgroundScale = dialog.dialogBackground.scale;
             }
 
-            if (string.IsNullOrEmpty(talk.bgm))
-                talk.bgm = bgm;
+            if (string.IsNullOrEmpty(dialog.bgm))
+                dialog.bgm = bgm;
             else
-                bgm = talk.bgm;
+                bgm = dialog.bgm;
 
-            if (talk.dialogue != null)
+            if (dialog.dialogText != null)
             {
-                if (!string.IsNullOrEmpty(talk.dialogue.talker))
+                if (!string.IsNullOrEmpty(dialog.dialogText.name))
                 {
-                    if (ownerDictionaries.TryGetValue(talk.dialogue.talker, out var dictionary))
+                    if (ownerDictionaries.TryGetValue(dialog.dialogText.name, out var dictionary))
                     {
-                        if (string.IsNullOrEmpty(talk.dialogue.owner))
+                        if (string.IsNullOrEmpty(dialog.dialogText.owner))
                         {
-                            talk.dialogue.owner = dictionary;
+                            dialog.dialogText.owner = dictionary;
                         }
                     }
                     else
                     {
-                        if (!string.IsNullOrEmpty(talk.dialogue.owner))
+                        if (!string.IsNullOrEmpty(dialog.dialogText.owner))
                         {
-                            ownerDictionaries.Add(talk.dialogue.talker, talk.dialogue.owner);
+                            ownerDictionaries.Add(dialog.dialogText.name, dialog.dialogText.owner);
                         }
                     }
                 }
 
-                if (!string.IsNullOrEmpty(talk.dialogue.text))
+                if (!string.IsNullOrEmpty(dialog.dialogText.text))
                 {
-                    var matches = tipRegex.Matches(talk.dialogue.text);
+                    var matches = tipRegex.Matches(dialog.dialogText.text);
                     int indexAdd = 0;
                     int indexAnimAdd = 0;
                     for (var i = 0; i < matches.Count; i++)
@@ -158,29 +158,29 @@ public class EditorUtility
                         if (commands[0] != "Tip")
                         {
                             Debug.Log(match.Index - indexAnimAdd + 1);
-                            var talkAnimation = new TalkAnimation
+                            var diloagTextAnimation = new DialogTextAnimation()
                             {
                                 startIndex = match.Index - indexAnimAdd + 1,
-                                type = Utility.GetEnum<TalkAnimationType>(commands[1])
+                                type = Utility.GetEnum<DialogTextAnimationType>(commands[1])
                             };
                             if (commands.Length < 3)
                             {
-                                switch (talkAnimation.type)
+                                switch (diloagTextAnimation.type)
                                 {
-                                    case TalkAnimationType.WAIT:
-                                        talkAnimation.parameter = 0.5f;
+                                    case DialogTextAnimationType.WAIT:
+                                        diloagTextAnimation.parameter = 0.5f;
                                         break;
-                                    case TalkAnimationType.ANIM:
-                                        talkAnimation.parameter = 1;
+                                    case DialogTextAnimationType.ANIM:
+                                        diloagTextAnimation.parameter = 1;
                                         break;
                                 }
                             }
                             else
                             {
-                                talkAnimation.parameter = float.Parse(commands[2]);
+                                diloagTextAnimation.parameter = float.Parse(commands[2]);
                             }
 
-                            talk.dialogue.talkAnimations.Add(talkAnimation);
+                            dialog.dialogText.dialogAnimations.Add(diloagTextAnimation);
                             indexAnimAdd += match.Groups["Tip"].Value.Length + 2;
                             continue;
                         }
@@ -188,27 +188,27 @@ public class EditorUtility
                         string name = commands[1];
                         string eventName = (commands.Length >= 3) ? commands[2] : commands[1];
 
-                        bool flag = talk.dialogue.tipEvent == null || talk.dialogue.tipEvent.Count <= 0 ||
-                                    !talk.dialogue.tipEvent.Exists((x) => !string.IsNullOrEmpty(x.eventName) && x.eventName == eventName);
+                        bool flag = dialog.dialogText.tipEvent == null || dialog.dialogText.tipEvent.Count <= 0 ||
+                                    !dialog.dialogText.tipEvent.Exists((x) => !string.IsNullOrEmpty(x.eventName) && x.eventName == eventName);
                         if (flag)
                         {
-                            talk.dialogue.tipEvent.Add(new TipEvent()
+                            dialog.dialogText.tipEvent.Add(new DialogTipEvent()
                             {
                                 eventName = eventName,
-                                talkName = (commands.Length >= 4) ? commands[3] : null,
-                                eventType = (commands.Length >= 5) ? Utility.GetStringToEventType(commands[4]) : EventType.CHANGE
+                                dialogName = (commands.Length >= 4) ? commands[3] : null,
+                                dialogEventType = (commands.Length >= 5) ? Utility.GetStringToEventType(commands[4]) : DialogEventType.CHANGE
                             });
                         }
                         else
                         {
-                            var tipEvent = talk.dialogue.tipEvent.Find((x) => !string.IsNullOrEmpty(x.eventName) && x.eventName == eventName);
+                            var tipEvent = dialog.dialogText.tipEvent.Find((x) => !string.IsNullOrEmpty(x.eventName) && x.eventName == eventName);
                             if (tipEvent.dialogs != null)
                             {
                                 string tipEventDialogName = $"{assetName}_TipEvent_{i}";
-                                ParsingTalks(tipEventDialogName, ref tipEvent.dialogs, ownerDictionaries);
+                                ParsingDialogs(tipEventDialogName, ref tipEvent.dialogs, ownerDictionaries);
                                 CreateNewAsset(tipEventDialogName, tipEvent.dialogs, string.Empty, tipEvent.skipText, ownerDictionaries);
                                 tipEvent.dialogs = null;
-                                tipEvent.talkName = tipEventDialogName;
+                                tipEvent.dialogName = tipEventDialogName;
                             }
                         }
 
@@ -217,42 +217,42 @@ public class EditorUtility
                             s = "<#FFAA00><bounce><link=" + eventName + ">" + name + "</color></bounce></link>";
                         else
                             s = "<#FFEE00><link=" + eventName + ">" + name + "</color></link>";
-                        talk.dialogue.text = talk.dialogue.text.Insert(match.Index + indexAdd, s);
+                        dialog.dialogText.text = dialog.dialogText.text.Insert(match.Index + indexAdd, s);
                         indexAdd += s.Length;
                         indexAnimAdd += match.Groups["Tip"].Value.Length + 2 -name.Length;
                     }
 
-                    talk.dialogue.text = Regex.Replace(talk.dialogue.text, tipRegexString, "");
+                    dialog.dialogText.text = Regex.Replace(dialog.dialogText.text, tipRegexString, "");
                 }
 
-                if (talk.dialogue.active && talk.characters != null)
+                if (dialog.dialogText.active && dialog.characters != null)
                 {
-                    if (!string.IsNullOrEmpty(talk.dialogue.owner))
+                    if (!string.IsNullOrEmpty(dialog.dialogText.owner))
                     {
-                        var findCharacter = talk.characters.Find((character) => character.dark && talk.dialogue.owner == character.name);
+                        var findCharacter = dialog.characters.Find((character) => character.dark && dialog.dialogText.owner == character.name);
                         if (findCharacter != null)
                             findCharacter.dark = false;
                     }
                 }
             }
 
-            if (talk.optionList != null && talk.optionList.Count > 0)
+            if (dialog.optionList != null && dialog.optionList.Count > 0)
             {
-                for (int i = 0; i < talk.optionList.Count; i++)
+                for (int i = 0; i < dialog.optionList.Count; i++)
                 {
-                    Option option = talk.optionList[i];
-                    if (option.dialogs != null && option.dialogs.Count > 0)
+                    DialogOption dialogOption = dialog.optionList[i];
+                    if (dialogOption.dialogs != null && dialogOption.dialogs.Count > 0)
                     {
                         string tipEventDialogName = $"{assetName}_Option_{i}";
-                        ParsingTalks(tipEventDialogName, ref option.dialogs, ownerDictionaries);
-                        CreateNewAsset(tipEventDialogName, option.dialogs, string.Empty, option.skipText, ownerDictionaries);
-                        option.dialogs = null;
-                        option.dialog = tipEventDialogName;
+                        ParsingDialogs(tipEventDialogName, ref dialogOption.dialogs, ownerDictionaries);
+                        CreateNewAsset(tipEventDialogName, dialogOption.dialogs, string.Empty, dialogOption.skipText, ownerDictionaries);
+                        dialogOption.dialogs = null;
+                        dialogOption.dialog = tipEventDialogName;
                     }
                 }
             }
 
-            foreach (var character in talk.characters)
+            foreach (var character in dialog.characters)
             {
                 if (string.IsNullOrEmpty(character.clothes))
                 {
@@ -281,12 +281,12 @@ public class EditorUtility
 
                 character.face = face;
 
-                CharacterPos pos = character.pos;
-                if (pos == CharacterPos.N)
+                DialogCharacterPos pos = character.pos;
+                if (pos == DialogCharacterPos.N)
                 {
                     if (!posDictionary.ContainsKey(character.name))
                     {
-                        posDictionary.Add(character.name, CharacterPos.C);
+                        posDictionary.Add(character.name, DialogCharacterPos.C);
                     }
 
                     pos = posDictionary[character.name];
@@ -294,12 +294,12 @@ public class EditorUtility
 
                 character.pos = pos;
 
-                CharacterSize size = character.size;
-                if (size == CharacterSize.N)
+                DialogCharacterSize size = character.size;
+                if (size == DialogCharacterSize.N)
                 {
                     if (!sizeDictionary.ContainsKey(character.name))
                     {
-                        sizeDictionary.Add(character.name, CharacterSize.M);
+                        sizeDictionary.Add(character.name, DialogCharacterSize.M);
                     }
 
                     size = sizeDictionary[character.name];
@@ -307,14 +307,14 @@ public class EditorUtility
 
                 character.size = size;
 
-                if (talk.animationLists.Count > 0)
+                if (dialog.animationLists.Count > 0)
                 {
-                    var firstAnimation = talk.animationLists.Find((AnimationList anim) => anim.index == 0);
+                    var firstAnimation = dialog.animationLists.Find((DialogAnimationList anim) => anim.index == 0);
                     if (firstAnimation == null) return;
                     
                     foreach (var anim in firstAnimation.animations)
                     {
-                        if (anim.type != AnimationType.CHAR) continue;
+                        if (anim.type != DialogAnimationType.CHAR) continue;
                         
                         if (anim.name == character.name)
                         {
@@ -324,25 +324,25 @@ public class EditorUtility
                                     face = anim.parameter;
                                     break;
                                 case "Scale":
-                                    size = Utility.GetEnum<CharacterSize>(anim.parameter);
+                                    size = Utility.GetEnum<DialogCharacterSize>(anim.parameter);
                                     break;
                                 case "Move":
-                                    pos = Utility.GetEnum<CharacterPos>(anim.parameter);
+                                    pos = Utility.GetEnum<DialogCharacterPos>(anim.parameter);
                                     break;
                             }
                         }
                     }
 
-                    if (talk.dialogue.talkAnimations.Count > 0)
+                    if (dialog.dialogText.dialogAnimations.Count > 0)
                     {
-                        foreach (var talkAnimation in talk.dialogue.talkAnimations)
+                        foreach (var dialogAnimation in dialog.dialogText.dialogAnimations)
                         {
-                            if (talkAnimation.type != TalkAnimationType.ANIM) continue;
+                            if (dialogAnimation.type != DialogTextAnimationType.ANIM) continue;
                             
-                            var animation = talk.animationLists.Find(animation => animation.index == Mathf.RoundToInt(talkAnimation.parameter));
+                            var animation = dialog.animationLists.Find(animation => animation.index == Mathf.RoundToInt(dialogAnimation.parameter));
                             foreach (var anim in animation.animations)
                             {
-                                if (anim.type != AnimationType.CHAR) continue;
+                                if (anim.type != DialogAnimationType.CHAR) continue;
                                 
                                 if (anim.name == character.name)
                                 {
@@ -352,10 +352,10 @@ public class EditorUtility
                                             face = anim.parameter;
                                             break;
                                         case "Scale":
-                                            size = Utility.GetEnum<CharacterSize>(anim.parameter);
+                                            size = Utility.GetEnum<DialogCharacterSize>(anim.parameter);
                                             break;
                                         case "Move":
-                                            pos = Utility.GetEnum<CharacterPos>(anim.parameter);
+                                            pos = Utility.GetEnum<DialogCharacterPos>(anim.parameter);
                                             break;
                                     }
                                 }

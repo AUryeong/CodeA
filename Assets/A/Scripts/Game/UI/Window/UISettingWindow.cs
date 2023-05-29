@@ -2,14 +2,15 @@
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
-using UnityEngine.Serialization;
 
 namespace UI
 {
     public class UISettingWindow : UIWindow
     {
         [SerializeField] private Button exitButton;
-        [Header("사운드")] [SerializeField] private Slider sfxSlider;
+        [Header("사운드")] 
+        
+        [SerializeField] private Slider sfxSlider;
         [SerializeField] private Slider bgmSlider;
 
         [Header("이름 설정")] [SerializeField] private TMP_InputField namingInput;
@@ -26,15 +27,14 @@ namespace UI
         [SerializeField] private Sprite textTypeSpriteOn;
         [SerializeField] private Sprite textTypeSpriteOff;
 
-        [Space(20f)] [SerializeField] private Button talkUI;
+        [Space(20f)] [SerializeField] private Button dialogUI;
 
-        [FormerlySerializedAs("descreptionText")] [SerializeField]
-        private TextMeshProUGUI descriptionText;
+        [SerializeField] private TextMeshProUGUI descriptionText;
 
         [SerializeField] private TextMeshProUGUI endTextEffect;
 
-        private float talkDuration;
-        private const float defaultTalkCooltime = 0.05f;
+        private float dialogDuration;
+        private const float defaultDialogCooltime = 0.05f;
 
         private float autoDuration;
         private const float autoWaitTime = 2f;
@@ -56,11 +56,11 @@ namespace UI
             textTypeToggle.onClick.RemoveAllListeners();
             textTypeToggle.onClick.AddListener(ChangeTextType);
 
-            talkUI.onClick.RemoveAllListeners();
-            talkUI.onClick.AddListener(CheckClick);
+            dialogUI.onClick.RemoveAllListeners();
+            dialogUI.onClick.AddListener(CheckClick);
 
             exitButton.onClick.RemoveAllListeners();
-            exitButton.onClick.AddListener(WindowManager.Instance.CloseAllWindow);
+            exitButton.onClick.AddListener(GameManager.Instance.windowManager.CloseAllWindow);
 
             namingInput.onEndEdit.AddListener((text) =>
             {
@@ -86,15 +86,15 @@ namespace UI
             descriptionText.text = exampleText;
         }
 
-        private void TalkUpdate()
+        private void DialogUpdate()
         {
             if (descriptionText.maxVisibleCharacters < descriptionText.text.Length)
             {
-                talkDuration += Time.unscaledDeltaTime;
-                float cooltime = defaultTalkCooltime * GameManager.Instance.saveManager.GameData.textSpeed;
-                if (talkDuration >= cooltime)
+                dialogDuration += Time.unscaledDeltaTime;
+                float cooltime = defaultDialogCooltime * GameManager.Instance.saveManager.GameData.textSpeed;
+                if (dialogDuration >= cooltime)
                 {
-                    talkDuration -= cooltime;
+                    dialogDuration -= cooltime;
                     descriptionText.maxVisibleCharacters++;
                 }
             }
@@ -126,7 +126,7 @@ namespace UI
                     if (autoDuration >= autoWaitTime)
                     {
                         autoDuration -= autoWaitTime;
-                        NewTalk();
+                        NewDialog();
                     }
                 }
             }
@@ -134,7 +134,7 @@ namespace UI
 
         private void Update()
         {
-            TalkUpdate();
+            DialogUpdate();
         }
 
         private void CheckClick()
@@ -142,27 +142,27 @@ namespace UI
             if (descriptionText.maxVisibleCharacters < exampleText.Length)
                 descriptionText.maxVisibleCharacters = exampleText.Length;
             else
-                NewTalk();
+                NewDialog();
         }
 
-        private void NewTalk()
+        private void NewDialog()
         {
             descriptionText.maxVisibleCharacters = 0;
             endTextEffect.gameObject.SetActive(false);
-            talkDuration = 0;
+            dialogDuration = 0;
             autoDuration = 0;
         }
 
         private void ChangeSfxSlider(float value)
         {
-            GameManager.Instance.saveManager.GameData.sfxSound = value;
-            SoundManager.Instance.UpdateVolume(ESoundType.SFX, value);
+            GameManager.Instance.saveManager.GameData.sfxSoundMultiplier = value;
+            GameManager.Instance.soundManager.UpdateVolume(ESoundType.SFX, value);
         }
 
         private void ChangeBgmSlider(float value)
         {
-            GameManager.Instance.saveManager.GameData.bgmSound = value;
-            SoundManager.Instance.UpdateVolume(ESoundType.BGM, value);
+            GameManager.Instance.saveManager.GameData.bgmSoundMultiplier = value;
+            GameManager.Instance.soundManager.UpdateVolume(ESoundType.BGM, value);
         }
 
         private void ChangeTextSpeedSlider(float value)
@@ -183,7 +183,7 @@ namespace UI
             NamingSetting();
             SoundSetting();
             TextSetting();
-            NewTalk();
+            NewDialog();
         }
 
         private void TextSetting()
@@ -194,8 +194,8 @@ namespace UI
 
         private void SoundSetting()
         {
-            bgmSlider.value = GameManager.Instance.saveManager.GameData.bgmSound;
-            sfxSlider.value = GameManager.Instance.saveManager.GameData.sfxSound;
+            bgmSlider.value = GameManager.Instance.saveManager.GameData.bgmSoundMultiplier;
+            sfxSlider.value = GameManager.Instance.saveManager.GameData.sfxSoundMultiplier;
         }
 
         private void NamingSetting()
