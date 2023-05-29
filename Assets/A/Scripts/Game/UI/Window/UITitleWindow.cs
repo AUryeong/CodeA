@@ -29,17 +29,17 @@ namespace UI
 
             warningOkayButton.onClick.RemoveAllListeners();
 
-            if (GameManager.Instance.nowGameData == null && TalkManager.Instance.GetLeftTalks().Count <= 0)
+            if (GameManager.Instance.saveManager.nowGameData == null && TalkManager.Instance.GetLeftTalks().Count <= 0)
             {
                 warningDescription.text = "정말로 종료하시겠습니까?";
                 warningDescription2.gameObject.SetActive(false);
-                warningOkayButton.onClick.AddListener(() => GameManager.Instance.SceneLoadFadeIn(Application.Quit));
+                warningOkayButton.onClick.AddListener(() => GameManager.Instance.sceneManager.SceneLoadFadeIn(Application.Quit));
             }
             else
             {
                 warningDescription.text = "정말로 타이틀로\n돌아가시겠습니까?";
                 warningDescription2.gameObject.SetActive(true);
-                warningOkayButton.onClick.AddListener(() => GameManager.Instance.SceneLoad(Scene.TITLE));
+                warningOkayButton.onClick.AddListener(() => GameManager.Instance.sceneManager.SceneLoad(Scene.TITLE));
             }
         }
     }

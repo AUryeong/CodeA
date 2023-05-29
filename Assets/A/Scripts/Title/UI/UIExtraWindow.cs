@@ -178,7 +178,7 @@ namespace UI
 
         private void ReloadCgs()
         {
-            var getCgs = SaveManager.Instance.GameData.getCg;
+            var getCgs = GameManager.Instance.saveManager.GameData.getCg;
             for (int i = 0; i < cgs.Length; i++)
             {
                 if (getCgs.Count > (picturesIdx * 6) + i)
@@ -232,7 +232,7 @@ namespace UI
 
         private void ReloadVideos()
         {
-            var getVideos = SaveManager.Instance.GameData.getVideo;
+            var getVideos = GameManager.Instance.saveManager.GameData.getVideo;
             for (int i = 0; i < videos.Length; i++)
             {
                 if (getVideos.Count > (videosIdx * 6) + i)
@@ -269,9 +269,9 @@ namespace UI
             if (isLoadingVideos) return;
 
             isLoadingVideos = true;
-            GameManager.Instance.SceneLoadFadeIn(()=> {
+            GameManager.Instance.sceneManager.SceneLoadFadeIn(()=> {
                 TalkManager.Instance.AddTalk(talks);
-                GameManager.Instance.SceneLoadFadeOut(0.1f);
+                GameManager.Instance.sceneManager.SceneLoadFadeOut(0.1f);
                 isLoadingVideos = false;
             });
         }
@@ -299,7 +299,7 @@ namespace UI
         {
             tipsWindow.gameObject.SetActive(true);
             ExtraSelectOn("Tips");
-            verticalScroll.SetLog(SaveManager.Instance.GameData.getTips);
+            verticalScroll.SetLog(GameManager.Instance.saveManager.GameData.getTips);
         }
 
         public void EventOpen(string eventName)

@@ -1,3 +1,4 @@
+using Ingame;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -61,12 +62,12 @@ public class GameData
 
     public void ChangeSaveData(int idx)
     {
-        if (GameManager.Instance.nowGameData == null) return;
+        if (GameManager.Instance.saveManager.nowGameData == null) return;
 
-        GameManager.Instance.UpdateGameData();
+        GameManager.Instance.saveManager.UpdateGameData();
 
-        var data = GameManager.Instance.nowGameData.Copy();
-        GameManager.Instance.nowGameData = data;
+        var data = GameManager.Instance.saveManager.nowGameData.Copy();
+        GameManager.Instance.saveManager.nowGameData = data;
         data.idx = idx;
 
         if (savedGameDatas != null && savedGameDatas.Count > 0)
@@ -129,7 +130,7 @@ public class SubGameData
     }
 }
 
-public class SaveManager : Singleton<SaveManager>
+public class SaveManager : Manager
 {
     public string prefsName = "CodeA";
 
@@ -145,15 +146,49 @@ public class SaveManager : Singleton<SaveManager>
         }
     }
 
-    protected override bool IsDontDestroying => true;
+    public SubGameData nowGameData;
 
-    protected override void OnCreated()
+    public override void OnCreated()
     {
         LoadGameData();
-
-        //TODO talk.saveTime = DateTime.Now.ToString("yyyy년 MM월 dd일 HH시 mm분 tt");
     }
 
+    public void AddTip(string tipName)
+    {
+        if (GameData.getTips.Contains(tipName)) return;
+
+        GameData.getTips.Add(tipName);
+        GameData.getTips.Sort();
+    }
+
+    public void AddCgData(string cgName)
+    {
+       GameData.saigoCg = cgName;
+
+        if (GameData.getCg.Contains(cgName)) return;
+
+        GameData.getCg.Add(cgName);
+        GameData.getCg.Sort();
+    }
+
+    public void UpdateGameData()
+    {
+        if (nowGameData == null) return;
+
+        nowGameData.leftTalks = TalkManager.Instance.GetLeftTalks();
+        nowGameData.leftTalkSkipText = TalkManager.Instance.talkSkipText;
+        nowGameData.saveTime = DateTime.Now.ToString("yyyy/MM/dd HH:mm");
+
+        nowGameData.year = InGameManager.Instance.year;
+        nowGameData.month = InGameManager.Instance.month;
+        nowGameData.week = InGameManager.Instance.week;
+        nowGameData.time = InGameManager.Instance.time;
+
+        nowGameData.loveLevel = InGameManager.Instance.loveLevel;
+        nowGameData.statLevels = InGameManager.Instance.statLevels;
+        nowGameData.hasSkills = InGameManager.Instance.hasSkills;
+        nowGameData.hasItems = InGameManager.Instance.hasItems;
+    }
 
     public void ResetSaveFile()
     {

@@ -48,7 +48,7 @@ namespace UI
         {
             nowPos = pos;
 
-            bool isHaveTips = SaveManager.Instance.GameData.getTips.Contains(eventName);
+            bool isHaveTips = GameManager.Instance.saveManager.GameData.getTips.Contains(eventName);
 
             eventTitleText.text = eventName + "에 대해";
             eventDescriptionText.text = isHaveTips ? ResourcesManager.Instance.GetTip(eventName) : "정보가 없다...";

@@ -76,15 +76,15 @@ public class ResourcesManager : Singleton<ResourcesManager>
         loadingWindow.gameObject.SetActive(false);
         Time.timeScale = 1;
 
-        if (GameManager.Instance.nowScene == Scene.LOADING)
-            GameManager.Instance.SceneLoad(Scene.TITLE);
+        if (GameManager.Instance.sceneManager.nowScene == Scene.LOADING)
+            GameManager.Instance.sceneManager.SceneLoad(Scene.TITLE);
     }
 
     private void CheckDownload()
     {
         if (Application.internetReachability == NetworkReachability.NotReachable)
         {
-            if (!SaveManager.Instance.GameData.isDownloadFile)
+            if (!GameManager.Instance.saveManager.GameData.isDownloadFile)
             {
                 DisableDownloadWindow();
                 return;
@@ -146,7 +146,7 @@ public class ResourcesManager : Singleton<ResourcesManager>
         }
         else
         {
-            if (!SaveManager.Instance.GameData.isDownloadFile) SaveManager.Instance.GameData.isDownloadFile = true;
+            if (!GameManager.Instance.saveManager.GameData.isDownloadFile) GameManager.Instance.saveManager.GameData.isDownloadFile = true;
             LoadBackground();
         }
 
@@ -212,7 +212,7 @@ public class ResourcesManager : Singleton<ResourcesManager>
                 Addressables.Release(handle);
                 downloadingText.text = string.Concat("다운로드 완료!");
                 downloadWindow.gameObject.SetActive(false);
-                SaveManager.Instance.GameData.isDownloadFile = true;
+                GameManager.Instance.saveManager.GameData.isDownloadFile = true;
 
                 LoadBackground();
             };

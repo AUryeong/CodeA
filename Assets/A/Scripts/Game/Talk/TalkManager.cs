@@ -18,7 +18,9 @@ public class TalkManager : Singleton<TalkManager>
     private Talk nowTalk;
     private Talk prevTalk;
 
-    [Header("대화문")][SerializeField] private GameObject talkWindow;
+    [Header("대화문")]
+    
+    [SerializeField] private GameObject talkWindow;
 
     [SerializeField] private Image dialogueImage;
     [SerializeField] private TextMeshProUGUI talkerText;
@@ -27,25 +29,37 @@ public class TalkManager : Singleton<TalkManager>
     [SerializeField]
     private TextMeshProUGUI descriptionText;
 
-    [Header("연출")][SerializeField] private UITransitionEffect blackFadeIn;
+    [Header("연출")]
+    
+    [SerializeField] private UITransitionEffect blackFadeIn;
     [SerializeField] private UITransitionEffect blackFadeOut;
     [SerializeField] private TextMeshProUGUI endTextEffect;
 
     private bool isEnding;
 
-    [Space(20)][SerializeField] private Image backgroundTitle;
+    [Space(20)]
+    
+    [SerializeField] private Image backgroundTitle;
     [SerializeField] private TextMeshProUGUI backgroundTitleText;
     [SerializeField] private TextMeshProUGUI backgroundTitleLore;
 
-    [Header("배경")][SerializeField] private Image backgroundImage;
+    private const float backgroundTitleDuration = 1.5f;
+
+    [Header("배경")]
+    
+    [SerializeField] private Image backgroundImage;
     [SerializeField] private Image subBackgroundImage;
     private UITransitionEffect subBackgroundEffect;
 
-    [Header("스탠딩")][SerializeField] private UIStanding uiStanding;
+    [Header("스탠딩")]
+    
+    [SerializeField] private UIStanding uiStanding;
     [SerializeField] private RectTransform standingParent;
     private readonly List<UIStanding> uiStandings = new List<UIStanding>();
 
-    [Header("애니메이션")] private Queue<Animation> animations = new Queue<Animation>();
+    [Header("애니메이션")] 
+    
+    private Queue<Animation> animations = new Queue<Animation>();
     private float animationWaitTime;
 
     private float talkDuration;
@@ -54,37 +68,56 @@ public class TalkManager : Singleton<TalkManager>
     private float autoDuration;
     private const float autoWaitTime = 2f;
 
-    [Header("선택지")][SerializeField] private UIOption uiOption;
+    private Dictionary<string, Action<UIStanding, Animation>> charAnimationPairs = new Dictionary<string, Action<UIStanding, Animation>>();
+    private Dictionary<string, Action<Animation>> camAnimationPairs = new Dictionary<string, Action<Animation>>();
+    private Dictionary<string, Action<Animation>> dialAnimationPairs = new Dictionary<string, Action<Animation>>();
+    private Dictionary<string, Action<Animation>> utilAnimationPairs = new Dictionary<string, Action<Animation>>();
+
+    [Header("선택지")]
+    
+    [SerializeField] private UIOption uiOption;
     [SerializeField] private RectTransform optionParent;
     private readonly List<UIOption> uiOptions = new List<UIOption>();
     private bool isHasOption;
     private bool optionActive;
 
-    [Header("스킵")][SerializeField] private Image skipBackground;
+    [Header("스킵")]
+    
+    [SerializeField] private Image skipBackground;
     [SerializeField] private Image skipGaugeBackground;
     [SerializeField] private Image skipGaugeImage;
 
-    [Space(10)][SerializeField] private Image skipWindow;
+    [Space(10)]
+    
+    [SerializeField] private Image skipWindow;
     [SerializeField] private Button skipOkayButton;
     [SerializeField] private TextMeshProUGUI skipText;
     [SerializeField] private Button skipExitButton;
     private TextMeshProUGUI skipOkayButtonText;
 
-    public string talkSkipText;
+    [HideInInspector] public string talkSkipText;
     private bool skipButtonClicking;
     private float skipDuration;
 
-    [Header("터치 이벤트")] private Vector2 dragStartPos;
+    private const float skipGaugeTime = 1;
+    private const float skipWindowTime = 2.5f;
+
+    [Header("터치 이벤트")] 
+    
+    private Vector2 dragStartPos;
     private bool isDialogHide;
 
-    [Header("이벤트")][SerializeField] private Image eventWindow;
+    private const float dragMinPower = 400;
+
+    [Header("이벤트")]
+    
+    [SerializeField] private Image eventWindow;
     [SerializeField] private TextMeshProUGUI eventTitleText;
     [SerializeField] private TextMeshProUGUI eventDescriptionText;
     [SerializeField] private Button eventOkayButton;
     [SerializeField] private Button eventExitButton;
     [SerializeField] private TextMeshProUGUI eventContinueText;
     private TextMeshProUGUI eventOkayButtonText;
-
 
     private bool isHasEvent;
     private string selectEvent;
@@ -94,25 +127,8 @@ public class TalkManager : Singleton<TalkManager>
     protected override void OnCreated()
     {
         subBackgroundEffect = subBackgroundImage.GetComponent<UITransitionEffect>();
-
         eventOkayButtonText = eventOkayButton.GetComponent<TextMeshProUGUI>();
-
         skipOkayButtonText = skipOkayButton.GetComponent<TextMeshProUGUI>();
-
-        defaultPos = eventWindow.rectTransform.anchoredPosition;
-        eventWindow.gameObject.SetActive(false);
-
-        eventExitButton.onClick.RemoveAllListeners();
-        eventExitButton.onClick.AddListener(EventExit);
-
-        eventOkayButton.onClick.RemoveAllListeners();
-        eventOkayButton.onClick.AddListener(EventOkay);
-
-        skipOkayButton.onClick.RemoveAllListeners();
-        skipOkayButton.onClick.AddListener(SkipOkay);
-
-        skipExitButton.onClick.RemoveAllListeners();
-        skipExitButton.onClick.AddListener(SkipExit);
 
         foreach (RectTransform rect in standingParent)
             uiStandings.Add(rect.GetComponent<UIStanding>());
@@ -121,6 +137,10 @@ public class TalkManager : Singleton<TalkManager>
             uiOptions.Add(rect.GetComponent<UIOption>());
 
         talkWindow.gameObject.SetActive(false);
+
+        EventInit();
+        SkipInit();
+        AnimationInit();
     }
 
     protected override void OnReset()
@@ -164,7 +184,7 @@ public class TalkManager : Singleton<TalkManager>
     private void EndingSetUp()
     {
         isEnding = true;
-        GameManager.Instance.SceneLoadFadeIn(() =>
+        GameManager.Instance.sceneManager.SceneLoadFadeIn(() =>
         {
             foreach (var obj in uiStandings)
             {
@@ -175,7 +195,7 @@ public class TalkManager : Singleton<TalkManager>
             talkWindow.gameObject.SetActive(false);
 
             isEnding = false;
-            GameManager.Instance.SceneLoadFadeOut(1);
+            GameManager.Instance.sceneManager.SceneLoadFadeOut(1);
         });
     }
 
@@ -196,7 +216,7 @@ public class TalkManager : Singleton<TalkManager>
         bool isSkipping = false;
         if (!string.IsNullOrEmpty(talkSkipText) && !isHasOption)
         {
-            isSkipping = skipDuration >= 1;
+            isSkipping = skipDuration >= skipGaugeTime;
             skipButtonClicking = false;
             skipDuration = 0;
 
@@ -211,19 +231,19 @@ public class TalkManager : Singleton<TalkManager>
         if (dialogueImage.gameObject.activeSelf)
         {
             Vector2 subVector = dragStartPos - (data as PointerEventData).position;
-            if (subVector.y > 400)
+            if (subVector.y > dragMinPower)
             {
                 dialogueImage.gameObject.SetActive(false);
                 optionParent.gameObject.SetActive(false);
                 isDialogHide = true;
                 return;
             }
-            else if (subVector.y < -400)
+            else if (subVector.y < -dragMinPower)
             {
                 WindowManager.Instance.ClickWindow(WindowType.LOG);
                 return;
             }
-            else if (subVector.x > 400)
+            else if (subVector.x > dragMinPower)
             {
                 WindowManager.Instance.WindowOpen();
                 return;
@@ -238,37 +258,31 @@ public class TalkManager : Singleton<TalkManager>
             return;
         }
 
-        if (dialogueImage.gameObject.activeSelf)
+        if (!dialogueImage.gameObject.activeSelf) return;
+
+        if (descriptionText.maxVisibleCharacters < descriptionText.textInfo.characterCount)
         {
-            if (descriptionText.maxVisibleCharacters < descriptionText.textInfo.characterCount)
-            {
-                descriptionText.maxVisibleCharacters = descriptionText.textInfo.characterCount;
-                if (nowTalk.dialogue.talkAnimations.Count <= 0) return;
+            descriptionText.maxVisibleCharacters = descriptionText.textInfo.characterCount;
+            if (nowTalk.dialogue.talkAnimations.Count <= 0) return;
 
-                var talkAnimations = nowTalk.dialogue.talkAnimations.OrderBy(talkAnimation => talkAnimation.parameter)
-                    .ToList();
-                foreach (var talkAnimation in talkAnimations)
-                    if (talkAnimation.type == TalkAnimationType.ANIM)
-                        EffectSetting(Mathf.RoundToInt(talkAnimation.parameter));
-            }
-            else
-            {
-                int linkIndex = TMP_TextUtilities.FindIntersectingLink(descriptionText, Input.mousePosition,
-                    GameManager.Instance.UICamera);
+            var talkAnimations = nowTalk.dialogue.talkAnimations.OrderBy(talkAnimation => talkAnimation.parameter)
+                .ToList();
+            foreach (var talkAnimation in talkAnimations)
+                if (talkAnimation.type == TalkAnimationType.ANIM)
+                    EffectSetting(Mathf.RoundToInt(talkAnimation.parameter));
+        }
+        else
+        {
+            int linkIndex = TMP_TextUtilities.FindIntersectingLink(descriptionText, Input.mousePosition,
+                GameManager.Instance.UICamera);
 
-                if (linkIndex != -1)
-                {
-                    var linkInfo = descriptionText.textInfo.linkInfo[linkIndex];
-                    EventOpen(linkInfo.GetLinkID(), (data as PointerEventData).position);
-                }
-                else
-                {
-                    if (nowTalk.optionList == null || nowTalk.optionList.Count <= 0)
-                    {
-                        NewTalk();
-                    }
-                }
+            if (linkIndex != -1)
+            {
+                var linkInfo = descriptionText.textInfo.linkInfo[linkIndex];
+                EventOpen(linkInfo.GetLinkID(), (data as PointerEventData).position);
             }
+            else if (nowTalk.optionList == null || nowTalk.optionList.Count <= 0)
+                NewTalk();
         }
     }
     private void CheckNextNoDialogue()
@@ -315,7 +329,7 @@ public class TalkManager : Singleton<TalkManager>
         if (descriptionText.maxVisibleCharacters < descriptionText.textInfo.characterCount)
         {
             talkDuration += Time.deltaTime;
-            float nextDuration = defaultTalkCooltime * SaveManager.Instance.GameData.textSpeed;
+            float nextDuration = defaultTalkCooltime * GameManager.Instance.saveManager.GameData.textSpeed;
             if (talkDuration >= nextDuration)
             {
                 talkDuration -= nextDuration;
@@ -372,7 +386,7 @@ public class TalkManager : Singleton<TalkManager>
                 return;
             }
 
-            if (SaveManager.Instance.GameData.textAuto && !isHasEvent)
+            if (GameManager.Instance.saveManager.GameData.textAuto && !isHasEvent)
             {
                 autoDuration += Time.deltaTime;
                 if (autoDuration >= autoWaitTime)
@@ -429,7 +443,7 @@ public class TalkManager : Singleton<TalkManager>
         if (nowTalk.dialogue != null)
         {
             isHasEvent = nowTalk.dialogue.tipEvent != null && nowTalk.dialogue.tipEvent.Exists((tipEvent) =>
-                SaveManager.Instance.GameData.getTips.Contains(tipEvent.eventName));
+                GameManager.Instance.saveManager.GameData.getTips.Contains(tipEvent.eventName));
             talkerText.text = string.IsNullOrEmpty(nowTalk.dialogue.talker)
                 ? " "
                 : "> " + Utility.GetTalkerName(nowTalk.dialogue.talker);
@@ -518,9 +532,9 @@ public class TalkManager : Singleton<TalkManager>
             backgroundTitle.rectTransform.DOKill();
             backgroundTitle.rectTransform.anchoredPosition =
                 new Vector2(-1377, backgroundTitle.rectTransform.anchoredPosition.y);
-            backgroundTitle.rectTransform.DOAnchorPosX(0, 1.5f).SetEase(Ease.OutQuart).OnComplete(() =>
+            backgroundTitle.rectTransform.DOAnchorPosX(0, backgroundTitleDuration).SetEase(Ease.OutQuart).OnComplete(() =>
             {
-                backgroundTitle.rectTransform.DOAnchorPosX(1377, 1.5f).SetEase(Ease.InQuart);
+                backgroundTitle.rectTransform.DOAnchorPosX(1377, backgroundTitleDuration).SetEase(Ease.InQuart);
             });
             backgroundTitleText.text = nowTalk.background.title;
             if (!string.IsNullOrEmpty(nowTalk.background.description))
@@ -542,7 +556,7 @@ public class TalkManager : Singleton<TalkManager>
                 standing.Init();
             }
 
-            GameManager.Instance.AddCgData(nowTalk.background.name);
+            GameManager.Instance.saveManager.AddCgData(nowTalk.background.name);
             EffectSetting();
             return;
         }
@@ -595,6 +609,14 @@ public class TalkManager : Singleton<TalkManager>
     }
 
     #region Skip
+    private void SkipInit()
+    {
+        skipOkayButton.onClick.RemoveAllListeners();
+        skipOkayButton.onClick.AddListener(SkipOkay);
+
+        skipExitButton.onClick.RemoveAllListeners();
+        skipExitButton.onClick.AddListener(SkipExit);
+    }
 
     private void SkipReset()
     {
@@ -610,7 +632,7 @@ public class TalkManager : Singleton<TalkManager>
     {
         if (!skipButtonClicking || skipWindow.gameObject.activeSelf || talkQueue.Count <= 0) return;
         skipDuration += Time.deltaTime;
-        if (skipDuration >= 2.5f)
+        if (skipDuration >= skipWindowTime)
         {
             skipGaugeBackground.gameObject.SetActive(false);
 
@@ -624,7 +646,7 @@ public class TalkManager : Singleton<TalkManager>
 
             skipText.text = Utility.GetTalkerName(talkSkipText);
         }
-        else if (skipDuration >= 1)
+        else if (skipDuration >= skipGaugeTime)
         {
             if (!skipBackground.gameObject.activeSelf)
             {
@@ -637,7 +659,7 @@ public class TalkManager : Singleton<TalkManager>
                 skipGaugeBackground.gameObject.SetActive(true);
             }
 
-            skipGaugeImage.fillAmount = (skipDuration - 1) / 1.5f;
+            skipGaugeImage.fillAmount = skipDuration / skipWindowTime;
         }
     }
 
@@ -752,13 +774,24 @@ public class TalkManager : Singleton<TalkManager>
     #endregion
 
     #region Event
+    private void EventInit()
+    {
+        defaultPos = eventWindow.rectTransform.anchoredPosition;
+        eventWindow.gameObject.SetActive(false);
+
+        eventExitButton.onClick.RemoveAllListeners();
+        eventExitButton.onClick.AddListener(EventExit);
+
+        eventOkayButton.onClick.RemoveAllListeners();
+        eventOkayButton.onClick.AddListener(EventOkay);
+    }
 
     private void EventOpen(string eventName, Vector2 pos)
     {
         nowPos = pos;
         selectEvent = eventName;
 
-        bool isHaveTips = SaveManager.Instance.GameData.getTips.Contains(eventName);
+        bool isHaveTips = GameManager.Instance.saveManager.GameData.getTips.Contains(eventName);
         var tipEvent = nowTalk.dialogue.tipEvent.Find((tip) => tip.eventName == eventName);
         bool isDialogTips = !string.IsNullOrEmpty(tipEvent.talkName) && !isHasOption;
 
@@ -807,7 +840,7 @@ public class TalkManager : Singleton<TalkManager>
     private void EventSetting()
     {
         if (nowTalk.eventList == null || nowTalk.eventList.Count <= 0) return;
-        if (GameManager.Instance.nowScene == Scene.TITLE) return;
+        if (GameManager.Instance.sceneManager.nowScene == Scene.TITLE) return;
 
         foreach (var getEvent in nowTalk.eventList)
             EventInteract(getEvent);
@@ -815,13 +848,13 @@ public class TalkManager : Singleton<TalkManager>
 
     private void EventInteract(Event getEvent)
     {
-        if (GameManager.Instance.nowScene == Scene.TITLE) return;
+        if (GameManager.Instance.sceneManager.nowScene == Scene.TITLE) return;
 
         switch (getEvent.type)
         {
             case Event.Type.ADD_TIP:
                 {
-                    GameManager.Instance.AddTip(getEvent.name);
+                    GameManager.Instance.saveManager.AddTip(getEvent.name);
                     break;
                 }
         }
@@ -836,8 +869,8 @@ public class TalkManager : Singleton<TalkManager>
         var talks = ResourcesManager.Instance.GetTalk(talkName);
 
         if (!string.IsNullOrEmpty(talks.cgTitle))
-            if (!SaveManager.Instance.GameData.getVideo.Contains(talkName))
-                SaveManager.Instance.GameData.getVideo.Add(talkName);
+            if (!GameManager.Instance.saveManager.GameData.getVideo.Contains(talkName))
+                GameManager.Instance.saveManager.GameData.getVideo.Add(talkName);
 
         AddTalk(talks);
     }
@@ -920,6 +953,80 @@ public class TalkManager : Singleton<TalkManager>
 
     #region Animation
 
+    private void AnimationInit()
+    {
+        charAnimationPairs.Add("Move", (findStanding, anim) => findStanding.Move(Utility.PosToVector2(anim.parameter), anim.duration));
+        charAnimationPairs.Add("Face", (findStanding, anim) => findStanding.FaceChange(anim.parameter));
+        charAnimationPairs.Add("Bounce", (findStanding, anim) => findStanding.Bounce(int.Parse(anim.parameter), anim.duration));
+        charAnimationPairs.Add("Shake", (findStanding, anim) => findStanding.Shake(float.Parse(anim.parameter), anim.duration));
+        charAnimationPairs.Add("Scale", (findStanding, anim) => findStanding.Scale(Utility.SizeToScale(anim.parameter), anim.duration));
+        charAnimationPairs.Add("Emotion", (findStanding, anim) => findStanding.Emotion(anim.parameter, anim.duration));
+        charAnimationPairs.Add("Dark", (findStanding, anim) => findStanding.SetDark(bool.Parse(anim.parameter)));
+
+
+        camAnimationPairs.Add("Black_FadeIn", (anim) =>
+        {
+            blackFadeIn.gameObject.SetActive(true);
+            blackFadeIn.effectFactor = 0;
+        });
+
+        camAnimationPairs.Add("Black_FadeOut", (anim) =>
+        {
+            if (blackFadeIn.gameObject.activeSelf)
+                blackFadeIn.gameObject.SetActive(false);
+            blackFadeOut.gameObject.SetActive(true);
+            blackFadeOut.effectFactor = 1;
+        });
+
+
+        utilAnimationPairs.Add("Wait", (anim) => animationWaitTime = anim.duration);
+
+
+        dialAnimationPairs.Add("On", (anim) =>
+        {
+            if (nowTalk.dialogue == null) return;
+
+            dialogueImage.DOKill();
+            dialogueImage.gameObject.SetActive(true);
+            if (nowTalk.dialogue.invisible)
+            {
+                dialogueImage.color = Color.clear;
+            }
+            else
+            {
+                dialogueImage.color = new Color(0.08627451F, 0.08627451F, 0.08627451F, 0);
+                dialogueImage.DOFade(0.9137255F, 0.2f);
+            }
+
+            EventSetting();
+
+            if (!string.IsNullOrEmpty(nowTalk.dialogue.owner))
+            {
+                foreach (var standing in uiStandings)
+                {
+                    if (!standing.gameObject.activeSelf) continue;
+
+                    standing.SetDark(standing.NowStanding.name != nowTalk.dialogue.owner);
+                }
+            }
+
+            if (!nowTalk.dialogue.active)
+                LogManager.Instance.AddLog(nowTalk);
+        });
+
+        dialAnimationPairs.Add("Shake", (anim) =>
+        {
+            float power = float.Parse(anim.parameter);
+
+            if (power < 0)
+                power = 6;
+            dialogueImage.rectTransform.DOKill(true);
+            dialogueImage.rectTransform
+                .DOShakeAnchorPos(anim.duration, power, 30, 90, false, false)
+                .SetRelative();
+        });
+    }
+
     private void AnimationWait()
     {
         if (animationWaitTime > 0 && !eventWindow.gameObject.activeSelf)
@@ -940,121 +1047,23 @@ public class TalkManager : Singleton<TalkManager>
         switch (anim.type)
         {
             case AnimationType.CHAR:
-                {
-                    var findStanding = uiStandings.Find((standing) =>
-                        standing.gameObject.activeSelf && standing.NowStanding != null &&
-                        standing.NowStanding.name == anim.name);
-                    if (findStanding != null)
-                    {
-                        switch (anim.effect)
-                        {
-                            case "Move":
-                                findStanding.Move(Utility.PosToVector2(anim.parameter), anim.duration);
-                                break;
-                            case "Face":
-                                findStanding.FaceChange(anim.parameter);
-                                break;
-                            case "Bounce":
-                                findStanding.Bounce(int.Parse(anim.parameter), anim.duration);
-                                break;
-                            case "Shake":
-                                findStanding.Shake(float.Parse(anim.parameter), anim.duration);
-                                break;
-                            case "Scale":
-                                findStanding.Scale(Utility.SizeToScale(anim.parameter), anim.duration);
-                                break;
-                            case "Emotion":
-                                findStanding.Emotion(anim.parameter, anim.duration);
-                                break;
-                            case "Dark":
-                                findStanding.SetDark(bool.Parse(anim.parameter));
-                                break;
-                        }
-                    }
+                var findStanding = uiStandings.Find((standing) =>
+                    standing.gameObject.activeSelf && standing.NowStanding != null &&
+                    standing.NowStanding.name == anim.name);
+                if (findStanding == null) break;
 
-                    break;
-                }
+                charAnimationPairs[anim.effect]?.Invoke(findStanding, anim);
+                break;
             case AnimationType.DIAL:
-                {
-                    switch (anim.effect)
-                    {
-                        case "On":
-                            if (nowTalk.dialogue == null) break;
-
-                            dialogueImage.DOKill();
-                            dialogueImage.gameObject.SetActive(true);
-                            if (nowTalk.dialogue.invisible)
-                            {
-                                dialogueImage.color = Color.clear;
-                            }
-                            else
-                            {
-                                dialogueImage.color = new Color(0.08627451F, 0.08627451F, 0.08627451F, 0);
-                                dialogueImage.DOFade(0.9137255F, 0.2f);
-                            }
-
-                            EventSetting();
-
-                            if (!string.IsNullOrEmpty(nowTalk.dialogue.owner))
-                            {
-                                foreach (var standing in uiStandings)
-                                {
-                                    if (!standing.gameObject.activeSelf) continue;
-
-                                    standing.SetDark(standing.NowStanding.name != nowTalk.dialogue.owner);
-                                }
-                            }
-
-                            if (!nowTalk.dialogue.active)
-                            {
-                                LogManager.Instance.AddLog(nowTalk);
-                            }
-
-                            break;
-                        case "Shake":
-                            float power = float.Parse(anim.parameter);
-
-                            if (power < 0)
-                                power = 6;
-                            dialogueImage.rectTransform.DOKill(true);
-                            dialogueImage.rectTransform
-                                .DOShakeAnchorPos(anim.duration, power, 30, 90, false, false)
-                                .SetRelative();
-                            break;
-                    }
-
-                    break;
-                }
+                dialAnimationPairs[anim.effect]?.Invoke(anim);
+                break;
             case AnimationType.CAM:
-                {
-                    switch (anim.effect)
-                    {
-                        case "Black_FadeIn":
-                            blackFadeIn.gameObject.SetActive(true);
-                            blackFadeIn.effectFactor = 0;
-                            break;
-                        case "Black_FadeOut":
-                            if (blackFadeIn.gameObject.activeSelf)
-                                blackFadeIn.gameObject.SetActive(false);
-                            blackFadeOut.gameObject.SetActive(true);
-                            blackFadeOut.effectFactor = 1;
-                            break;
-                    }
-
-                    break;
-                }
+                camAnimationPairs[anim.effect]?.Invoke(anim);
+                break;
             default:
             case AnimationType.UTIL:
-                {
-                    switch (anim.effect)
-                    {
-                        case "Wait":
-                            animationWaitTime = anim.duration;
-                            return;
-                    }
-
-                    break;
-                }
+                utilAnimationPairs[anim.effect]?.Invoke(anim);
+                return;
         }
 
         AnimationUpdate();

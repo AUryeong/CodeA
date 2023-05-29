@@ -64,7 +64,7 @@ namespace UI
 
             namingInput.onEndEdit.AddListener((text) =>
             {
-                if (text == SaveManager.Instance.GameData.name) return;
+                if (text == GameManager.Instance.saveManager.GameData.name) return;
 
                 warningWindow.gameObject.SetActive(true);
                 warningText.text = "당신의 이름을 " + (string.IsNullOrEmpty(text) ? "김준우" : text) + "(으)로 확정하시겠습니까?";
@@ -91,7 +91,7 @@ namespace UI
             if (descriptionText.maxVisibleCharacters < descriptionText.text.Length)
             {
                 talkDuration += Time.unscaledDeltaTime;
-                float cooltime = defaultTalkCooltime * SaveManager.Instance.GameData.textSpeed;
+                float cooltime = defaultTalkCooltime * GameManager.Instance.saveManager.GameData.textSpeed;
                 if (talkDuration >= cooltime)
                 {
                     talkDuration -= cooltime;
@@ -120,7 +120,7 @@ namespace UI
                     endTextEffect.rectTransform.anchoredPosition = new Vector2(characterPos.x + 30, characterPos.y - 5);
                 }
 
-                if (SaveManager.Instance.GameData.textAuto)
+                if (GameManager.Instance.saveManager.GameData.textAuto)
                 {
                     autoDuration += Time.unscaledDeltaTime;
                     if (autoDuration >= autoWaitTime)
@@ -155,25 +155,25 @@ namespace UI
 
         private void ChangeSfxSlider(float value)
         {
-            SaveManager.Instance.GameData.sfxSound = value;
+            GameManager.Instance.saveManager.GameData.sfxSound = value;
             SoundManager.Instance.UpdateVolume(ESoundType.SFX, value);
         }
 
         private void ChangeBgmSlider(float value)
         {
-            SaveManager.Instance.GameData.bgmSound = value;
+            GameManager.Instance.saveManager.GameData.bgmSound = value;
             SoundManager.Instance.UpdateVolume(ESoundType.BGM, value);
         }
 
         private void ChangeTextSpeedSlider(float value)
         {
-            SaveManager.Instance.GameData.textSpeed = (1 - value) * 1.8f - 0.2f;
+            GameManager.Instance.saveManager.GameData.textSpeed = (1 - value) * 1.8f - 0.2f;
         }
 
         private void ChangeTextType()
         {
-            SaveManager.Instance.GameData.textAuto = !SaveManager.Instance.GameData.textAuto;
-            textTypeImage.sprite = SaveManager.Instance.GameData.textAuto ? textTypeSpriteOn : textTypeSpriteOff;
+            GameManager.Instance.saveManager.GameData.textAuto = !GameManager.Instance.saveManager.GameData.textAuto;
+            textTypeImage.sprite = GameManager.Instance.saveManager.GameData.textAuto ? textTypeSpriteOn : textTypeSpriteOff;
         }
 
         public override void Init(Vector3 pos)
@@ -188,25 +188,25 @@ namespace UI
 
         private void TextSetting()
         {
-            textSpeedSlider.value = (1 - (SaveManager.Instance.GameData.textSpeed + 0.2f)/1.8f);
-            textTypeImage.sprite = SaveManager.Instance.GameData.textAuto ? textTypeSpriteOn : textTypeSpriteOff;
+            textSpeedSlider.value = (1 - (GameManager.Instance.saveManager.GameData.textSpeed + 0.2f)/1.8f);
+            textTypeImage.sprite = GameManager.Instance.saveManager.GameData.textAuto ? textTypeSpriteOn : textTypeSpriteOff;
         }
 
         private void SoundSetting()
         {
-            bgmSlider.value = SaveManager.Instance.GameData.bgmSound;
-            sfxSlider.value = SaveManager.Instance.GameData.sfxSound;
+            bgmSlider.value = GameManager.Instance.saveManager.GameData.bgmSound;
+            sfxSlider.value = GameManager.Instance.saveManager.GameData.sfxSound;
         }
 
         private void NamingSetting()
         {
-            namingInput.text = SaveManager.Instance.GameData.name;
+            namingInput.text = GameManager.Instance.saveManager.GameData.name;
         }
 
         private void EnterName()
         {
             //TODO SOUND
-            SaveManager.Instance.GameData.name = string.IsNullOrEmpty(namingInput.text) ? "김준우" : namingInput.text;
+            GameManager.Instance.saveManager.GameData.name = string.IsNullOrEmpty(namingInput.text) ? "김준우" : namingInput.text;
             warningWindow.gameObject.SetActive(false);
         }
     }

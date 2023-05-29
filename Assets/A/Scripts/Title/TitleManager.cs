@@ -45,17 +45,17 @@ public class TitleManager : Singleton<TitleManager>
         sideTextButton.onClick.AddListener(WindowManager.Instance.WindowOpen);
 
         warningOkayButton.onClick.RemoveAllListeners();
-        warningOkayButton.onClick.AddListener(() => GameManager.Instance.SceneLoad(Scene.INGAME));
+        warningOkayButton.onClick.AddListener(() => GameManager.Instance.sceneManager.SceneLoad(Scene.INGAME));
 
         warningCancelButton.onClick.RemoveAllListeners();
         warningCancelButton.onClick.AddListener(() => warningWindow.gameObject.SetActive(false));
 
-        GameManager.Instance.nowGameData = null;
+        GameManager.Instance.saveManager.nowGameData = null;
 
-        if (string.IsNullOrEmpty(SaveManager.Instance.GameData.saigoCg)) return;
+        if (string.IsNullOrEmpty(GameManager.Instance.saveManager.GameData.saigoCg)) return;
 
         wallpaperImage.color = new Color(0.8f, 0.8f, 0.8f);
-        wallpaperImage.sprite = ResourcesManager.Instance.GetBackground(SaveManager.Instance.GameData.saigoCg);
+        wallpaperImage.sprite = ResourcesManager.Instance.GetBackground(GameManager.Instance.saveManager.GameData.saigoCg);
     }
 
     private void Start()
@@ -103,9 +103,9 @@ public class TitleManager : Singleton<TitleManager>
 
     private void GameStart()
     {
-        if (SaveManager.Instance.GameData.savedGameDatas.Count <= 0)
+        if (GameManager.Instance.saveManager.GameData.savedGameDatas.Count <= 0)
         {
-            GameManager.Instance.SceneLoad(Scene.INGAME);
+            GameManager.Instance.sceneManager.SceneLoad(Scene.INGAME);
             return;
         }
 

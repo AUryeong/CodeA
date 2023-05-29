@@ -11,7 +11,7 @@ public static class Utility
 
     public static string GetTalkerName(string talkerName)
     {
-        return string.Format(talkerName, SaveManager.Instance.GameData.name);
+        return string.Format(talkerName, GameManager.Instance.saveManager.GameData.name);
     }
 
     public static Vector3 GetVector3Aver(Vector3 vector, Vector3 vector2)

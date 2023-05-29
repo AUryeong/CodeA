@@ -30,10 +30,10 @@ public class SoundManager : Singleton<SoundManager>
             audioClips.Add(clip.name, clip);
 
         var audioInfo = AddAudioInfo(ESoundType.BGM);
-        audioInfo.audioVolume = SaveManager.Instance.GameData.bgmSound;
+        audioInfo.audioVolume = GameManager.Instance.saveManager.GameData.bgmSound;
         audioInfo.audioSource.loop = true;
 
-        AddAudioInfo(ESoundType.SFX).audioVolume = SaveManager.Instance.GameData.sfxSound;
+        AddAudioInfo(ESoundType.SFX).audioVolume = GameManager.Instance.saveManager.GameData.sfxSound;
     }
 
     protected override void OnReset()

@@ -62,7 +62,7 @@ namespace UI
                 int idx = i + (savesIdx * 6);
                 saves[i].onClick.RemoveAllListeners();
 
-                var getSaveData = SaveManager.Instance.GameData.GetSaveData(idx);
+                var getSaveData = GameManager.Instance.saveManager.GameData.GetSaveData(idx);
                 if (getSaveData != null)
                 {
                     if (getSaveData.leftTalks == null || getSaveData.leftTalks.Count <= 0 || getSaveData.leftTalks[0]?.background == null ||
@@ -92,7 +92,7 @@ namespace UI
 
         private void WarningLoad(int idx)
         {
-            if (GameManager.Instance.nowGameData == null)
+            if (GameManager.Instance.saveManager.nowGameData == null)
             {
                 Load(idx);
                 return;
@@ -104,8 +104,8 @@ namespace UI
 
         private void Load(int idx)
         {
-            GameManager.Instance.nowGameData = SaveManager.Instance.GameData.GetSaveData(idx).Copy();
-            GameManager.Instance.SceneLoad(Scene.INGAME);
+            GameManager.Instance.saveManager.nowGameData = GameManager.Instance.saveManager.GameData.GetSaveData(idx).Copy();
+            GameManager.Instance.sceneManager.SceneLoad(Scene.INGAME);
             ReloadSaves();
         }
 

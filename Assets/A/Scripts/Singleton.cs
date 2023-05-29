@@ -30,7 +30,7 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
             if (IsDontDestroying)
             {
                 DontDestroyOnLoad(gameObject);
-                SceneManager.sceneLoaded += OnSceneLoaded;
+                UnityEngine.SceneManagement.SceneManager.sceneLoaded += OnSceneLoaded;
             }
         }
         else

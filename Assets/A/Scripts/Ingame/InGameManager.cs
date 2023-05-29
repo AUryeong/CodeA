@@ -34,7 +34,7 @@ namespace Ingame
         {
             if (Instance != this) return;
             
-            if (GameManager.Instance.nowGameData != null && GameManager.Instance.nowGameData.idx >= 0)
+            if (GameManager.Instance.saveManager.nowGameData != null && GameManager.Instance.saveManager.nowGameData.idx >= 0)
                 ContinueSaveData();
             else
                 NewSaveData();
@@ -44,7 +44,7 @@ namespace Ingame
 
         private void ApplySaveData()
         {
-            var gameData = GameManager.Instance.nowGameData;
+            var gameData = GameManager.Instance.saveManager.nowGameData;
             if (gameData == null) return;
 
             year = gameData.year;
@@ -74,15 +74,15 @@ namespace Ingame
 
         private void AddLeftTalks()
         {
-            if (GameManager.Instance.nowGameData.leftTalks.Count > 0)
-                TalkManager.Instance.AddTalk(GameManager.Instance.nowGameData.leftTalks);
+            if (GameManager.Instance.saveManager.nowGameData.leftTalks.Count > 0)
+                TalkManager.Instance.AddTalk(GameManager.Instance.saveManager.nowGameData.leftTalks);
 
-            TalkManager.Instance.talkSkipText = GameManager.Instance.nowGameData.leftTalkSkipText;
+            TalkManager.Instance.talkSkipText = GameManager.Instance.saveManager.nowGameData.leftTalkSkipText;
         }
 
         private void NewSaveData()
         {
-            GameManager.Instance.nowGameData = new SubGameData();
+            GameManager.Instance.saveManager.nowGameData = new SubGameData();
 
             ApplySaveData();
             NamingSetting();
@@ -90,7 +90,7 @@ namespace Ingame
 
         private void NamingSetting()
         {
-            if (!string.IsNullOrEmpty(SaveManager.Instance.GameData.name))
+            if (!string.IsNullOrEmpty(GameManager.Instance.saveManager.GameData.name))
             {
                 StartFadeOut();
                 TalkManager.Instance.AddTalk("new");
@@ -121,7 +121,7 @@ namespace Ingame
         private void EnterName()
         {
             //TODO SOUND
-            SaveManager.Instance.GameData.name = string.IsNullOrEmpty(namingInput.text) ? "김준우" : namingInput.text;
+            GameManager.Instance.saveManager.GameData.name = string.IsNullOrEmpty(namingInput.text) ? "김준우" : namingInput.text;
             fadeInBlack.gameObject.SetActive(true);
             fadeInBlack.color = Utility.GetFadeColor(Color.black, 0);
             fadeInBlack.DOFade(1, 1).OnComplete(() =>

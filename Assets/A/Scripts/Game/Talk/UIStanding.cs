@@ -199,7 +199,10 @@ namespace UI
 
         public void Bounce(int repeat, float duration)
         {
-            rectTransform.DOAnchorPosY(-50, duration).SetRelative().SetLoops(repeat * 2, LoopType.Yoyo).SetEase(Ease.InOutQuad);
+            rectTransform.DOAnchorPosY(-50, duration).SetRelative().SetLoops(repeat * 2, LoopType.Yoyo).SetEase(Ease.InOutQuad).OnComplete(() =>
+            {
+                rectTransform.anchoredPosition = new Vector2(rectTransform.anchoredPosition.x, 431.5f);
+            });
             if (!NowStanding.dark)
                 rectTransform.SetAsLastSibling();
         }

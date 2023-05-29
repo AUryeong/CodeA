@@ -49,7 +49,7 @@ namespace UI
         public override void Init(Vector3 pos)
         {
             base.Init(pos);
-            warningWindow.gameObject.SetActive(GameManager.Instance.nowGameData == null);
+            warningWindow.gameObject.SetActive(GameManager.Instance.saveManager.nowGameData == null);
             warningWindow2.gameObject.SetActive(false);
 
             warningCancelButton.onClick.RemoveAllListeners();
@@ -65,7 +65,7 @@ namespace UI
             {
                 int idx = i + (savesIdx * 6);
                 saves[i].onClick.RemoveAllListeners();
-                var getSaveData = SaveManager.Instance.GameData.GetSaveData(idx);
+                var getSaveData = GameManager.Instance.saveManager.GameData.GetSaveData(idx);
                 if (getSaveData != null)
                 {
                     if (getSaveData.leftTalks == null || getSaveData.leftTalks.Count <= 0 || getSaveData.leftTalks[0]?.background == null ||
@@ -103,7 +103,7 @@ namespace UI
         private void Save(int idx)
         {
             warningWindow2.gameObject.SetActive(false);
-            SaveManager.Instance.GameData.ChangeSaveData(idx);
+            GameManager.Instance.saveManager.GameData.ChangeSaveData(idx);
             ReloadSaves();
         }
 

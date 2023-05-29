@@ -94,14 +94,14 @@ MonoBehaviour:
         type: 0
         parameter: 2
       active: 0
-      invisible: 0
+      invisible: 1
       owner: A
     eventList: []
     optionList: []
     characters:
     - name: A
       clothes: Default
-      face: Default
+      face: Smile
       pos: 2
       size: 2
       dark: 0
@@ -124,11 +124,6 @@ MonoBehaviour:
         name: 
         parameter: 
         duration: 1.1
-      - type: 0
-        effect: Bounce
-        name: A
-        parameter: 2
-        duration: 0.2
       - type: 0
         effect: Face
         name: A
