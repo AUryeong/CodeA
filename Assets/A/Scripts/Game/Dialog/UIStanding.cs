@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using DG.Tweening;
+﻿using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -18,7 +17,7 @@ namespace UI
 
         [Header("감정 표현용")][SerializeField] private Image emotionBase;
 
-        [Space(10)][SerializeField] private Image[] thinkingDialogs;
+        [Space(10)][SerializeField] private Image[] thinkingPoints;
 
         [Space(10)][SerializeField] private Image flushBase;
         [SerializeField] private Image flushLine;
@@ -163,7 +162,7 @@ namespace UI
                 rectTransform.SetAsLastSibling();
         }
 
-        public void ClothesChange(string clothesName, bool isSet = false)
+        private void ClothesChange(string clothesName, bool isSet = false)
         {
             var duration = 0.4f;
             var toColor = NowStanding.dark ? Utility.darkColor : Color.white;
@@ -236,7 +235,7 @@ namespace UI
             emotionBase.rectTransform.localScale = Vector3.zero;
             emotionBase.rectTransform.DOScale(Vector3.one, fadeOutDuration);
 
-            foreach (Image image in thinkingDialogs)
+            foreach (Image image in thinkingPoints)
             {
                 image.DOKill();
                 image.gameObject.SetActive(false);
@@ -273,9 +272,9 @@ namespace UI
             switch (emotionName)
             {
                 case "Thinking":
-                    for (var index = 0; index < thinkingDialogs.Length; index++)
+                    for (var index = 0; index < thinkingPoints.Length; index++)
                     {
-                        var image = thinkingDialogs[index];
+                        var image = thinkingPoints[index];
                         image.gameObject.SetActive(true);
                         image.color = Utility.GetFadeColor(Color.white, 0);
                         image.DOFade(1, duration / 6).SetDelay(duration / 4 * index);

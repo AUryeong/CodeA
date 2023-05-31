@@ -754,7 +754,7 @@ MonoBehaviour:
   face: {fileID: 6459186008386886883}
   sideFace: {fileID: 6459186008216546841}
   emotionBase: {fileID: 2679829101417399244}
-  thinkingTalks:
+  thinkingPoints:
   - {fileID: 1085160729984950810}
   - {fileID: 4112210083270084894}
   - {fileID: 6043908426911229348}

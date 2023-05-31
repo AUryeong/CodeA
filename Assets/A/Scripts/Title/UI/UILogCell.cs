@@ -35,7 +35,7 @@ namespace UI
             if (linkIndex == -1) return;
             
             var linkInfo = descriptionText.textInfo.linkInfo[linkIndex];
-            logWindow.EventOpen(linkInfo.GetLinkID(), eventData.position);
+            logWindow.EventDetail.EventOpen(linkInfo.GetLinkID(), eventData.position, false);
         }
     }
 }

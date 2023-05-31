@@ -28,7 +28,7 @@ public class SerializedCharacterStanding
 
 public class CharacterStanding
 {
-    public Dictionary<string, Standing> standings = new Dictionary<string, Standing>();
+    public readonly Dictionary<string, Standing> standings = new Dictionary<string, Standing>();
 }
 
 public class Standing

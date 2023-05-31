@@ -6,7 +6,6 @@ using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 using UI;
 
@@ -16,19 +15,16 @@ public class DialogManager : Manager
     private Dialog nowDialog;
     private Dialog prevDialog;
 
-    [Header("대화문")] 
-    
-    [SerializeField] private GameObject dialogWindow;
+    [SerializeField] private EventTrigger dialogEventTrigger;
+
+    [Header("대화문")] [SerializeField] private GameObject dialogWindow;
 
     [SerializeField] private Image dialogueImage;
     [SerializeField] private TextMeshProUGUI dialogOwnerNameText;
 
-    [FormerlySerializedAs("descreptionText")] [SerializeField]
-    private TextMeshProUGUI descriptionText;
+    [SerializeField] private TextMeshProUGUI descriptionText;
 
-    [Header("연출")] 
-    
-    [SerializeField] private UITransitionEffect blackFadeIn;
+    [Header("연출")] [SerializeField] private UITransitionEffect blackFadeIn;
     [SerializeField] private UITransitionEffect blackFadeOut;
     [SerializeField] private TextMeshProUGUI endTextEffect;
 
@@ -40,25 +36,19 @@ public class DialogManager : Manager
 
     private const float backgroundTitleDuration = 1.5f;
 
-    [Header("배경")] 
-    
-    [SerializeField] private Image backgroundImage;
+    [Header("배경")] [SerializeField] private Image backgroundImage;
     [SerializeField] private Image subBackgroundImage;
     private UITransitionEffect subBackgroundEffect;
 
-    [Header("스탠딩")] 
-    
-    [SerializeField] private UIStanding uiStanding;
+    [Header("스탠딩")] [SerializeField] private UIStanding uiStanding;
     [SerializeField] private RectTransform standingParent;
     private readonly List<UIStanding> uiStandings = new List<UIStanding>();
 
-    [Header("애니메이션")]
-    
-    private readonly Queue<DialogAnimation> animations = new Queue<DialogAnimation>();
+    [Header("애니메이션")] private readonly Queue<DialogAnimation> animations = new Queue<DialogAnimation>();
     private float animationWaitTime;
 
     private float dialogDuration;
-    private const float defaultDialogCooltime = 0.05f;
+    private const float defaultDialogDuration = 0.05f;
 
     private float autoDuration;
     private const float autoWaitTime = 2f;
@@ -68,17 +58,13 @@ public class DialogManager : Manager
     private readonly Dictionary<string, Action<DialogAnimation>> dialAnimationPairs = new Dictionary<string, Action<DialogAnimation>>();
     private readonly Dictionary<string, Action<DialogAnimation>> utilAnimationPairs = new Dictionary<string, Action<DialogAnimation>>();
 
-    [Header("선택지")] 
-    
-    [SerializeField] private UIOption uiOption;
+    [Header("선택지")] [SerializeField] private UIOption uiOption;
     [SerializeField] private RectTransform optionParent;
     private readonly List<UIOption> uiOptions = new List<UIOption>();
     private bool isHasOption;
     private bool optionActive;
 
-    [Header("스킵")] 
-    
-    [SerializeField] private Image skipBackground;
+    [Header("스킵")] [SerializeField] private Image skipBackground;
     [SerializeField] private Image skipGaugeBackground;
     [SerializeField] private Image skipGaugeImage;
 
@@ -95,38 +81,21 @@ public class DialogManager : Manager
     private const float skipGaugeTime = 1;
     private const float skipWindowTime = 2.5f;
 
-    [Header("터치 이벤트")]
-    
-    private Vector2 dragStartPos;
+    [Header("터치 이벤트")] private Vector2 dragStartPos;
     private bool isDialogHide;
 
     private const float dragMinPower = 400;
 
-    [Header("이벤트")] 
-    
-    [SerializeField] private Image eventWindow;
-    [SerializeField] private TextMeshProUGUI eventTitleText;
-    [SerializeField] private TextMeshProUGUI eventDescriptionText;
-    [SerializeField] private Button eventOkayButton;
-    [SerializeField] private Button eventExitButton;
-    [SerializeField] private TextMeshProUGUI eventContinueText;
-    private TextMeshProUGUI eventOkayButtonText;
 
-    private bool isHasEvent;
-    private string selectEvent;
-    private Vector2 nowPos;
-    private Vector2 defaultPos;
-
-    [Header("디테일들")] 
-    
-    public LogDetail dialogLogDetail;
+    public DialogLogDetail LogDetail { get; private set; }
+    public DialogEventDetail EventDetail { get; private set; }
 
     public override void OnCreated()
     {
-        dialogLogDetail = GetComponent<LogDetail>();
+        LogDetail = GetComponent<DialogLogDetail>();
+        EventDetail = GetComponent<DialogEventDetail>();
 
         subBackgroundEffect = subBackgroundImage.GetComponent<UITransitionEffect>();
-        eventOkayButtonText = eventOkayButton.GetComponent<TextMeshProUGUI>();
         skipOkayButtonText = skipOkayButton.GetComponent<TextMeshProUGUI>();
 
         foreach (RectTransform rect in standingParent)
@@ -135,16 +104,34 @@ public class DialogManager : Manager
         foreach (RectTransform rect in optionParent)
             uiOptions.Add(rect.GetComponent<UIOption>());
 
+        dialogEventTrigger.triggers.Clear();
+
+        var entry = new EventTrigger.Entry()
+        {
+            eventID = EventTriggerType.PointerUp,
+            callback = new EventTrigger.TriggerEvent()
+        };
+        entry.callback.AddListener(PointerUp);
+        dialogEventTrigger.triggers.Add(entry);
+
+        entry = new EventTrigger.Entry()
+        {
+            eventID = EventTriggerType.PointerDown,
+            callback = new EventTrigger.TriggerEvent()
+        };
+        entry.callback.AddListener(PointerDown);
+        dialogEventTrigger.triggers.Add(entry);
+
         dialogWindow.gameObject.SetActive(false);
 
-        EventInit();
+        EventDetail.OnCreated();
         SkipInit();
         AnimationInit();
     }
 
     public override void OnReset()
     {
-        dialogLogDetail.OnReset();
+        LogDetail.OnReset();
 
         nowDialog = null;
         prevDialog = null;
@@ -156,7 +143,6 @@ public class DialogManager : Manager
         autoDuration = 0;
 
         dialogWindow.gameObject.SetActive(false);
-        eventWindow.gameObject.SetActive(false);
 
         blackFadeIn.gameObject.SetActive(false);
         blackFadeOut.gameObject.SetActive(false);
@@ -164,6 +150,7 @@ public class DialogManager : Manager
         dialogSkipText = string.Empty;
         isEnding = false;
 
+        EventDetail.OnReset();
         SkipReset();
         OptionReset();
 
@@ -239,12 +226,14 @@ public class DialogManager : Manager
                 isDialogHide = true;
                 return;
             }
-            else if (subVector.y < -dragMinPower)
+
+            if (subVector.y < -dragMinPower)
             {
                 GameManager.Instance.windowManager.ClickWindow(WindowType.LOG);
                 return;
             }
-            else if (subVector.x > dragMinPower)
+
+            if (subVector.x > dragMinPower)
             {
                 GameManager.Instance.windowManager.WindowOpen();
                 return;
@@ -280,7 +269,7 @@ public class DialogManager : Manager
             if (linkIndex != -1)
             {
                 var linkInfo = descriptionText.textInfo.linkInfo[linkIndex];
-                EventOpen(linkInfo.GetLinkID(), (data as PointerEventData).position);
+                EventDetail.EventOpen(linkInfo.GetLinkID(), (data as PointerEventData).position, isHasOption);
             }
             else if (nowDialog.optionList == null || nowDialog.optionList.Count <= 0)
                 NewDialog();
@@ -323,7 +312,7 @@ public class DialogManager : Manager
             return;
         }
 
-        if (eventWindow.gameObject.activeSelf) return;
+        if (EventDetail.IsActivating()) return;
 
         SkipUpdate();
 
@@ -331,7 +320,7 @@ public class DialogManager : Manager
         if (descriptionText.maxVisibleCharacters < descriptionText.textInfo.characterCount)
         {
             dialogDuration += Time.deltaTime;
-            float nextDuration = defaultDialogCooltime * GameManager.Instance.saveManager.GameData.textSpeed;
+            float nextDuration = defaultDialogDuration * GameManager.Instance.saveManager.GameData.textSpeed;
             if (dialogDuration >= nextDuration)
             {
                 dialogDuration -= nextDuration;
@@ -388,7 +377,7 @@ public class DialogManager : Manager
                 return;
             }
 
-            if (GameManager.Instance.saveManager.GameData.textAuto && !isHasEvent)
+            if (GameManager.Instance.saveManager.GameData.textAuto && !EventDetail.IsHasEvent)
             {
                 autoDuration += Time.deltaTime;
                 if (autoDuration >= autoWaitTime)
@@ -415,7 +404,7 @@ public class DialogManager : Manager
             prevDialog = null;
             nowDialog = null;
 
-            EventExit();
+            EventDetail.EventExit();
             SkipReset();
             OptionReset();
 
@@ -435,17 +424,16 @@ public class DialogManager : Manager
         optionParent.gameObject.SetActive(true);
 
         endTextEffect.gameObject.SetActive(false);
-        nowDialog = newDialog == null ? dialogQueue.Dequeue() : newDialog;
-        isHasEvent = false;
+        nowDialog = newDialog ?? dialogQueue.Dequeue();
         isDialogHide = false;
 
         isHasOption = nowDialog.optionList.Count > 0;
         optionActive = false;
 
+        EventDetail.NewDialog(nowDialog.dialogText);
+
         if (nowDialog.dialogText != null)
         {
-            isHasEvent = nowDialog.dialogText.tipEvent != null && nowDialog.dialogText.tipEvent.Exists((tipEvent) =>
-                GameManager.Instance.saveManager.GameData.getTips.Contains(tipEvent.eventName));
             dialogOwnerNameText.text = string.IsNullOrEmpty(nowDialog.dialogText.name)
                 ? " "
                 : "> " + Utility.GetDialogName(nowDialog.dialogText.name);
@@ -458,7 +446,7 @@ public class DialogManager : Manager
                 : new Color(0.08627451F, 0.08627451F, 0.08627451F, 0.9137255F);
             if (nowDialog.dialogText.active)
             {
-                dialogLogDetail.AddLog(nowDialog);
+                LogDetail.AddLog(nowDialog);
                 EventSetting();
             }
         }
@@ -644,12 +632,13 @@ public class DialogManager : Manager
             skipWindow.rectTransform.DOScale(Vector3.one, 0.3f).SetEase(Ease.OutBack);
 
             skipOkayButtonText.DOKill();
-            skipOkayButtonText.color = Utility.GetFadeColor(eventOkayButtonText.color, 1);
+            skipOkayButtonText.color = Utility.GetFadeColor(skipOkayButtonText.color, 1);
             skipOkayButtonText.DOFade(0, 0.8f).SetLoops(-1, LoopType.Yoyo);
 
             skipText.text = Utility.GetDialogName(dialogSkipText);
+            return;
         }
-        else if (skipDuration >= skipGaugeTime)
+        if (skipDuration >= skipGaugeTime)
         {
             if (!skipBackground.gameObject.activeSelf)
             {
@@ -662,7 +651,7 @@ public class DialogManager : Manager
                 skipGaugeBackground.gameObject.SetActive(true);
             }
 
-            skipGaugeImage.fillAmount = skipDuration / skipWindowTime;
+            skipGaugeImage.fillAmount = (skipDuration - skipGaugeTime) / (skipWindowTime - skipGaugeTime);
         }
     }
 
@@ -694,7 +683,7 @@ public class DialogManager : Manager
                 }
             }
 
-            dialogLogDetail.AddLog(dialog);
+            LogDetail.AddLog(dialog);
         }
 
         NewDialog();
@@ -778,69 +767,6 @@ public class DialogManager : Manager
 
     #region Event
 
-    private void EventInit()
-    {
-        defaultPos = eventWindow.rectTransform.anchoredPosition;
-        eventWindow.gameObject.SetActive(false);
-
-        eventExitButton.onClick.RemoveAllListeners();
-        eventExitButton.onClick.AddListener(EventExit);
-
-        eventOkayButton.onClick.RemoveAllListeners();
-        eventOkayButton.onClick.AddListener(EventOkay);
-    }
-
-    private void EventOpen(string eventName, Vector2 pos)
-    {
-        nowPos = pos;
-        selectEvent = eventName;
-
-        bool isHaveTips = GameManager.Instance.saveManager.GameData.getTips.Contains(eventName);
-        var tipEvent = nowDialog.dialogText.tipEvent.Find((tip) => tip.eventName == eventName);
-        bool isDialogTips = !string.IsNullOrEmpty(tipEvent.dialogName) && !isHasOption;
-
-        eventTitleText.text = eventName + "에 대해";
-        eventDescriptionText.text = isHaveTips ? GameManager.Instance.resourcesManager.GetTip(eventName) : "정보가 없다...";
-
-        eventWindow.gameObject.SetActive(true);
-        eventWindow.rectTransform.DOKill();
-
-        eventWindow.rectTransform.anchoredPosition = pos;
-        eventWindow.rectTransform.localScale = Vector3.zero;
-
-        eventWindow.rectTransform.DOScale(Vector3.one, 0.3f).SetEase(Ease.OutBack);
-        eventWindow.rectTransform.DOAnchorPos(defaultPos, 0.3f).SetEase(Ease.OutBack);
-
-        eventContinueText.gameObject.SetActive(isHaveTips && isDialogTips);
-        eventOkayButtonText.gameObject.SetActive(isHaveTips && isDialogTips);
-        if (isHaveTips && isDialogTips)
-        {
-            eventOkayButtonText.DOKill();
-            eventOkayButtonText.color = new Color(105 / 255f, 1, 126 / 255f, 1);
-            eventOkayButtonText.DOFade(0, 0.8f).SetLoops(-1, LoopType.Yoyo);
-        }
-    }
-
-    private void EventOkay()
-    {
-        EventExit();
-        var tipEvent = nowDialog.dialogText.tipEvent.Find((tip) => tip.eventName == selectEvent);
-        var dialogs = GameManager.Instance.resourcesManager.GetDialog(tipEvent.dialogName).dialogs;
-
-        DialogAdd(tipEvent.dialogEventType, dialogs);
-    }
-
-    private void EventExit()
-    {
-        if (!eventWindow.gameObject.activeSelf) return;
-
-        eventWindow.rectTransform.DOKill();
-        eventWindow.rectTransform.localScale = Vector3.one;
-
-        eventWindow.rectTransform.DOScale(Vector3.zero, 0.2f).OnComplete(() => eventWindow.gameObject.SetActive(false));
-        eventWindow.rectTransform.DOAnchorPos(nowPos, 0.2f);
-    }
-
     private void EventSetting()
     {
         if (nowDialog.eventList == null || nowDialog.eventList.Count <= 0) return;
@@ -909,7 +835,7 @@ public class DialogManager : Manager
         return dialogList;
     }
 
-    private void DialogAdd(DialogEventType dialogEventType, List<Dialog> dialogs)
+    public void DialogAdd(DialogEventType dialogEventType, List<Dialog> dialogs)
     {
         if (dialogs == null || dialogs.Count <= 0)
         {
@@ -1015,7 +941,7 @@ public class DialogManager : Manager
             }
 
             if (!nowDialog.dialogText.active)
-                dialogLogDetail.AddLog(nowDialog);
+                LogDetail.AddLog(nowDialog);
         });
 
         dialAnimationPairs.Add("Shake", (anim) =>
@@ -1033,7 +959,7 @@ public class DialogManager : Manager
 
     private void AnimationWait()
     {
-        if (animationWaitTime > 0 && !eventWindow.gameObject.activeSelf)
+        if (animationWaitTime > 0 && !EventDetail.IsActivating())
         {
             animationWaitTime -= Time.deltaTime;
             if (animationWaitTime <= 0)

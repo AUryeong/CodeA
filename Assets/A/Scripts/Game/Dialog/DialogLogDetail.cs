@@ -10,7 +10,7 @@ public struct LogCellData
     public string text;
 }
 
-public class LogDetail : MonoBehaviour
+public class DialogLogDetail : MonoBehaviour
 {
     private readonly Queue<LogCellData> datas = new Queue<LogCellData>();
 
