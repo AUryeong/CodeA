@@ -176,6 +176,7 @@ MonoBehaviour:
   dialogManager: {fileID: 2064348043}
   soundManager: {fileID: 1124300724}
   resourcesManager: {fileID: 242715620}
+  windowManager: {fileID: 9126023066166191487}
 --- !u!1 &12445099
 GameObject:
   m_ObjectHideFlags: 0
@@ -552,7 +553,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &103111720
 GameObject:
@@ -5002,6 +5003,7 @@ Transform:
   - {fileID: 2064348044}
   - {fileID: 1124300725}
   - {fileID: 242715621}
+  - {fileID: 9126023066166191480}
   m_Father: {fileID: 7970594}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -31262,13 +31264,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9126023066166191486}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 9126023065433884709}
-  m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_Father: {fileID: 1007414107}
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &9126023066166191486
 GameObject:
@@ -31281,7 +31283,7 @@ GameObject:
   - component: {fileID: 9126023066166191480}
   - component: {fileID: 9126023066166191487}
   m_Layer: 0
-  m_Name: =====Window Manager=====
+  m_Name: Window Manager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

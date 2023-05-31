@@ -1,6 +1,7 @@
 using System;
 using DG.Tweening;
 using Ingame;
+using UI;
 using UnityEngine;
 using UnityEngine.Serialization;
 
