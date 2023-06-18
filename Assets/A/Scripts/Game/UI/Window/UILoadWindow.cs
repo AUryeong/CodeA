@@ -27,7 +27,7 @@ namespace UI
             base.OnCreated();
 
             exitButton.onClick.RemoveAllListeners();
-            exitButton.onClick.AddListener(WindowManager.Instance.CloseAllWindow);
+            exitButton.onClick.AddListener(GameManager.Instance.windowManager.CloseAllWindow);
 
             foreach (var button in saves)
             {
@@ -62,17 +62,17 @@ namespace UI
                 int idx = i + (savesIdx * 6);
                 saves[i].onClick.RemoveAllListeners();
 
-                var getSaveData = SaveManager.Instance.GameData.GetSaveData(idx);
+                var getSaveData = GameManager.Instance.saveManager.GameData.GetSaveData(idx);
                 if (getSaveData != null)
                 {
-                    if (getSaveData.leftTalks == null || getSaveData.leftTalks.Count <= 0 || getSaveData.leftTalks[0]?.background == null ||
-                        string.IsNullOrEmpty(getSaveData.leftTalks[0].background.name))
+                    if (getSaveData.leftDialogList == null || getSaveData.leftDialogList.Count <= 0 || getSaveData.leftDialogList[0]?.dialogBackground == null ||
+                        string.IsNullOrEmpty(getSaveData.leftDialogList[0].dialogBackground.name))
                     {
                         //TODO 시간별 이미지 적용
                         saves[i].image.sprite = null;
                     }
                     else
-                        saves[i].image.sprite = ResourcesManager.Instance.GetBackground(getSaveData.leftTalks[0].background.name);
+                        saves[i].image.sprite = GameManager.Instance.resourcesManager.GetBackground(getSaveData.leftDialogList[0].dialogBackground.name);
 
                     saveTitles[i].gameObject.SetActive(true);
                     saveTitles[i].text = $"{getSaveData.year}년 {getSaveData.month}월 {getSaveData.week}주 {Utility.GetTimeToString(getSaveData.time)}";
@@ -92,7 +92,7 @@ namespace UI
 
         private void WarningLoad(int idx)
         {
-            if (GameManager.Instance.nowGameData == null)
+            if (GameManager.Instance.saveManager.nowGameData == null)
             {
                 Load(idx);
                 return;
@@ -104,8 +104,8 @@ namespace UI
 
         private void Load(int idx)
         {
-            GameManager.Instance.nowGameData = SaveManager.Instance.GameData.GetSaveData(idx).Copy();
-            GameManager.Instance.SceneLoad(Scene.INGAME);
+            GameManager.Instance.saveManager.nowGameData = GameManager.Instance.saveManager.GameData.GetSaveData(idx).Copy();
+            GameManager.Instance.sceneManager.SceneLoad(Scene.INGAME);
             ReloadSaves();
         }
 
@@ -120,7 +120,7 @@ namespace UI
         {
             if (savesIdx <= 0)
             {
-                WindowManager.Instance.CloseAllWindow();
+                GameManager.Instance.windowManager.CloseAllWindow();
                 return;
             }
 

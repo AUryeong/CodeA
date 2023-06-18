@@ -9,15 +9,14 @@ public class PoolingData
     public GameObject originObject;
     public List<GameObject> poolingList;
 }
-public class PoolManager : Singleton<PoolManager>
-{
-    protected override bool IsDontDestroying => true;
 
+public class PoolManager : Manager
+{
     private readonly Dictionary<string, List<GameObject>> pools = new Dictionary<string, List<GameObject>>();
     private readonly Dictionary<string, GameObject> originObjects = new Dictionary<string, GameObject>();
     [SerializeField] private List<PoolingData> poolingDatas = new List<PoolingData>();
 
-    protected override void OnCreated()
+    public override void OnCreated()
     {
         foreach (var data in poolingDatas)
         {
@@ -25,7 +24,7 @@ public class PoolManager : Singleton<PoolManager>
             originObjects.Add(poolName, data.originObject);
 
             if (data.poolingList.Count <= 0) continue;
-            
+
             pools.Add(poolName, new List<GameObject>());
             foreach (var obj in data.poolingList)
             {
@@ -33,7 +32,6 @@ public class PoolManager : Singleton<PoolManager>
                 obj.gameObject.SetActive(false);
             }
         }
-        poolingDatas.Clear();
     }
 
     public GameObject Init(string origin)
@@ -61,16 +59,16 @@ public class PoolManager : Singleton<PoolManager>
             Debug.Log("풀링 에러");
             return null;
         }
+
         copy = Instantiate(originObjects[origin]);
         copy.SetActive(true);
-        if (IsDontDestroying)
-            DontDestroyOnLoad(copy);
+        DontDestroyOnLoad(copy);
 
         pools[origin].Add(copy);
         return copy;
     }
 
-    protected override void OnReset()
+    public override void OnReset()
     {
         foreach (var obj in pools.Values.SelectMany(objs => objs))
             obj.gameObject.SetActive(false);

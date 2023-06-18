@@ -54,7 +54,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cellIdentifier: UI Log Cell
   logWindow: {fileID: 0}
-  talkerText: {fileID: 756397092081648115}
+  dialogOwnerText: {fileID: 756397092081648115}
   descriptionText: {fileID: 5869819861890891534}
   faceIcon: {fileID: 3199758448019343939}
   faceSprite: {fileID: 4854827916946407368}
@@ -118,7 +118,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 0
+  m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:

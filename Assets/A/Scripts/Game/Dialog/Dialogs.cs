@@ -3,64 +3,65 @@ using System.Xml.Serialization;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-public class Talks : ScriptableObject
+public class Dialogs : ScriptableObject
 {
     public string cgTitle;
+    
     [TextArea] public string skipText;
-    public List<Talk> talks = new List<Talk>();
+    public List<Dialog> dialogs = new List<Dialog>();
 }
 
 [System.Serializable]
-public class Talk
+public class Dialog
 {
     [XmlElement("Bgm")] 
     public string bgm = "";
 
     [XmlElement("BG")] 
-    public Background background = new Background();
+    public DialogBackground dialogBackground = new DialogBackground();
 
-    [XmlElement("Dialogue")] 
-    public Dialogue dialogue;
+    [XmlElement("Text")] 
+    public DialogText dialogText;
 
     [XmlElement("Event")] 
-    public List<Event> eventList = new List<Event>();
+    public List<DialogEvent> eventList = new List<DialogEvent>();
 
     [XmlElement("Option")] 
-    public List<Option> optionList;
+    public List<DialogOption> optionList;
 
     [XmlArray("Characters")]
     [XmlArrayItem("Character")]
-    public List<Character> characters = new List<Character>();
+    public List<DialogCharacter> characters = new List<DialogCharacter>();
 
     [FormerlySerializedAs("animations")] [XmlElement("Animations")] 
-    public List<AnimationList> animationLists = new List<AnimationList>();
+    public List<DialogAnimationList> animationLists = new List<DialogAnimationList>();
 }
 
 [System.Serializable]
-public class TalkAnimation
+public class DialogTextAnimation
 {
     [XmlAttribute("Index")]
     public int startIndex = 0;
 
     [XmlAttribute("Type")] 
-    public TalkAnimationType type = TalkAnimationType.ANIM;
+    public DialogTextAnimationType type = DialogTextAnimationType.ANIM;
     
     [XmlAttribute("Parameter")]
     public float parameter;
 }
 
 [System.Serializable]
-public class AnimationList
+public class DialogAnimationList
 {
     [XmlAttribute("Index")]
     public int index = 0;
     
     [XmlElement("Animation")]
-    public List<Animation> animations = new List<Animation>();
+    public List<DialogAnimation> animations = new List<DialogAnimation>();
 }
 
 [System.Serializable]
-public class Option
+public class DialogOption
 {
     [XmlAttribute("Script")] 
     public string script;
@@ -71,8 +72,8 @@ public class Option
     [XmlAttribute("Dialog")] 
     public string dialog;
 
-    [XmlAttribute("DialogType")]
-    public EventType eventType;
+    [FormerlySerializedAs("eventType")] [XmlAttribute("DialogType")]
+    public DialogEventType dialogEventType;
     
     [XmlAttribute("Special")]
     public bool special;
@@ -80,15 +81,15 @@ public class Option
     [XmlArray("Dialogs")]
     [XmlArrayItem("Dialog")]
     [HideInInspector]
-    public List<Talk> dialogs;
+    public List<Dialog> dialogs;
 
     [XmlElement("Event")] 
-    public List<Event> eventList = new List<Event>();
+    public List<DialogEvent> eventList = new List<DialogEvent>();
 }
 
 
 [System.Serializable]
-public class TipEvent
+public class DialogTipEvent
 {
     [XmlAttribute("Name")] 
     public string eventName;
@@ -97,31 +98,31 @@ public class TipEvent
     public string skipText;
 
     [XmlAttribute("Dialog")] 
-    public string talkName;
+    public string dialogName;
 
     [XmlArray("Dialogs")]
     [XmlArrayItem("Dialog")]
     [HideInInspector]
-    public List<Talk> dialogs;
+    public List<Dialog> dialogs;
 
-    [XmlAttribute("Type")]
-    public EventType eventType = EventType.CHANGE;
+    [FormerlySerializedAs("eventType")] [XmlAttribute("Type")]
+    public DialogEventType dialogEventType = DialogEventType.CHANGE;
 }
 
 [System.Serializable]
-public class Dialogue
+public class DialogText
 {
-    [XmlElement("Talker")] 
-    public string talker;
+    [XmlElement("Name")] 
+    public string name;
 
     [XmlElement("Text")] 
     public string text;
 
     [XmlElement("TipEvent")]  
-    public List<TipEvent> tipEvent = new List<TipEvent>();
+    public List<DialogTipEvent> tipEvent = new List<DialogTipEvent>();
 
-    [XmlElement("TalkAnimation")]  
-    public List<TalkAnimation> talkAnimations = new List<TalkAnimation>();
+    [XmlElement("DialogAnimation")]  
+    public List<DialogTextAnimation> dialogAnimations = new List<DialogTextAnimation>();
 
     [XmlAttribute("Active")] 
     public bool active = true;
@@ -135,7 +136,7 @@ public class Dialogue
 }
 
 [System.Serializable]
-public class Event
+public class DialogEvent
 {
     [XmlAttribute("Name")] 
     public string name;
@@ -150,13 +151,13 @@ public class Event
 
 
 [System.Serializable]
-public class Background
+public class DialogBackground
 {
     [XmlAttribute("Name")] 
     public string name;
     
     [XmlAttribute("Effect")]
-    public BackgroundEffect effect = BackgroundEffect.NONE;
+    public DialogBackgroundEffect effect = DialogBackgroundEffect.NONE;
 
     [XmlAttribute("Title")]
     public string title;
@@ -172,10 +173,10 @@ public class Background
 }
 
 [System.Serializable]
-public class Animation
+public class DialogAnimation
 {
     [XmlAttribute("Type")] 
-    public AnimationType type = AnimationType.UTIL;
+    public DialogAnimationType type = DialogAnimationType.UTIL;
 
     [XmlAttribute("Effect")] 
     public string effect;
@@ -191,7 +192,7 @@ public class Animation
 }
 
 [System.Serializable]
-public class Character
+public class DialogCharacter
 {
     [XmlAttribute("Name")] 
     public string name;
@@ -203,30 +204,30 @@ public class Character
     public string face;
 
     [XmlAttribute("Pos")] 
-    public CharacterPos pos = CharacterPos.N;
+    public DialogCharacterPos pos = DialogCharacterPos.N;
 
     [XmlAttribute("Size")] 
-    public CharacterSize size = CharacterSize.N;
+    public DialogCharacterSize size = DialogCharacterSize.N;
 
     [XmlAttribute("Dark")] 
     public bool dark = true;
 }
 
-public enum BackgroundEffect
+public enum DialogBackgroundEffect
 {
     NONE,
     TRANS,
     FADE
 }
 
-public enum EventType
+public enum DialogEventType
 {
     BEFORE,
     CHANGE,
     AFTER
 }
 
-public enum AnimationType
+public enum DialogAnimationType
 {
     CHAR,
     UTIL,
@@ -234,12 +235,12 @@ public enum AnimationType
     CAM
 }
 
-public enum TalkAnimationType
+public enum DialogTextAnimationType
 {
     WAIT,
     ANIM
 }
-public enum CharacterPos
+public enum DialogCharacterPos
 {
     N,
     R3,
@@ -253,7 +254,7 @@ public enum CharacterPos
     LEND
 }
 
-public enum CharacterSize
+public enum DialogCharacterSize
 {
     N,
     S,

@@ -3,7 +3,7 @@
 	<Dialog>
 		<Bgm>School</Bgm>
 		<BG Name="Class_Morning"/>
-		<Dialogue Active="false" />
+		<Text Active="false" />
 		<Characters>
 			<Character Name="A" Face="Smile" Pos="C" Size="M" Dark="false"/>
 			<Character Name="Loli" Face="DefaultLight" Pos="L2" Size="M" Dark="false"/>
@@ -20,20 +20,20 @@
 		</Animations>
 	</Dialog>
 	<Dialog>
-		<Dialogue>
-			<Talker>{0}</Talker>
+		<Text>
+			<Name>{0}</Name>
 			<Text>이건 모를 수가 없긴해</Text>
-		</Dialogue>
+		</Text>
 		<Characters>
 			<Character Name="Loli" />
 			<Character Name="A" />
 		</Characters>
 	</Dialog>
 	<Dialog>
-		<Dialogue>
-			<Talker>이로리</Talker>
+		<Text>
+			<Name>이로리</Name>
 			<Text>히히 알아서 다행이다</Text>
-		</Dialogue>
+		</Text>
 		<Characters>
 			<Character Name="A" />
 			<Character Name="Loli" Pos="L3"/>

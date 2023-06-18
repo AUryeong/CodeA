@@ -7,14 +7,12 @@ using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.UI;
 
-public class ResourcesManager : Singleton<ResourcesManager>
+public class ResourcesManager : Manager
 {
-    protected override bool IsDontDestroying => true;
-
     public bool IsLoading { get; private set; }
     private readonly Dictionary<string, Sprite> backgroundSprites = new Dictionary<string, Sprite>();
     private readonly Dictionary<string, CharacterStanding> characters = new Dictionary<string, CharacterStanding>();
-    private readonly Dictionary<string, Talks> talks = new Dictionary<string, Talks>();
+    private readonly Dictionary<string, Dialogs> dialogs = new Dictionary<string, Dialogs>();
     private readonly Dictionary<string, string> tips = new Dictionary<string, string>();
 
     [SerializeField] private List<SerializedCharacter> serializedCharacters;
@@ -23,7 +21,7 @@ public class ResourcesManager : Singleton<ResourcesManager>
 
     [Header("어드레서블용")] 
     [SerializeField] private AssetLabelReference backgroundLabel;
-    [SerializeField] private AssetLabelReference talkLabel;
+    [SerializeField] private AssetLabelReference dialogLabel;
     [SerializeField] private AssetLabelReference tipLabel;
     [Space(20)] [SerializeField] private Canvas downloadWindow;
     [SerializeField] private TextMeshProUGUI downloadingText;
@@ -39,7 +37,7 @@ public class ResourcesManager : Singleton<ResourcesManager>
     [SerializeField] private TextMeshProUGUI loadingText;
     private AsyncOperationHandle downloadHandle;
 
-    protected override void OnCreated()
+    public override void OnCreated()
     {
         Time.timeScale = 0;
         IsLoading = true;
@@ -76,15 +74,15 @@ public class ResourcesManager : Singleton<ResourcesManager>
         loadingWindow.gameObject.SetActive(false);
         Time.timeScale = 1;
 
-        if (GameManager.Instance.nowScene == Scene.LOADING)
-            GameManager.Instance.SceneLoad(Scene.TITLE);
+        if (GameManager.Instance.sceneManager.NowScene == Scene.LOADING)
+            GameManager.Instance.sceneManager.SceneLoad(Scene.TITLE);
     }
 
     private void CheckDownload()
     {
         if (Application.internetReachability == NetworkReachability.NotReachable)
         {
-            if (!SaveManager.Instance.GameData.isDownloadFile)
+            if (!GameManager.Instance.saveManager.GameData.isDownloadFile)
             {
                 DisableDownloadWindow();
                 return;
@@ -94,27 +92,6 @@ public class ResourcesManager : Singleton<ResourcesManager>
         Addressables.GetDownloadSizeAsync(backgroundLabel).Completed +=
             CheckDownloadSize;
     }
-
-    // private void ForcedUpdate()
-    // {
-    //     downloadWindow.gameObject.SetActive(true);
-    //
-    //     exitButton.onClick.RemoveAllListeners();
-    //     exitButton.onClick.AddListener(Application.Quit);
-    //
-    //     if (Application.internetReachability != NetworkReachability.NotReachable)
-    //     {
-    //         downloadingText.text = "업데이트 또는 버그가 발생했습니다.\n파일을 새로 다운로드 해주세요.";
-    //         downloadButton.gameObject.SetActive(true);
-    //
-    //         downloadButton.onClick.RemoveAllListeners();
-    //         downloadButton.onClick.AddListener(CheckWifi);
-    //     }
-    //     else
-    //     {
-    //         downloadingText.text = "와이파이에 연결되어 있지 않습니다.\n최초 또는 업데이트 파일 다운로드를 위해 와이파이를 연결해주세요.";
-    //     }
-    // }
 
     private void CheckDownloadSize(AsyncOperationHandle<long> sizeHandle)
     {
@@ -146,7 +123,7 @@ public class ResourcesManager : Singleton<ResourcesManager>
         }
         else
         {
-            if (!SaveManager.Instance.GameData.isDownloadFile) SaveManager.Instance.GameData.isDownloadFile = true;
+            if (!GameManager.Instance.saveManager.GameData.isDownloadFile) GameManager.Instance.saveManager.GameData.isDownloadFile = true;
             LoadBackground();
         }
 
@@ -212,7 +189,7 @@ public class ResourcesManager : Singleton<ResourcesManager>
                 Addressables.Release(handle);
                 downloadingText.text = string.Concat("다운로드 완료!");
                 downloadWindow.gameObject.SetActive(false);
-                SaveManager.Instance.GameData.isDownloadFile = true;
+                GameManager.Instance.saveManager.GameData.isDownloadFile = true;
 
                 LoadBackground();
             };
@@ -229,12 +206,12 @@ public class ResourcesManager : Singleton<ResourcesManager>
     private void LoadBackground()
     {
         Addressables.LoadAssetsAsync<Sprite>(backgroundLabel, sprite => { backgroundSprites.Add(sprite.name, sprite); })
-            .Completed += (list) => { LoadTalk(); };
+            .Completed += (list) => { LoadDialog(); };
     }
 
-    private void LoadTalk()
+    private void LoadDialog()
     {
-        Addressables.LoadAssetsAsync<Talks>(talkLabel, talk => { talks.Add(talk.name, talk); })
+        Addressables.LoadAssetsAsync<Dialogs>(dialogLabel, dialog => { dialogs.Add(dialog.name, dialog); })
             .Completed += (list) => { LoadTips(); };
     }
 
@@ -281,9 +258,9 @@ public class ResourcesManager : Singleton<ResourcesManager>
         return characters[characterName];
     }
 
-    public Talks GetTalk(string talkName)
+    public Dialogs GetDialog(string dialogName)
     {
-        return talks.TryGetValue(talkName, out var talk) ? talk : null;
+        return dialogs.TryGetValue(dialogName, out var dialog) ? dialog : null;
     }
 
     public string GetTip(string tipName)

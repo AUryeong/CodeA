@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
-[CreateAssetMenu(fileName = nameof(Character), menuName = "CodeA/" + nameof(Character), order = 0)]
+[CreateAssetMenu(fileName = nameof(DialogCharacter), menuName = "CodeA/" + nameof(DialogCharacter), order = 0)]
 public class SerializedCharacter : ScriptableObject
 {
     [Header("캐릭터")]
@@ -28,7 +28,7 @@ public class SerializedCharacterStanding
 
 public class CharacterStanding
 {
-    public Dictionary<string, Standing> standings = new Dictionary<string, Standing>();
+    public readonly Dictionary<string, Standing> standings = new Dictionary<string, Standing>();
 }
 
 public class Standing

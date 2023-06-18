@@ -32,30 +32,30 @@ public class TitleManager : Singleton<TitleManager>
 
         gameLoadButton.onClick.RemoveAllListeners();
         gameLoadButton.onClick.AddListener(() =>
-            WindowManager.Instance.ClickWindow(WindowType.LOAD, gameLoadButton.transform.position));
+            GameManager.Instance.windowManager.ClickWindow(WindowType.LOAD, gameLoadButton.transform.position));
 
         settingButton.onClick.RemoveAllListeners();
         settingButton.onClick.AddListener(() =>
-            WindowManager.Instance.ClickWindow(WindowType.SETTING, settingButton.transform.position));
+            GameManager.Instance.windowManager.ClickWindow(WindowType.SETTING, settingButton.transform.position));
 
         explorerButton.onClick.RemoveAllListeners();
         explorerButton.onClick.AddListener(() => extraWindow.Init(explorerButton.transform.position));
 
         sideTextButton.onClick.RemoveAllListeners();
-        sideTextButton.onClick.AddListener(WindowManager.Instance.WindowOpen);
+        sideTextButton.onClick.AddListener(GameManager.Instance.windowManager.WindowOpen);
 
         warningOkayButton.onClick.RemoveAllListeners();
-        warningOkayButton.onClick.AddListener(() => GameManager.Instance.SceneLoad(Scene.INGAME));
+        warningOkayButton.onClick.AddListener(() => GameManager.Instance.sceneManager.SceneLoad(Scene.INGAME));
 
         warningCancelButton.onClick.RemoveAllListeners();
         warningCancelButton.onClick.AddListener(() => warningWindow.gameObject.SetActive(false));
 
-        GameManager.Instance.nowGameData = null;
+        GameManager.Instance.saveManager.nowGameData = null;
 
-        if (string.IsNullOrEmpty(SaveManager.Instance.GameData.saigoCg)) return;
+        if (string.IsNullOrEmpty(GameManager.Instance.saveManager.GameData.lastCg)) return;
 
         wallpaperImage.color = new Color(0.8f, 0.8f, 0.8f);
-        wallpaperImage.sprite = ResourcesManager.Instance.GetBackground(SaveManager.Instance.GameData.saigoCg);
+        wallpaperImage.sprite = GameManager.Instance.resourcesManager.GetBackground(GameManager.Instance.saveManager.GameData.lastCg);
     }
 
     private void Start()
@@ -103,9 +103,9 @@ public class TitleManager : Singleton<TitleManager>
 
     private void GameStart()
     {
-        if (SaveManager.Instance.GameData.savedGameDatas.Count <= 0)
+        if (GameManager.Instance.saveManager.GameData.savedGameDatas.Count <= 0)
         {
-            GameManager.Instance.SceneLoad(Scene.INGAME);
+            GameManager.Instance.sceneManager.SceneLoad(Scene.INGAME);
             return;
         }
 

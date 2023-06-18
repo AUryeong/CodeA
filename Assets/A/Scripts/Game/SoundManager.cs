@@ -7,7 +7,7 @@ public enum ESoundType
     SFX
 }
 
-public class SoundManager : Singleton<SoundManager>
+public class SoundManager : Manager
 {
     private class AudioInfo
     {
@@ -21,22 +21,20 @@ public class SoundManager : Singleton<SoundManager>
     private readonly Dictionary<ESoundType, AudioInfo> audioInfos =
         new Dictionary<ESoundType, AudioInfo>();
 
-    protected override bool IsDontDestroying => true;
-
-    protected override void OnCreated()
+    public override void OnCreated()
     {
         var clips = Resources.LoadAll<AudioClip>(path);
         foreach (var clip in clips)
             audioClips.Add(clip.name, clip);
 
         var audioInfo = AddAudioInfo(ESoundType.BGM);
-        audioInfo.audioVolume = SaveManager.Instance.GameData.bgmSound;
+        audioInfo.audioVolume = GameManager.Instance.saveManager.GameData.bgmSoundMultiplier;
         audioInfo.audioSource.loop = true;
 
-        AddAudioInfo(ESoundType.SFX).audioVolume = SaveManager.Instance.GameData.sfxSound;
+        AddAudioInfo(ESoundType.SFX).audioVolume = GameManager.Instance.saveManager.GameData.sfxSoundMultiplier;
     }
 
-    protected override void OnReset()
+    public override void OnReset()
     {
         foreach (var audioInfo in audioInfos.Values)
             audioInfo.audioSource.Stop();

@@ -153,10 +153,9 @@ Transform:
   m_Children:
   - {fileID: 775280444}
   - {fileID: 909302393}
-  - {fileID: 779575518}
-  - {fileID: 2136476982}
+  - {fileID: 1007414107}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7970595
 MonoBehaviour:
@@ -171,22 +170,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   uiCamera: {fileID: 775280443}
-  nowScene: 0
-  nowGameData:
-    idx: -1
-    year: 1
-    month: 3
-    week: 1
-    time: 0
-    loveLevel: 
-    statLevels: 
-    hasSkills: 
-    hasItems: 
-    leftTalkSkipText: 
-    leftTalks: []
-    saveTime: 
-  sceneTransitionBlack: {fileID: 779575517}
-  sceneTransitionSquare: {fileID: 2136476981}
+  sceneManager: {fileID: 640077808}
+  saveManager: {fileID: 410175362}
+  poolManager: {fileID: 1073019274}
+  dialogManager: {fileID: 2064348043}
+  soundManager: {fileID: 1124300724}
+  resourcesManager: {fileID: 242715620}
+  windowManager: {fileID: 9126023066166191487}
 --- !u!1 &12445099
 GameObject:
   m_ObjectHideFlags: 0
@@ -563,7 +553,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &103111720
 GameObject:
@@ -971,7 +961,7 @@ GameObject:
   - component: {fileID: 242715621}
   - component: {fileID: 242715620}
   m_Layer: 0
-  m_Name: =====Resources Manager=====
+  m_Name: Resources Manager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -994,7 +984,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 71b352f0755f54248965686dcc17f284, type: 2}
   backgroundLabel:
     m_LabelString: background
-  talkLabel:
+  dialogLabel:
     m_LabelString: talk
   tipLabel:
     m_LabelString: tip
@@ -1020,8 +1010,8 @@ Transform:
   m_Children:
   - {fileID: 1088497144}
   - {fileID: 1097073855}
-  m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_Father: {fileID: 1007414107}
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &281541756 stripped
 GameObject:
@@ -1422,49 +1412,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 333588649}
   m_CullTransparentMesh: 1
---- !u!1 &358471680
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 358471682}
-  - component: {fileID: 358471681}
-  m_Layer: 0
-  m_Name: =====Log Manager=====
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &358471681
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 358471680}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 282aef4be6ea45f4fb5f402097072623, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!4 &358471682
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 358471680}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 8
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &372047455
 GameObject:
   m_ObjectHideFlags: 0
@@ -1947,7 +1894,7 @@ GameObject:
   - component: {fileID: 410175363}
   - component: {fileID: 410175362}
   m_Layer: 0
-  m_Name: =====Save Manager=====
+  m_Name: Save Manager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1969,15 +1916,28 @@ MonoBehaviour:
   gameData:
     isDownloadFile: 0
     name: 
-    sfxSound: 1
-    bgmSound: 1
+    sfxSoundMultiplier: 1
+    bgmSoundMultiplier: 1
     textSpeed: 0.5
     textAuto: 0
-    saigoCg: 
+    lastCg: 
     getCg: []
-    getVideo: []
+    getScenes: []
     getTips: []
     savedGameDatas: []
+  nowGameData:
+    idx: -1
+    saveTime: 
+    year: 1
+    month: 3
+    week: 1
+    time: 0
+    loveLevels: 
+    statLevels: 
+    hasSkills: 
+    hasItems: 
+    leftDialogSkipText: 
+    leftDialogList: []
 --- !u!4 &410175363
 Transform:
   m_ObjectHideFlags: 0
@@ -1989,7 +1949,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1007414107}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &413189746
@@ -3229,6 +3189,53 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 614647260}
   m_CullTransparentMesh: 1
+--- !u!1 &640077806
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 640077807}
+  - component: {fileID: 640077808}
+  m_Layer: 0
+  m_Name: Scene Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &640077807
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 640077806}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 779575518}
+  - {fileID: 2136476982}
+  m_Father: {fileID: 1007414107}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &640077808
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 640077806}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 404f72bec237cb746908d65ff0feb300, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneTransitionBlack: {fileID: 779575517}
+  sceneTransitionSquare: {fileID: 2136476981}
 --- !u!1001 &643765410
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3589,7 +3596,7 @@ GameObject:
   m_Component:
   - component: {fileID: 767865912}
   m_Layer: 0
-  m_Name: Talk Parent
+  m_Name: Dialog Parent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3767,8 +3774,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 7970594}
-  m_RootOrder: 2
+  m_Father: {fileID: 640077807}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &779665412
 GameObject:
@@ -4963,6 +4970,43 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 970679197}
   m_CullTransparentMesh: 1
+--- !u!1 &1007414106
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1007414107}
+  m_Layer: 0
+  m_Name: Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1007414107
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1007414106}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 410175363}
+  - {fileID: 640077807}
+  - {fileID: 1073019273}
+  - {fileID: 2064348044}
+  - {fileID: 1124300725}
+  - {fileID: 242715621}
+  - {fileID: 9126023066166191480}
+  m_Father: {fileID: 7970594}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1045603170
 GameObject:
   m_ObjectHideFlags: 0
@@ -5212,7 +5256,7 @@ GameObject:
   - component: {fileID: 1073019273}
   - component: {fileID: 1073019274}
   m_Layer: 0
-  m_Name: =====Pool Manager=====
+  m_Name: Pool Manager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5225,13 +5269,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1073019272}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 373310101}
-  m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_Father: {fileID: 1007414107}
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1073019274
 MonoBehaviour:
@@ -5717,7 +5761,7 @@ GameObject:
   - component: {fileID: 1124300724}
   - component: {fileID: 1124300726}
   m_Layer: 0
-  m_Name: =====Sound Manager=====
+  m_Name: Sound Manager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5746,8 +5790,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_Father: {fileID: 1007414107}
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!81 &1124300726
 AudioListener:
@@ -6051,55 +6095,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Delegates:
-  - eventID: 4
-    callback:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 2064348043}
-          m_TargetAssemblyTypeName: TalkManager, Assembly-CSharp
-          m_MethodName: PointerClick
-          m_Mode: 0
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-  - eventID: 2
-    callback:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 2064348043}
-          m_TargetAssemblyTypeName: TalkManager, Assembly-CSharp
-          m_MethodName: PointerDown
-          m_Mode: 0
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-  - eventID: 3
-    callback:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 2064348043}
-          m_TargetAssemblyTypeName: TalkManager, Assembly-CSharp
-          m_MethodName: PointerUp
-          m_Mode: 0
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
+  m_Delegates: []
 --- !u!1 &1275147935
 GameObject:
   m_ObjectHideFlags: 0
@@ -10370,8 +10366,10 @@ GameObject:
   m_Component:
   - component: {fileID: 2064348044}
   - component: {fileID: 2064348043}
+  - component: {fileID: 2064348045}
+  - component: {fileID: 2064348046}
   m_Layer: 0
-  m_Name: =====Talk Manager=====
+  m_Name: Dialog Manager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10389,9 +10387,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: efebd3f6055273c48872391a52739d36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  talkWindow: {fileID: 767865911}
+  dialogEventTrigger: {fileID: 1250393019}
+  dialogWindow: {fileID: 767865911}
   dialogueImage: {fileID: 867003928}
-  talkerText: {fileID: 781497759}
+  dialogOwnerNameText: {fileID: 781497759}
   descriptionText: {fileID: 372047459}
   blackFadeIn: {fileID: 1322233239}
   blackFadeOut: {fileID: 1045603174}
@@ -10412,13 +10411,7 @@ MonoBehaviour:
   skipOkayButton: {fileID: 496555573}
   skipText: {fileID: 551980175}
   skipExitButton: {fileID: 913866934}
-  talkSkipText: 
-  eventWindow: {fileID: 103111722}
-  eventTitleText: {fileID: 891991502}
-  eventDescriptionText: {fileID: 425755957}
-  eventOkayButton: {fileID: 12445101}
-  eventExitButton: {fileID: 1275147937}
-  eventContinueText: {fileID: 1749165426}
+  dialogSkipText: 
 --- !u!4 &2064348044
 Transform:
   m_ObjectHideFlags: 0
@@ -10426,14 +10419,44 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2064348042}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 767865912}
-  m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_Father: {fileID: 1007414107}
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2064348045
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2064348042}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 282aef4be6ea45f4fb5f402097072623, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2064348046
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2064348042}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec17f36fbd6a426389484192632ea71a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  eventWindow: {fileID: 103111722}
+  eventTitleText: {fileID: 891991502}
+  eventDescriptionText: {fileID: 425755957}
+  eventOkayButton: {fileID: 12445101}
+  eventExitButton: {fileID: 1275147937}
+  eventContinueText: {fileID: 1749165426}
 --- !u!1 &2130226081
 GameObject:
   m_ObjectHideFlags: 0
@@ -10727,8 +10750,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 20, y: 20, z: 20}
   m_Children: []
-  m_Father: {fileID: 7970594}
-  m_RootOrder: 3
+  m_Father: {fileID: 640077807}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 45}
 --- !u!1 &2145871569 stripped
 GameObject:
@@ -12735,7 +12758,7 @@ MonoBehaviour:
   textTypeToggle: {fileID: 4225220370539471416}
   textTypeSpriteOn: {fileID: 21300000, guid: d9a1e9f7a2f385e43aebfcf6a1594af1, type: 3}
   textTypeSpriteOff: {fileID: 21300000, guid: 7e67e5c5691298d4b9f6147a679dd708, type: 3}
-  talkUI: {fileID: 8814608183571469718}
+  dialogUI: {fileID: 8814608183571469718}
   descriptionText: {fileID: 5811165513655215239}
   endTextEffect: {fileID: 8301559611422739990}
 --- !u!224 &838065597679020812
@@ -18629,10 +18652,6 @@ MonoBehaviour:
   exitButton: {fileID: 4255087289847004917}
   logScroll: {fileID: 6441533239597167770}
   logCell: {fileID: 3430927386934272151, guid: 24c31cbb0f070bb4db6271ff0b88fcaa, type: 3}
-  eventWindow: {fileID: 6477323095061028084}
-  eventTitleText: {fileID: 6270370939259395627}
-  eventDescriptionText: {fileID: 3466160651319804575}
-  eventExitButton: {fileID: 3806200486929680214}
 --- !u!114 &3806200486929680214
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21815,6 +21834,7 @@ GameObject:
   - component: {fileID: 7105972339407562833}
   - component: {fileID: 5896531362822788959}
   - component: {fileID: 3801181633298376714}
+  - component: {fileID: 5437168539634191914}
   m_Layer: 5
   m_Name: Log Window
   m_TagString: Untagged
@@ -21822,6 +21842,24 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 0
+--- !u!114 &5437168539634191914
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5437168539634191913}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec17f36fbd6a426389484192632ea71a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  eventWindow: {fileID: 6477323095061028084}
+  eventTitleText: {fileID: 6270370939259395627}
+  eventDescriptionText: {fileID: 3466160651319804575}
+  eventOkayButton: {fileID: 0}
+  eventExitButton: {fileID: 3806200486929680214}
+  eventContinueText: {fileID: 0}
 --- !u!1 &5442724993164230256
 GameObject:
   m_ObjectHideFlags: 0
@@ -22878,49 +22916,6 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
---- !u!114 &5812603823957714764
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5812603823957714765}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 282aef4be6ea45f4fb5f402097072623, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!1 &5812603823957714765
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 5812603823957714767}
-  - component: {fileID: 5812603823957714764}
-  m_Layer: 0
-  m_Name: =====Log Manager=====
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &5812603823957714767
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5812603823957714765}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!224 &5813319370974250225
 RectTransform:
   m_ObjectHideFlags: 0
@@ -31249,12 +31244,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9126023066166191486}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 9126023065433884709}
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1007414107}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &9126023066166191486
@@ -31268,7 +31263,7 @@ GameObject:
   - component: {fileID: 9126023066166191480}
   - component: {fileID: 9126023066166191487}
   m_Layer: 0
-  m_Name: =====Window Manager=====
+  m_Name: Window Manager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

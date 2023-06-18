@@ -11,7 +11,7 @@ namespace UI
         [SerializeField] TextMeshProUGUI scriptText;
         [SerializeField] TextMeshProUGUI effectText;
 
-        public Option Option { get; private set; }
+        public DialogOption DialogOption { get; private set; }
 
         private RectTransform rectTransform;
         private Image image;
@@ -28,12 +28,12 @@ namespace UI
 
         public void Disable()
         {
-            if (Option == null)
+            if (DialogOption == null)
             {
                 gameObject.SetActive(false);
             }
 
-            Option = null;
+            DialogOption = null;
             rectTransform.DOScale(Vector3.zero, 0.5f).SetEase(Ease.InBack).OnComplete(() =>
             {
                 image.DOFade(0, 0.5f);
@@ -42,15 +42,15 @@ namespace UI
             });
         }
 
-        public void SetOption(Option setOption)
+        public void SetOption(DialogOption setDialogOption)
         {
-            Option = setOption;
+            DialogOption = setDialogOption;
 
             scriptText.DOKill();
-            scriptText.text = setOption.script;
+            scriptText.text = setDialogOption.script;
 
             var color = defaultTextColor;
-            if ((setOption.eventList != null && setOption.eventList.Count > 0) || setOption.special)
+            if ((setDialogOption.eventList != null && setDialogOption.eventList.Count > 0) || setDialogOption.special)
                 color = specialTextColor;
             
             scriptText.color = Utility.GetFadeColor(color, 0);
@@ -82,8 +82,8 @@ namespace UI
                 scriptText.DOFade(0, 0.5f);
                 effectText.DOFade(0, 0.5f).OnComplete(() => { gameObject.SetActive(false); });
             });
-            TalkManager.Instance.SelectOption(this);
-            Option = null;
+            GameManager.Instance.dialogManager.SelectOption(this);
+            DialogOption = null;
         }
 
         public void OnPointerDown(PointerEventData eventData)

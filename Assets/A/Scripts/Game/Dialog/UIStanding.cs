@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using DG.Tweening;
+﻿using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,13 +11,13 @@ namespace UI
         [SerializeField] private Image face;
         [SerializeField] private Image sideFace;
 
-        public Character NowStanding { get; private set; }
+        public DialogCharacter NowStanding { get; private set; }
 
         private RectTransform rectTransform;
 
         [Header("감정 표현용")][SerializeField] private Image emotionBase;
 
-        [Space(10)][SerializeField] private Image[] thinkingTalks;
+        [Space(10)][SerializeField] private Image[] thinkingPoints;
 
         [Space(10)][SerializeField] private Image flushBase;
         [SerializeField] private Image flushLine;
@@ -60,16 +59,16 @@ namespace UI
             emotionBase.gameObject.SetActive(false);
         }
 
-        public void ShowCharacter(Character talkStanding)
+        public void ShowCharacter(DialogCharacter dialogStanding)
         {
-            if (!talkStanding.dark)
+            if (!dialogStanding.dark)
                 rectTransform.SetAsLastSibling();
 
-            var character = ResourcesManager.Instance.GetCharacter(talkStanding.name);
-            var standing = character.standings[talkStanding.clothes];
+            var character = GameManager.Instance.resourcesManager.GetCharacter(dialogStanding.name);
+            var standing = character.standings[dialogStanding.clothes];
 
             var prevStanding = NowStanding;
-            NowStanding = talkStanding;
+            NowStanding = dialogStanding;
 
             var toColor = NowStanding.dark ? Utility.darkColor : Color.white;
             var toScale = Utility.SizeToScale(NowStanding.size);
@@ -118,7 +117,7 @@ namespace UI
             baseStanding.DOColor(toColor, 0.5f);
 
             face.DOKill();
-            face.sprite = standing.faces[talkStanding.face];
+            face.sprite = standing.faces[dialogStanding.face];
             face.color = Utility.fadeBlackColor;
             face.DOColor(toColor, 0.5f);
 
@@ -156,14 +155,14 @@ namespace UI
 
             face.DOKill();
             face.color = Utility.GetFadeColor(toColor, 0);
-            face.sprite = ResourcesManager.Instance.GetCharacter(NowStanding.name).standings[NowStanding.clothes].faces[faceName];
+            face.sprite = GameManager.Instance.resourcesManager.GetCharacter(NowStanding.name).standings[NowStanding.clothes].faces[faceName];
             face.DOFade(1, duration).SetEase(Ease.Linear);
 
             if (!isSet && !NowStanding.dark)
                 rectTransform.SetAsLastSibling();
         }
 
-        public void ClothesChange(string clothesName, bool isSet = false)
+        private void ClothesChange(string clothesName, bool isSet = false)
         {
             var duration = 0.4f;
             var toColor = NowStanding.dark ? Utility.darkColor : Color.white;
@@ -178,7 +177,7 @@ namespace UI
 
             baseStanding.DOKill();
             baseStanding.color = Utility.GetFadeColor(toColor, 0);
-            baseStanding.sprite = ResourcesManager.Instance.GetCharacter(NowStanding.name).standings[clothesName].baseStanding;
+            baseStanding.sprite = GameManager.Instance.resourcesManager.GetCharacter(NowStanding.name).standings[clothesName].baseStanding;
             baseStanding.DOFade(1, duration).SetEase(Ease.Linear);
 
             if (!isSet && !NowStanding.dark)
@@ -199,7 +198,10 @@ namespace UI
 
         public void Bounce(int repeat, float duration)
         {
-            rectTransform.DOAnchorPosY(-50, duration).SetRelative().SetLoops(repeat * 2, LoopType.Yoyo).SetEase(Ease.InOutQuad);
+            rectTransform.DOAnchorPosY(-50, duration).SetRelative().SetLoops(repeat * 2, LoopType.Yoyo).SetEase(Ease.InOutQuad).OnComplete(() =>
+            {
+                rectTransform.anchoredPosition = new Vector2(rectTransform.anchoredPosition.x, 431.5f);
+            });
             if (!NowStanding.dark)
                 rectTransform.SetAsLastSibling();
         }
@@ -233,7 +235,7 @@ namespace UI
             emotionBase.rectTransform.localScale = Vector3.zero;
             emotionBase.rectTransform.DOScale(Vector3.one, fadeOutDuration);
 
-            foreach (Image image in thinkingTalks)
+            foreach (Image image in thinkingPoints)
             {
                 image.DOKill();
                 image.gameObject.SetActive(false);
@@ -270,9 +272,9 @@ namespace UI
             switch (emotionName)
             {
                 case "Thinking":
-                    for (var index = 0; index < thinkingTalks.Length; index++)
+                    for (var index = 0; index < thinkingPoints.Length; index++)
                     {
-                        var image = thinkingTalks[index];
+                        var image = thinkingPoints[index];
                         image.gameObject.SetActive(true);
                         image.color = Utility.GetFadeColor(Color.white, 0);
                         image.DOFade(1, duration / 6).SetDelay(duration / 4 * index);
