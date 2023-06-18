@@ -33,8 +33,43 @@ public class Owner
 public class EditorUtility
 {
     private const string remainderRegex = "(.*?((?=})|(/|$)))";
-    private const string tipRegexString = "{(?<Tip>" + remainderRegex + ")}";
-    private static readonly Regex tipRegex = new Regex(tipRegexString);
+    private const string eventRegexString = "{(?<Event>" + remainderRegex + ")}";
+    private static readonly Regex eventRegex = new Regex(eventRegexString);
+    
+    [MenuItem("Assets/Convert Tsv To ScriptableObject Tip")]
+    public static void CreateTipScriptableObject()
+    {
+        const string csvPath = "/A/Editor/Csvs/Tip";
+        var dir = new DirectoryInfo(Application.dataPath + csvPath);
+        foreach (FileInfo fileInfo in dir.GetFiles())
+        {
+            if (fileInfo.FullName.EndsWith(".meta")) continue;
+
+            Debug.Log(Path.GetFileNameWithoutExtension(fileInfo.FullName));
+            var lines = File.ReadAllLines(fileInfo.FullName);
+            var tipList = new List<Tip>();
+
+            for (var index = 1; index < lines.Length; index++)
+            {
+                var line = lines[index];
+                if (string.IsNullOrEmpty(line)) continue;
+
+                var column = line.Split('\t');
+                var tip = new Tip()
+                {
+                    id = column[0],
+                    lore = column[1]
+                };
+                tipList.Add(tip);
+            }
+
+            var newTips = ScriptableObject.CreateInstance<Tips>();
+            newTips.tips = tipList;
+            AssetDatabase.CreateAsset(newTips, $"Assets/A/ScriptableObjects/Tips/{Path.GetFileNameWithoutExtension(fileInfo.FullName)}.asset");
+        }
+
+        AssetDatabase.SaveAssets();
+    }
 
     [MenuItem("Assets/Convert Xml To ScriptableObject Dialog")]
     public static void CreateDialogScriptableObject()
@@ -147,82 +182,87 @@ public class EditorUtility
 
                 if (!string.IsNullOrEmpty(dialog.dialogText.text))
                 {
-                    var matches = tipRegex.Matches(dialog.dialogText.text);
+                    var matches = eventRegex.Matches(dialog.dialogText.text);
                     int indexAdd = 0;
                     int indexAnimAdd = 0;
                     for (var i = 0; i < matches.Count; i++)
                     {
                         var match = matches[i];
-                        var commands = match.Groups["Tip"].Value.Split(':');
+                        var commands = match.Groups["Event"].Value.Split(':');
 
-                        if (commands[0] != "Tip")
+                        switch (commands[0])
                         {
-                            Debug.Log(match.Index - indexAnimAdd + 1);
-                            var diloagTextAnimation = new DialogTextAnimation()
+                            case "Anim":
                             {
-                                startIndex = match.Index - indexAnimAdd + 1,
-                                type = Utility.GetEnum<DialogTextAnimationType>(commands[1])
-                            };
-                            if (commands.Length < 3)
-                            {
-                                switch (diloagTextAnimation.type)
+                                var dialogTextAnimation = new DialogTextAnimation()
                                 {
-                                    case DialogTextAnimationType.WAIT:
-                                        diloagTextAnimation.parameter = 0.5f;
-                                        break;
-                                    case DialogTextAnimationType.ANIM:
-                                        diloagTextAnimation.parameter = 1;
-                                        break;
+                                    startIndex = match.Index - indexAnimAdd,
+                                    type = Utility.GetEnum<DialogTextAnimationType>(commands[1])
+                                };
+                                if (commands.Length < 3)
+                                {
+                                    switch (dialogTextAnimation.type)
+                                    {
+                                        case DialogTextAnimationType.WAIT:
+                                            dialogTextAnimation.parameter = 0.5f;
+                                            break;
+                                        case DialogTextAnimationType.ANIM:
+                                            dialogTextAnimation.parameter = 1;
+                                            break;
+                                    }
                                 }
+                                else
+                                {
+                                    dialogTextAnimation.parameter = float.Parse(commands[2]);
+                                }
+
+                                dialog.dialogText.dialogAnimations.Add(dialogTextAnimation);
+                                break;
                             }
-                            else
+                            case "Tip":
                             {
-                                diloagTextAnimation.parameter = float.Parse(commands[2]);
+                                string name = commands[1];
+                                string eventName = (commands.Length >= 3) ? commands[2] : commands[1];
+
+                                bool flag = dialog.dialogText.tipEvent == null || dialog.dialogText.tipEvent.Count <= 0 ||
+                                            !dialog.dialogText.tipEvent.Exists((x) => !string.IsNullOrEmpty(x.eventName) && x.eventName == eventName);
+                                if (flag)
+                                {
+                                    dialog.dialogText.tipEvent.Add(new DialogTipEvent()
+                                    {
+                                        eventName = eventName,
+                                        dialogName = (commands.Length >= 4) ? commands[3] : null,
+                                        dialogEventType = (commands.Length >= 5) ? Utility.GetStringToEventType(commands[4]) : DialogEventType.CHANGE
+                                    });
+                                }
+                                else
+                                {
+                                    var tipEvent = dialog.dialogText.tipEvent.Find((x) => !string.IsNullOrEmpty(x.eventName) && x.eventName == eventName);
+                                    if (tipEvent.dialogs != null)
+                                    {
+                                        string tipEventDialogName = $"{assetName}_TipEvent_{i}";
+                                        ParsingDialogs(tipEventDialogName, ref tipEvent.dialogs, ownerDictionaries);
+                                        CreateNewAsset(tipEventDialogName, tipEvent.dialogs, string.Empty, tipEvent.skipText, ownerDictionaries);
+                                        tipEvent.dialogs = null;
+                                        tipEvent.dialogName = tipEventDialogName;
+                                    }
+                                }
+
+                                string s;
+                                if (commands.Length >= 4 || !flag)
+                                    s = "<#FFAA00><bounce><link=" + eventName + ">" + name + "</color></bounce></link>";
+                                else
+                                    s = "<#FFEE00><link=" + eventName + ">" + name + "</color></link>";
+                                dialog.dialogText.text = dialog.dialogText.text.Insert(match.Index + indexAdd, s);
+                                indexAdd += s.Length;
+                                indexAnimAdd -= name.Length;
+                                break;
                             }
-
-                            dialog.dialogText.dialogAnimations.Add(diloagTextAnimation);
-                            indexAnimAdd += match.Groups["Tip"].Value.Length + 2;
-                            continue;
                         }
-
-                        string name = commands[1];
-                        string eventName = (commands.Length >= 3) ? commands[2] : commands[1];
-
-                        bool flag = dialog.dialogText.tipEvent == null || dialog.dialogText.tipEvent.Count <= 0 ||
-                                    !dialog.dialogText.tipEvent.Exists((x) => !string.IsNullOrEmpty(x.eventName) && x.eventName == eventName);
-                        if (flag)
-                        {
-                            dialog.dialogText.tipEvent.Add(new DialogTipEvent()
-                            {
-                                eventName = eventName,
-                                dialogName = (commands.Length >= 4) ? commands[3] : null,
-                                dialogEventType = (commands.Length >= 5) ? Utility.GetStringToEventType(commands[4]) : DialogEventType.CHANGE
-                            });
-                        }
-                        else
-                        {
-                            var tipEvent = dialog.dialogText.tipEvent.Find((x) => !string.IsNullOrEmpty(x.eventName) && x.eventName == eventName);
-                            if (tipEvent.dialogs != null)
-                            {
-                                string tipEventDialogName = $"{assetName}_TipEvent_{i}";
-                                ParsingDialogs(tipEventDialogName, ref tipEvent.dialogs, ownerDictionaries);
-                                CreateNewAsset(tipEventDialogName, tipEvent.dialogs, string.Empty, tipEvent.skipText, ownerDictionaries);
-                                tipEvent.dialogs = null;
-                                tipEvent.dialogName = tipEventDialogName;
-                            }
-                        }
-
-                        string s;
-                        if (commands.Length >= 4 || !flag)
-                            s = "<#FFAA00><bounce><link=" + eventName + ">" + name + "</color></bounce></link>";
-                        else
-                            s = "<#FFEE00><link=" + eventName + ">" + name + "</color></link>";
-                        dialog.dialogText.text = dialog.dialogText.text.Insert(match.Index + indexAdd, s);
-                        indexAdd += s.Length;
-                        indexAnimAdd += match.Groups["Tip"].Value.Length + 2 -name.Length;
+                        indexAnimAdd += match.Groups["Event"].Value.Length + 2;
                     }
 
-                    dialog.dialogText.text = Regex.Replace(dialog.dialogText.text, tipRegexString, "");
+                    dialog.dialogText.text = Regex.Replace(dialog.dialogText.text, eventRegexString, "");
                 }
 
                 if (dialog.dialogText.active && dialog.characters != null)
@@ -311,11 +351,11 @@ public class EditorUtility
                 {
                     var firstAnimation = dialog.animationLists.Find((DialogAnimationList anim) => anim.index == 0);
                     if (firstAnimation == null) return;
-                    
+
                     foreach (var anim in firstAnimation.animations)
                     {
                         if (anim.type != DialogAnimationType.CHAR) continue;
-                        
+
                         if (anim.name == character.name)
                         {
                             switch (anim.effect)
@@ -338,12 +378,12 @@ public class EditorUtility
                         foreach (var dialogAnimation in dialog.dialogText.dialogAnimations)
                         {
                             if (dialogAnimation.type != DialogTextAnimationType.ANIM) continue;
-                            
+
                             var animation = dialog.animationLists.Find(animation => animation.index == Mathf.RoundToInt(dialogAnimation.parameter));
                             foreach (var anim in animation.animations)
                             {
                                 if (anim.type != DialogAnimationType.CHAR) continue;
-                                
+
                                 if (anim.name == character.name)
                                 {
                                     switch (anim.effect)
@@ -371,41 +411,5 @@ public class EditorUtility
                 sizeDictionary[character.name] = size;
             }
         }
-    }
-
-
-    [MenuItem("Assets/Convert Tsv To ScriptableObject Tip")]
-    public static void CreateTipScriptableObject()
-    {
-        const string csvPath = "/A/Editor/Csvs/Tip";
-        var dir = new DirectoryInfo(Application.dataPath + csvPath);
-        foreach (FileInfo fileInfo in dir.GetFiles())
-        {
-            if (fileInfo.FullName.EndsWith(".meta")) continue;
-
-            Debug.Log(Path.GetFileNameWithoutExtension(fileInfo.FullName));
-            var lines = File.ReadAllLines(fileInfo.FullName);
-            var tipList = new List<Tip>();
-
-            for (var index = 1; index < lines.Length; index++)
-            {
-                var line = lines[index];
-                if (string.IsNullOrEmpty(line)) continue;
-
-                var column = line.Split('\t');
-                var tip = new Tip()
-                {
-                    id = column[0],
-                    lore = column[1]
-                };
-                tipList.Add(tip);
-            }
-
-            var newTips = ScriptableObject.CreateInstance<Tips>();
-            newTips.tips = tipList;
-            AssetDatabase.CreateAsset(newTips, $"Assets/A/ScriptableObjects/Tips/{Path.GetFileNameWithoutExtension(fileInfo.FullName)}.asset");
-        }
-
-        AssetDatabase.SaveAssets();
     }
 }

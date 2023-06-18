@@ -29,6 +29,9 @@ public class Dialog
     [XmlElement("Option")] 
     public List<DialogOption> optionList;
 
+    [XmlElement("Popup")] 
+    public DialogPopup dialogPopup;
+
     [XmlArray("Characters")]
     [XmlArrayItem("Character")]
     public List<DialogCharacter> characters = new List<DialogCharacter>();
@@ -149,6 +152,92 @@ public class DialogEvent
     }
 }
 
+[System.Serializable]
+public class SerializedVector2
+{
+    [XmlAttribute("X")]
+    public float x;
+    
+    [XmlAttribute("Y")]
+    public float y;
+
+    public Vector2 GetVector2()
+    {
+        return new Vector2(x, y);
+    }
+}
+
+[System.Serializable]
+public class SerializedHtmlScale
+{
+    [XmlAttribute("X")]
+    public string x;
+    
+    [XmlAttribute("Y")]
+    public string y;
+
+    public Vector2 GetScale(float defaultWidth, float defaultHeight)
+    {
+        bool isXNotSet = string.IsNullOrEmpty(x);
+        bool isYNotSet = string.IsNullOrEmpty(y);
+
+        float width = defaultWidth;
+        float height = defaultHeight;
+        
+        if (!isXNotSet)
+        {
+            if (x.EndsWith("%"))
+            {
+                float percent = float.Parse(x.Replace("%", ""))/100f;
+                width = defaultWidth * percent;
+                if (isYNotSet)
+                    height = defaultHeight * percent;
+            }
+            else
+            {
+                width = float.Parse(x.Replace("px", ""));
+                if (isYNotSet)
+                    height = width / defaultWidth * defaultHeight;
+            }
+        }
+        
+        if (!isYNotSet)
+        {
+            if (y.EndsWith("%"))
+            {
+                float percent = float.Parse(y.Replace("%", ""))/100f;
+                height = defaultHeight * percent;
+                if (isXNotSet)
+                    width = defaultWidth * percent;
+            }
+            else
+            {
+                height = float.Parse(x.Replace("px", ""));
+                if (isXNotSet)
+                    width = width / defaultHeight * defaultHeight;
+            }
+        }
+
+        return new Vector2(width, height);
+    }
+}
+
+[System.Serializable]
+public class DialogPopup
+{
+    [XmlAttribute("Name")] 
+    public string name;
+
+    [XmlElement("Pos")] 
+    public SerializedVector2 pos = new SerializedVector2() { x = 0, y = 100 };
+
+    [XmlElement("Pivot")] 
+    public SerializedVector2 pivot = new SerializedVector2() { x = 0.5f, y = 0.5f };
+
+    [XmlElement("Scale")] 
+    public SerializedHtmlScale scale;
+}
+
 
 [System.Serializable]
 public class DialogBackground
@@ -238,7 +327,8 @@ public enum DialogAnimationType
 public enum DialogTextAnimationType
 {
     WAIT,
-    ANIM
+    ANIM,
+    SKIP
 }
 public enum DialogCharacterPos
 {

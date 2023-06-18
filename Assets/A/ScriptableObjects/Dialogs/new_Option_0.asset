@@ -33,6 +33,17 @@ MonoBehaviour:
       owner: A
     eventList: []
     optionList: []
+    dialogPopup:
+      name: 
+      pos:
+        x: 0
+        y: 100
+      pivot:
+        x: 0.5
+        y: 0.5
+      scale:
+        x: 
+        y: 
     characters:
     - name: A
       clothes: Default
@@ -112,6 +123,17 @@ MonoBehaviour:
       owner: 
     eventList: []
     optionList: []
+    dialogPopup:
+      name: 
+      pos:
+        x: 0
+        y: 100
+      pivot:
+        x: 0.5
+        y: 0.5
+      scale:
+        x: 
+        y: 
     characters:
     - name: Loli
       clothes: Default
@@ -144,6 +166,17 @@ MonoBehaviour:
       owner: Loli
     eventList: []
     optionList: []
+    dialogPopup:
+      name: 
+      pos:
+        x: 0
+        y: 100
+      pivot:
+        x: 0.5
+        y: 0.5
+      scale:
+        x: 
+        y: 
     characters:
     - name: A
       clothes: Default

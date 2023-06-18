@@ -13,6 +13,7 @@ public class ResourcesManager : Manager
     private readonly Dictionary<string, Sprite> backgroundSprites = new Dictionary<string, Sprite>();
     private readonly Dictionary<string, CharacterStanding> characters = new Dictionary<string, CharacterStanding>();
     private readonly Dictionary<string, Dialogs> dialogs = new Dictionary<string, Dialogs>();
+    private readonly Dictionary<string, Sprite> popupSprites = new Dictionary<string, Sprite>();
     private readonly Dictionary<string, string> tips = new Dictionary<string, string>();
 
     [SerializeField] private List<SerializedCharacter> serializedCharacters;
@@ -23,6 +24,9 @@ public class ResourcesManager : Manager
     [SerializeField] private AssetLabelReference backgroundLabel;
     [SerializeField] private AssetLabelReference dialogLabel;
     [SerializeField] private AssetLabelReference tipLabel;
+    [SerializeField] private AssetLabelReference popupLabel;
+    
+    
     [Space(20)] [SerializeField] private Canvas downloadWindow;
     [SerializeField] private TextMeshProUGUI downloadingText;
 
@@ -43,7 +47,6 @@ public class ResourcesManager : Manager
         IsLoading = true;
         loadingWindow.gameObject.SetActive(true);
 
-        LoadCharacter();
         StartCoroutine(WaitDownload());
     }
 
@@ -124,7 +127,7 @@ public class ResourcesManager : Manager
         else
         {
             if (!GameManager.Instance.saveManager.GameData.isDownloadFile) GameManager.Instance.saveManager.GameData.isDownloadFile = true;
-            LoadBackground();
+            LoadAddressable();
         }
 
         Addressables.Release(sizeHandle);
@@ -191,7 +194,7 @@ public class ResourcesManager : Manager
                 downloadWindow.gameObject.SetActive(false);
                 GameManager.Instance.saveManager.GameData.isDownloadFile = true;
 
-                LoadBackground();
+                LoadAddressable();
             };
     }
 
@@ -203,25 +206,37 @@ public class ResourcesManager : Manager
 
     #endregion
 
-    private void LoadBackground()
+    private void LoadAddressable()
     {
-        Addressables.LoadAssetsAsync<Sprite>(backgroundLabel, sprite => { backgroundSprites.Add(sprite.name, sprite); })
-            .Completed += (list) => { LoadDialog(); };
+        StartCoroutine(LoadAddressableCoroutine());
     }
 
-    private void LoadDialog()
+    IEnumerator LoadAddressableCoroutine()
     {
-        Addressables.LoadAssetsAsync<Dialogs>(dialogLabel, dialog => { dialogs.Add(dialog.name, dialog); })
-            .Completed += (list) => { LoadTips(); };
-    }
+        LoadCharacter();
+        
+        var backgroundAsync = Addressables.LoadAssetsAsync<Sprite>(backgroundLabel, sprite => { backgroundSprites.Add(sprite.name, sprite); });
+        if (!backgroundAsync.IsDone)
+            yield return null;
+        
+        var dialogAsync = Addressables.LoadAssetsAsync<Dialogs>(dialogLabel, dialog => { dialogs.Add(dialog.name, dialog); });
+        if (!dialogAsync.IsDone)
+            yield return null;
 
-    private void LoadTips()
-    {
-        Addressables.LoadAssetsAsync<Tips>(tipLabel, tipLists =>
+        var tipAsync = Addressables.LoadAssetsAsync<Tips>(tipLabel, tipLists =>
         {
             foreach (var tip in tipLists.tips)
                 tips.Add(tip.id, tip.lore);
-        }).Completed += (list) => { IsLoading = false; };
+        });
+        if (!tipAsync.IsDone)
+            yield return null;
+        
+        var popupAsync = Addressables.LoadAssetsAsync<Sprite>(popupLabel, sprite => { popupSprites.Add(sprite.name, sprite); });
+        if (!popupAsync.IsDone)
+            yield return null;
+
+        IsLoading = false;
+        Debug.Log("로딩 완료!");
     }
 
     private void LoadCharacter()
@@ -261,6 +276,11 @@ public class ResourcesManager : Manager
     public Dialogs GetDialog(string dialogName)
     {
         return dialogs.TryGetValue(dialogName, out var dialog) ? dialog : null;
+    }
+
+    public Sprite GetPopup(string popupName)
+    {
+        return popupSprites.TryGetValue(popupName, out var sprite) ? sprite : null;
     }
 
     public string GetTip(string tipName)

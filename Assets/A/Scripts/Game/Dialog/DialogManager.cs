@@ -36,6 +36,8 @@ public class DialogManager : Manager
 
     private const float backgroundTitleDuration = 1.5f;
 
+    [SerializeField] private Image popupImage;
+
     [Header("배경")] [SerializeField] private Image backgroundImage;
     [SerializeField] private Image subBackgroundImage;
     private UITransitionEffect subBackgroundEffect;
@@ -122,9 +124,11 @@ public class DialogManager : Manager
         entry.callback.AddListener(PointerDown);
         dialogEventTrigger.triggers.Add(entry);
 
+        
         dialogWindow.gameObject.SetActive(false);
-
+        
         EventDetail.OnCreated();
+        
         SkipInit();
         AnimationInit();
     }
@@ -143,6 +147,8 @@ public class DialogManager : Manager
         autoDuration = 0;
 
         dialogWindow.gameObject.SetActive(false);
+        
+        popupImage.gameObject.SetActive(false);
 
         blackFadeIn.gameObject.SetActive(false);
         blackFadeOut.gameObject.SetActive(false);
@@ -181,6 +187,8 @@ public class DialogManager : Manager
             }
 
             dialogWindow.gameObject.SetActive(false);
+            
+            popupImage.gameObject.SetActive(false);
 
             isEnding = false;
             GameManager.Instance.sceneManager.SceneLoadFadeOut(1);
@@ -252,14 +260,19 @@ public class DialogManager : Manager
 
         if (descriptionText.maxVisibleCharacters < descriptionText.textInfo.characterCount)
         {
+            int nowIndex = descriptionText.maxVisibleCharacters;
             descriptionText.maxVisibleCharacters = descriptionText.textInfo.characterCount;
             if (nowDialog.dialogText.dialogAnimations.Count <= 0) return;
 
-            var dialogAnimations = nowDialog.dialogText.dialogAnimations.OrderBy(dialogAnimation => dialogAnimation.parameter)
-                .ToList();
-            foreach (var dialogAnimation in dialogAnimations)
-                if (dialogAnimation.type == DialogTextAnimationType.ANIM)
-                    EffectSetting(Mathf.RoundToInt(dialogAnimation.parameter));
+            var dialogTextAnimations = nowDialog.dialogText.dialogAnimations.FindAll((dialogTextAnimation => dialogTextAnimation.startIndex >nowIndex));
+            
+            foreach (var dialogTextAnimation in dialogTextAnimations)
+            {
+                if (dialogTextAnimation.type == DialogTextAnimationType.ANIM)
+                    EffectSetting(Mathf.RoundToInt(dialogTextAnimation.parameter));
+                if (dialogTextAnimation.type == DialogTextAnimationType.SKIP)
+                    NewDialog();
+            }
         }
         else
         {
@@ -336,6 +349,9 @@ public class DialogManager : Manager
                                 break;
                             case DialogTextAnimationType.ANIM:
                                 EffectSetting(Mathf.RoundToInt(dialogAnimation.parameter));
+                                break;
+                            case DialogTextAnimationType.SKIP:
+                                NewDialog();
                                 break;
                         }
                     }
@@ -535,6 +551,50 @@ public class DialogManager : Manager
             else
             {
                 backgroundTitleLore.gameObject.SetActive(false);
+            }
+        }
+
+        if (nowDialog.dialogPopup != null && !string.IsNullOrEmpty(nowDialog.dialogPopup.name))
+        {
+            Sprite popupSprite = GameManager.Instance.resourcesManager.GetPopup(nowDialog.dialogPopup.name);
+            if (popupSprite != null)
+            {
+                popupImage.DOKill();
+                popupImage.gameObject.SetActive(true);
+            
+                Vector2 pivot = nowDialog.dialogPopup.pivot.GetVector2();
+                popupImage.rectTransform.anchorMin = pivot;
+                popupImage.rectTransform.anchorMax = pivot;
+
+                popupImage.rectTransform.anchoredPosition = nowDialog.dialogPopup.pos.GetVector2();
+
+                popupImage.sprite = popupSprite;
+                
+                float x = popupSprite.rect.width / popupImage.pixelsPerUnit;
+                float y = popupSprite.rect.height / popupImage.pixelsPerUnit;
+                
+                popupImage.rectTransform.sizeDelta = nowDialog.dialogPopup.scale.GetScale(x, y);
+                popupImage.SetAllDirty();
+
+                if (prevDialog.dialogPopup == null || string.IsNullOrEmpty(prevDialog.dialogPopup.name))
+                {
+                    popupImage.rectTransform.localScale = Vector3.zero;
+                    popupImage.rectTransform.DOScale(Vector3.one, 0.3f).SetEase(Ease.OutBack);
+                }
+            }
+        }
+        else
+        {
+            if (prevDialog != null && prevDialog.dialogPopup != null && !string.IsNullOrEmpty(prevDialog.dialogPopup.name))
+            {
+                popupImage.rectTransform.DOKill();
+                popupImage.rectTransform.localScale = Vector3.one;
+
+                popupImage.rectTransform.DOScale(Vector3.zero, 0.3f).OnComplete(() => popupImage.gameObject.SetActive(false));
+            }
+            else
+            {
+                popupImage.gameObject.SetActive(false);
             }
         }
 

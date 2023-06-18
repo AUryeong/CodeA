@@ -41,6 +41,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 1ac03f1b85459384380f594a71811aaf, type: 2}
   - {fileID: 11400000, guid: 7dd26066ac1e16d44845ba435bdb4bdb, type: 2}
   - {fileID: 11400000, guid: 192801303e0217040a6101d7f9dc277a, type: 2}
+  - {fileID: 11400000, guid: da1004dcf4ce3554f84bb242d307a0af, type: 2}
   m_BuildSettings:
     m_CompileScriptsInVirtualMode: 0
     m_CleanupStreamingAssetsAfterBuilds: 1
@@ -85,6 +86,7 @@ MonoBehaviour:
     - background
     - talk
     - tip
+    - popup
   m_SchemaTemplates: []
   m_GroupTemplateObjects:
   - {fileID: 11400000, guid: 00991249dcc6e324bb57f225141e2e47, type: 2}

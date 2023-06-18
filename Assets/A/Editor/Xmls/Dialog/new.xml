@@ -90,7 +90,27 @@
     <Dialog>
         <Text>
             <Name>에이</Name>
-            <Text>나는 유해한 인간이야</Text>
+            <Text>나는 유해한 인간이야나는 유해한 인간이야나는 유해한 인간이야나는 유해한 인간이야나는 유해한 인간이야나는 유해한 인간이야나는 유해한 인간이야{Anim:SKIP}</Text>
+        </Text>
+        <Characters>
+            <Character Name="Loli"/>
+            <Character Name="A" Dark="false"/>
+        </Characters>
+    </Dialog>
+    <Dialog>
+        <Text>
+            <Name>에이</Name>
+            <Text>나는 유해한 인간이야{Anim:SKIP}</Text>
+        </Text>
+        <Characters>
+            <Character Name="Loli"/>
+            <Character Name="A" Dark="false"/>
+        </Characters>
+    </Dialog>
+    <Dialog>
+        <Text>
+            <Name>에이</Name>
+            <Text>나는 유해한 인간이야{Anim:SKIP}</Text>
         </Text>
         <Characters>
             <Character Name="Loli"/>
@@ -102,26 +122,9 @@
             <Name>에이</Name>
             <Text>나는 유해한 인간이야</Text>
         </Text>
-        <Characters>
-            <Character Name="Loli"/>
-            <Character Name="A" Dark="false"/>
-        </Characters>
-    </Dialog>
-    <Dialog>
-        <Text>
-            <Name>에이</Name>
-            <Text>나는 유해한 인간이야</Text>
-        </Text>
-        <Characters>
-            <Character Name="Loli"/>
-            <Character Name="A" Dark="false"/>
-        </Characters>
-    </Dialog>
-    <Dialog>
-        <Text>
-            <Name>에이</Name>
-            <Text>나는 유해한 인간이야</Text>
-        </Text>
+        <Popup Name="Code">
+            <Scale X="150%"/>
+        </Popup>
         <Characters>
             <Character Name="Loli"/>
             <Character Name="A" Dark="false"/>

@@ -34,6 +34,17 @@ MonoBehaviour:
       owner: 
     eventList: []
     optionList: []
+    dialogPopup:
+      name: 
+      pos:
+        x: 0
+        y: 100
+      pivot:
+        x: 0.5
+        y: 0.5
+      scale:
+        x: 
+        y: 
     characters: []
     animationLists: []
   - bgm: School
@@ -54,6 +65,17 @@ MonoBehaviour:
       owner: 
     eventList: []
     optionList: []
+    dialogPopup:
+      name: 
+      pos:
+        x: 0
+        y: 100
+      pivot:
+        x: 0.5
+        y: 0.5
+      scale:
+        x: 
+        y: 
     characters: []
     animationLists: []
   - bgm: School
@@ -81,16 +103,16 @@ MonoBehaviour:
         dialogs: []
         dialogEventType: 1
       dialogAnimations:
-      - startIndex: 9
+      - startIndex: 8
         type: 1
         parameter: 1
-      - startIndex: 9
+      - startIndex: 8
         type: 0
         parameter: 2
-      - startIndex: 17
+      - startIndex: 16
         type: 1
         parameter: 2
-      - startIndex: 17
+      - startIndex: 16
         type: 0
         parameter: 2
       active: 0
@@ -98,6 +120,17 @@ MonoBehaviour:
       owner: A
     eventList: []
     optionList: []
+    dialogPopup:
+      name: 
+      pos:
+        x: 0
+        y: 100
+      pivot:
+        x: 0.5
+        y: 0.5
+      scale:
+        x: 
+        y: 
     characters:
     - name: A
       clothes: Default
@@ -178,14 +211,124 @@ MonoBehaviour:
       scale: 1
     dialogText:
       name: "\uC5D0\uC774"
-      text: "\uB098\uB294 \uC720\uD574\uD55C \uC778\uAC04\uC774\uC57C"
+      text: "\uB098\uB294 \uC720\uD574\uD55C \uC778\uAC04\uC774\uC57C\uB098\uB294
+        \uC720\uD574\uD55C \uC778\uAC04\uC774\uC57C\uB098\uB294 \uC720\uD574\uD55C
+        \uC778\uAC04\uC774\uC57C\uB098\uB294 \uC720\uD574\uD55C \uC778\uAC04\uC774\uC57C\uB098\uB294
+        \uC720\uD574\uD55C \uC778\uAC04\uC774\uC57C\uB098\uB294 \uC720\uD574\uD55C
+        \uC778\uAC04\uC774\uC57C\uB098\uB294 \uC720\uD574\uD55C \uC778\uAC04\uC774\uC57C"
       tipEvent: []
-      dialogAnimations: []
+      dialogAnimations:
+      - startIndex: 77
+        type: 2
+        parameter: 0
       active: 1
       invisible: 0
       owner: A
     eventList: []
     optionList: []
+    dialogPopup:
+      name: 
+      pos:
+        x: 0
+        y: 100
+      pivot:
+        x: 0.5
+        y: 0.5
+      scale:
+        x: 
+        y: 
+    characters:
+    - name: Loli
+      clothes: Default
+      face: DefaultLight
+      pos: 7
+      size: 2
+      dark: 1
+    - name: A
+      clothes: Default
+      face: Smile
+      pos: 6
+      size: 2
+      dark: 0
+    animationLists: []
+  - bgm: School
+    dialogBackground:
+      name: Class_Morning
+      effect: 0
+      title: 
+      description: 
+      effectDuration: 1
+      scale: 1
+    dialogText:
+      name: "\uC5D0\uC774"
+      text: "\uB098\uB294 \uC720\uD574\uD55C \uC778\uAC04\uC774\uC57C"
+      tipEvent: []
+      dialogAnimations:
+      - startIndex: 11
+        type: 2
+        parameter: 0
+      active: 1
+      invisible: 0
+      owner: A
+    eventList: []
+    optionList: []
+    dialogPopup:
+      name: 
+      pos:
+        x: 0
+        y: 100
+      pivot:
+        x: 0.5
+        y: 0.5
+      scale:
+        x: 
+        y: 
+    characters:
+    - name: Loli
+      clothes: Default
+      face: DefaultLight
+      pos: 7
+      size: 2
+      dark: 1
+    - name: A
+      clothes: Default
+      face: Smile
+      pos: 6
+      size: 2
+      dark: 0
+    animationLists: []
+  - bgm: School
+    dialogBackground:
+      name: Class_Morning
+      effect: 0
+      title: 
+      description: 
+      effectDuration: 1
+      scale: 1
+    dialogText:
+      name: "\uC5D0\uC774"
+      text: "\uB098\uB294 \uC720\uD574\uD55C \uC778\uAC04\uC774\uC57C"
+      tipEvent: []
+      dialogAnimations:
+      - startIndex: 11
+        type: 2
+        parameter: 0
+      active: 1
+      invisible: 0
+      owner: A
+    eventList: []
+    optionList: []
+    dialogPopup:
+      name: 
+      pos:
+        x: 0
+        y: 100
+      pivot:
+        x: 0.5
+        y: 0.5
+      scale:
+        x: 
+        y: 
     characters:
     - name: Loli
       clothes: Default
@@ -218,70 +361,17 @@ MonoBehaviour:
       owner: A
     eventList: []
     optionList: []
-    characters:
-    - name: Loli
-      clothes: Default
-      face: DefaultLight
-      pos: 7
-      size: 2
-      dark: 1
-    - name: A
-      clothes: Default
-      face: Smile
-      pos: 6
-      size: 2
-      dark: 0
-    animationLists: []
-  - bgm: School
-    dialogBackground:
-      name: Class_Morning
-      effect: 0
-      title: 
-      description: 
-      effectDuration: 1
-      scale: 1
-    dialogText:
-      name: "\uC5D0\uC774"
-      text: "\uB098\uB294 \uC720\uD574\uD55C \uC778\uAC04\uC774\uC57C"
-      tipEvent: []
-      dialogAnimations: []
-      active: 1
-      invisible: 0
-      owner: A
-    eventList: []
-    optionList: []
-    characters:
-    - name: Loli
-      clothes: Default
-      face: DefaultLight
-      pos: 7
-      size: 2
-      dark: 1
-    - name: A
-      clothes: Default
-      face: Smile
-      pos: 6
-      size: 2
-      dark: 0
-    animationLists: []
-  - bgm: School
-    dialogBackground:
-      name: Class_Morning
-      effect: 0
-      title: 
-      description: 
-      effectDuration: 1
-      scale: 1
-    dialogText:
-      name: "\uC5D0\uC774"
-      text: "\uB098\uB294 \uC720\uD574\uD55C \uC778\uAC04\uC774\uC57C"
-      tipEvent: []
-      dialogAnimations: []
-      active: 1
-      invisible: 0
-      owner: A
-    eventList: []
-    optionList: []
+    dialogPopup:
+      name: Code
+      pos:
+        x: 0
+        y: 100
+      pivot:
+        x: 0.5
+        y: 0.5
+      scale:
+        x: 150%
+        y: 
     characters:
     - name: Loli
       clothes: Default
@@ -334,6 +424,17 @@ MonoBehaviour:
       special: 0
       dialogs: []
       eventList: []
+    dialogPopup:
+      name: 
+      pos:
+        x: 0
+        y: 100
+      pivot:
+        x: 0.5
+        y: 0.5
+      scale:
+        x: 
+        y: 
     characters:
     - name: Loli
       clothes: Default
@@ -385,6 +486,17 @@ MonoBehaviour:
     - name: "\uC568\uB9AC\uC2A4"
       type: 0
     optionList: []
+    dialogPopup:
+      name: 
+      pos:
+        x: 0
+        y: 100
+      pivot:
+        x: 0.5
+        y: 0.5
+      scale:
+        x: 
+        y: 
     characters:
     - name: Loli
       clothes: Default
