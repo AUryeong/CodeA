@@ -66,9 +66,9 @@ MonoBehaviour:
       scale: 1
     dialogue:
       talker: "\uC5D0\uC774"
-      text: "\uD639\uC2DC <#FFAA00><bounce><link=\uC568\uB9AC\uC2A4>\uC6D0\uB354\uB79C\uB4DC</color></bounce></link>\uB098
-        <#FFEE00><link=\uC2DC\uACF5\uC758 \uD3ED\uD48D>\uC2DC\uACF5\uC758 \uD3ED\uD48D</color></link>\uC744
-        \uC544\uC2ED\uB2C8\uAE4C?"
+      text: "<align=\"left\">\uD639\uC2DC <#FFAA00><bounce><link=\uC568\uB9AC\uC2A4><align=\"center\">\uC6D0\uB354\uB79C\uB4DC</color></bounce></link>\uB098
+        <#FFEE00><link=\uC2DC\uACF5\uC758 \uD3ED\uD48D><align=\"right\">\uC2DC\uACF5\uC758
+        \uD3ED\uD48D</color></link>\uC744 \uC544\uC2ED\uB2C8\uAE4C?"
       tipEvent:
       - eventName: "\uC568\uB9AC\uC2A4"
         skipText: 
@@ -101,7 +101,7 @@ MonoBehaviour:
     characters:
     - name: A
       clothes: Default
-      face: Default
+      face: Smile
       pos: 2
       size: 2
       dark: 0
@@ -242,7 +242,7 @@ MonoBehaviour:
       scale: 1
     dialogue:
       talker: "\uC5D0\uC774"
-      text: "\uB098\uB294 \uC720\uD574\uD55C \uC778\uAC04\uC774\uC57C"
+      text: "<align=\"middle\">\uB098\uB294 \uC720\uD574\uD55C \uC778\uAC04\uC774\uC57C"
       tipEvent: []
       talkAnimations: []
       active: 1
@@ -274,7 +274,7 @@ MonoBehaviour:
       scale: 1
     dialogue:
       talker: "\uC5D0\uC774"
-      text: "\uB098\uB294 \uC720\uD574\uD55C \uC778\uAC04\uC774\uC57C"
+      text: <align="right">Right<br><align="center">Center<br><align="left">Left
       tipEvent: []
       talkAnimations: []
       active: 1

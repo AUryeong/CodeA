@@ -74,6 +74,11 @@ MonoBehaviour:
         name: A
         parameter: SmileFlush
         duration: -1
+      - type: 0
+        effect: Scale
+        name: A
+        parameter: L
+        duration: 1
       - type: 1
         effect: Wait
         name: 
@@ -123,7 +128,7 @@ MonoBehaviour:
       clothes: Default
       face: SmileFlush
       pos: 6
-      size: 2
+      size: 3
       dark: 1
     animationLists: []
   - bgm: School
@@ -149,7 +154,7 @@ MonoBehaviour:
       clothes: Default
       face: SmileFlush
       pos: 6
-      size: 2
+      size: 3
       dark: 1
     - name: Loli
       clothes: Default

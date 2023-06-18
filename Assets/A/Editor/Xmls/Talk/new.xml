@@ -36,6 +36,7 @@
                             <Animation Type="UTIL" Effect="Wait" Duration="1"/>
                             <Animation Type="CHAR" Name="A" Effect="Bounce" Parameter="1" Duration="0.2"/>
                             <Animation Type="CHAR" Name="A" Effect="Face" Parameter="SmileFlush"/>
+                            <Animation Type="CHAR" Name="A" Effect="Scale" Parameter="L" Duration="1"/>
                             <Animation Type="UTIL" Effect="Wait" Duration="0.5"/>
                             <Animation Type="DIAL" Effect="On"/>
                             <Animation Type="CHAR" Name="A" Effect="Move" Parameter="L1" Duration="0.8"/>
