@@ -16,37 +16,6 @@ MonoBehaviour:
   skipText: "\uC2E0 \uD559\uAE30\uC5D0 \uC568\uB9AC\uC2A4 \uBCF4\uACE0 \uC2F6\uB2E4
     \uD558 \uC2DC\uBC1C\n\uC640\uD558\uD558\uD558"
   dialogs:
-  - bgm: 
-    dialogBackground:
-      name: Black
-      effect: 0
-      title: 
-      description: 
-      effectDuration: 1
-      scale: 1
-    dialogText:
-      name: 
-      text: 
-      tipEvent: []
-      dialogAnimations: []
-      active: 1
-      invisible: 0
-      owner: 
-    eventList: []
-    optionList: []
-    dialogPopup:
-      name: 
-      pos:
-        x: 0
-        y: 100
-      pivot:
-        x: 0.5
-        y: 0.5
-      scale:
-        x: 
-        y: 
-    characters: []
-    animationLists: []
   - bgm: School
     dialogBackground:
       name: Class_Morning

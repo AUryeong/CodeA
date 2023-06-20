@@ -55,6 +55,8 @@ public class SoundManager : Manager
         {
             audioSource = audioSourceObj.AddComponent<AudioSource>(),
         };
+        audioInfo.audioSource.dopplerLevel = 0;
+        audioInfo.audioSource.reverbZoneMix = 0;
         audioInfos.Add(soundType, audioInfo);
         return audioInfo;
     }

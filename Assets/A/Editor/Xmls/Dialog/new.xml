@@ -3,10 +3,6 @@
     <Title>안녕 세계!</Title>
     <SkipText>신 학기에 앨리스 보고 싶다 하 시발\n와하하하</SkipText>
     <Dialog>
-        <BG Name="Black"/>
-        <Text/>
-    </Dialog>
-    <Dialog>
         <Bgm>School</Bgm>
         <BG Name="Class_Morning" Title="디지텍 고등학교" Description="조금 이른 아침" Effect="FADE" Duration="3"/>
         <Text>
