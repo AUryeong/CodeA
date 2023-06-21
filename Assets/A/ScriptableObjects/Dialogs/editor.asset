@@ -1,0 +1,868 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ea4cc8aacb5484389845b651f03202d, type: 3}
+  m_Name: editor
+  m_EditorClassIdentifier: 
+  cgTitle: "\uC720\uB2C8\uD2F0\uB97C \uC0AC\uC6A9\uD558\uB294\uB370\uB294 \uC5B4\uB5A4
+    \uC5D0\uB514\uD130\uAC00 \uC88B\uB098\uC694?"
+  skipText: "\uBB34\uC2A8 \uC5D0\uB514\uD130\uAC00 \uC88B\uB0D0\uC5D0 \uB300\uD574
+    \uD1A0\uB860\uD588\uC9C0\uB9CC, \uACB0\uAD6D\uC5D4 \uB9DE\uB294\uAC78 \uC4F0\uB294\uAC8C
+    \uB354 \uC88B\uB2E4\uB294 \uAC78 \uC54C\uC558\uB530."
+  dialogs:
+  - bgm: 
+    dialogBackground:
+      name: Black
+      effect: 0
+      title: 
+      description: 
+      effectDuration: 1
+      scale: 1
+    dialogText:
+      name: 
+      text: "\uC720\uB2C8\uD2F0\uB97C \uC0AC\uC6A9\uD558\uB294\uB370\uB294 \uC5B4\uB5A4
+        \uC5D0\uB514\uD130\uAC00 \uC88B\uB098\uC694?"
+      tipEvent: []
+      dialogAnimations: []
+      active: 1
+      invisible: 0
+      owner: 
+    eventList: []
+    optionList: []
+    dialogPopup:
+      name: 
+      pos:
+        x: 0
+        y: 100
+      pivot:
+        x: 0.5
+        y: 0.5
+      scale:
+        x: 
+        y: 
+    characters: []
+    animationLists: []
+  - bgm: School
+    dialogBackground:
+      name: Class_Morning
+      effect: 2
+      title: "\uD559\uAD50"
+      description: "\uC544\uCE68"
+      effectDuration: 2
+      scale: 1
+    dialogText:
+      name: '{0}'
+      text: "\uACE0\uBBFC\uC774\uB124..."
+      tipEvent: []
+      dialogAnimations: []
+      active: 1
+      invisible: 0
+      owner: 
+    eventList: []
+    optionList: []
+    dialogPopup:
+      name: 
+      pos:
+        x: 0
+        y: 100
+      pivot:
+        x: 0.5
+        y: 0.5
+      scale:
+        x: 
+        y: 
+    characters:
+    - name: A
+      clothes: Default
+      face: Default
+      pos: 4
+      size: 2
+      dark: 0
+    animationLists: []
+  - bgm: School
+    dialogBackground:
+      name: Class_Morning
+      effect: 0
+      title: 
+      description: 
+      effectDuration: 1
+      scale: 1
+    dialogText:
+      name: "\uC5D0\uC774"
+      text: "\uBB50\uD558\uACE0 \uC788\uC5B4?"
+      tipEvent: []
+      dialogAnimations: []
+      active: 0
+      invisible: 0
+      owner: A
+    eventList: []
+    optionList: []
+    dialogPopup:
+      name: 
+      pos:
+        x: 0
+        y: 100
+      pivot:
+        x: 0.5
+        y: 0.5
+      scale:
+        x: 
+        y: 
+    characters:
+    - name: A
+      clothes: Default
+      face: Default
+      pos: 4
+      size: 2
+      dark: 0
+    animationLists:
+    - index: 0
+      animations:
+      - type: 0
+        effect: Move
+        name: A
+        parameter: R2
+        duration: 2
+      - type: 1
+        effect: Wait
+        name: 
+        parameter: 
+        duration: 2
+      - type: 0
+        effect: Emotion
+        name: A
+        parameter: Surprise
+        duration: 0.4
+      - type: 0
+        effect: Bounce
+        name: A
+        parameter: 1
+        duration: 0.2
+      - type: 1
+        effect: Wait
+        name: 
+        parameter: 
+        duration: 1
+      - type: 0
+        effect: Move
+        name: A
+        parameter: R1
+        duration: 1
+      - type: 0
+        effect: Scale
+        name: A
+        parameter: L
+        duration: 1
+      - type: 0
+        effect: Face
+        name: A
+        parameter: SmileFlush
+        duration: -1
+      - type: 2
+        effect: On
+        name: 
+        parameter: 
+        duration: -1
+  - bgm: School
+    dialogBackground:
+      name: Class_Morning
+      effect: 0
+      title: 
+      description: 
+      effectDuration: 1
+      scale: 1
+    dialogText:
+      name: '{0}'
+      text: "\uC544, \uADF8\uB0E5 \uACE0\uBBFC \uC911\uC774\uC600\uC5B4."
+      tipEvent: []
+      dialogAnimations: []
+      active: 1
+      invisible: 0
+      owner: 
+    eventList: []
+    optionList: []
+    dialogPopup:
+      name: 
+      pos:
+        x: 0
+        y: 100
+      pivot:
+        x: 0.5
+        y: 0.5
+      scale:
+        x: 
+        y: 
+    characters:
+    - name: A
+      clothes: Default
+      face: SmileFlush
+      pos: 3
+      size: 3
+      dark: 1
+    animationLists: []
+  - bgm: School
+    dialogBackground:
+      name: Class_Morning
+      effect: 0
+      title: 
+      description: 
+      effectDuration: 1
+      scale: 1
+    dialogText:
+      name: "\uC5D0\uC774"
+      text: "\uBB34\uC2A8 \uACE0\uBBFC?"
+      tipEvent: []
+      dialogAnimations: []
+      active: 1
+      invisible: 0
+      owner: A
+    eventList: []
+    optionList: []
+    dialogPopup:
+      name: 
+      pos:
+        x: 0
+        y: 100
+      pivot:
+        x: 0.5
+        y: 0.5
+      scale:
+        x: 
+        y: 
+    characters:
+    - name: A
+      clothes: Default
+      face: Default
+      pos: 3
+      size: 3
+      dark: 0
+    animationLists: []
+  - bgm: School
+    dialogBackground:
+      name: Class_Morning
+      effect: 0
+      title: 
+      description: 
+      effectDuration: 1
+      scale: 1
+    dialogText:
+      name: '{0}'
+      text: "\uC6D0\uB798 <#FFEE00><link=Visual Studio>Visual Studio</color></link>\uB97C
+        \uC37C\uC5C8\uB294\uB370, \uCE5C\uAD6C\uAC00 <#FFEE00><link=Visual Studio
+        Code>Visual Studio Code</color></link>\uB97C \uACC4\uC18D \uCD94\uCC9C\uD574\uC11C,
+        \uBB50\uAC00 \uB354 \uB0AB\uB098 \uC2F6\uC5B4\uC11C"
+      tipEvent:
+      - eventName: Visual Studio
+        skipText: 
+        dialogName: 
+        dialogs: []
+        dialogEventType: 1
+      - eventName: Visual Studio Code
+        skipText: 
+        dialogName: 
+        dialogs: []
+        dialogEventType: 1
+      dialogAnimations: []
+      active: 1
+      invisible: 0
+      owner: 
+    eventList: []
+    optionList: []
+    dialogPopup:
+      name: 
+      pos:
+        x: 0
+        y: 100
+      pivot:
+        x: 0.5
+        y: 0.5
+      scale:
+        x: 
+        y: 
+    characters:
+    - name: A
+      clothes: Default
+      face: Default
+      pos: 3
+      size: 3
+      dark: 1
+    animationLists: []
+  - bgm: School
+    dialogBackground:
+      name: Class_Morning
+      effect: 0
+      title: 
+      description: 
+      effectDuration: 1
+      scale: 1
+    dialogText:
+      name: "\uC5D0\uC774"
+      text: "\uC544, \uC5D0\uB514\uD130 \uAD00\uB828 \uACE0\uBBFC\uC774\uAD6C\uB098?"
+      tipEvent: []
+      dialogAnimations: []
+      active: 1
+      invisible: 0
+      owner: A
+    eventList: []
+    optionList: []
+    dialogPopup:
+      name: 
+      pos:
+        x: 0
+        y: 100
+      pivot:
+        x: 0.5
+        y: 0.5
+      scale:
+        x: 
+        y: 
+    characters:
+    - name: A
+      clothes: Default
+      face: Smile
+      pos: 3
+      size: 3
+      dark: 0
+    animationLists:
+    - index: 0
+      animations:
+      - type: 0
+        effect: Emotion
+        name: A
+        parameter: Funny
+        duration: 1
+      - type: 0
+        effect: Bounce
+        name: A
+        parameter: 1
+        duration: 0.2
+  - bgm: School
+    dialogBackground:
+      name: Class_Morning
+      effect: 0
+      title: 
+      description: 
+      effectDuration: 1
+      scale: 1
+    dialogText:
+      name: "\uC5D0\uC774"
+      text: "\uB098\uB3C4 \uC804\uBD80\uD130 \uAD81\uAE08\uD588\uB358 \uB0B4\uC6A9\uC778\uB370
+        \uAC19\uC774 \uC54C\uC544\uBCF4\uBA74 \uB418\uACA0\uB124."
+      tipEvent: []
+      dialogAnimations: []
+      active: 1
+      invisible: 0
+      owner: A
+    eventList: []
+    optionList: []
+    dialogPopup:
+      name: 
+      pos:
+        x: 0
+        y: 100
+      pivot:
+        x: 0.5
+        y: 0.5
+      scale:
+        x: 
+        y: 
+    characters:
+    - name: A
+      clothes: Default
+      face: Default
+      pos: 3
+      size: 3
+      dark: 0
+    animationLists: []
+  - bgm: School
+    dialogBackground:
+      name: Class_Morning
+      effect: 0
+      title: 
+      description: 
+      effectDuration: 1
+      scale: 1
+    dialogText:
+      name: "\uC5D0\uC774"
+      text: "\uC720\uBA85\uD55C \uC5D0\uB514\uD130\uB294 3\uAC00\uC9C0 \uC815\uB3C4\uAC00
+        \uC788\uB294\uAC70 \uAC19\uC544"
+      tipEvent: []
+      dialogAnimations: []
+      active: 1
+      invisible: 0
+      owner: A
+    eventList: []
+    optionList: []
+    dialogPopup:
+      name: 
+      pos:
+        x: 0
+        y: 100
+      pivot:
+        x: 0.5
+        y: 0.5
+      scale:
+        x: 
+        y: 
+    characters:
+    - name: A
+      clothes: Default
+      face: Default
+      pos: 3
+      size: 3
+      dark: 0
+    animationLists:
+    - index: 0
+      animations:
+      - type: 0
+        effect: Move
+        name: A
+        parameter: R3
+        duration: 1
+  - bgm: School
+    dialogBackground:
+      name: Class_Morning
+      effect: 0
+      title: 
+      description: 
+      effectDuration: 1
+      scale: 1
+    dialogText:
+      name: "\uC5D0\uC774"
+      text: "\uAE30\uBCF8\uC801\uC778 \uC5D0\uB514\uD130\uC778 <#FFEE00><link=Visual
+        Studio>Visual Studio</color></link>, \uAE30\uBCF8\uC801\uC778 \uB9CC\uD07C
+        \uD2B9\uBCC4\uD55C \uC694\uC18C \uC5C6\uC774 \uD3C9\uBC94\uD55C\uAC8C \uD2B9\uC9D5\uC774\uB77C\uACE0
+        \uC0DD\uAC01\uD574."
+      tipEvent:
+      - eventName: Visual Studio
+        skipText: 
+        dialogName: 
+        dialogs: []
+        dialogEventType: 1
+      dialogAnimations: []
+      active: 1
+      invisible: 0
+      owner: A
+    eventList: []
+    optionList: []
+    dialogPopup:
+      name: VS
+      pos:
+        x: -200
+        y: 140
+      pivot:
+        x: 0.5
+        y: 0.5
+      scale:
+        x: 800px
+        y: 
+    characters:
+    - name: A
+      clothes: Default
+      face: Default
+      pos: 1
+      size: 3
+      dark: 0
+    animationLists:
+    - index: 0
+      animations:
+      - type: 0
+        effect: Bounce
+        name: A
+        parameter: 2
+        duration: 0.2
+  - bgm: School
+    dialogBackground:
+      name: Class_Morning
+      effect: 0
+      title: 
+      description: 
+      effectDuration: 1
+      scale: 1
+    dialogText:
+      name: "\uC5D0\uC774"
+      text: "\uB2E4\uC74C, <#FFEE00><link=Visual Studio Code>Visual Studio Code</color></link>"
+      tipEvent:
+      - eventName: Visual Studio Code
+        skipText: 
+        dialogName: 
+        dialogs: []
+        dialogEventType: 1
+      dialogAnimations: []
+      active: 1
+      invisible: 0
+      owner: A
+    eventList: []
+    optionList: []
+    dialogPopup:
+      name: VSCode
+      pos:
+        x: -200
+        y: 140
+      pivot:
+        x: 0.5
+        y: 0.5
+      scale:
+        x: 800px
+        y: 
+    characters:
+    - name: A
+      clothes: Default
+      face: Default
+      pos: 1
+      size: 3
+      dark: 0
+    animationLists: []
+  - bgm: School
+    dialogBackground:
+      name: Class_Morning
+      effect: 0
+      title: 
+      description: 
+      effectDuration: 1
+      scale: 1
+    dialogText:
+      name: "\uC5D0\uC774"
+      text: "\uB098\uB3C4 \uC798 \uC548 \uC368\uBD10\uC11C \uC798 \uBAA8\uB974\uACA0\uB294\uB370,
+        \uB2E4\uB978 \uC5D0\uB514\uD130\uBCF4\uB2E4 \uBE60\uB974\uACE0, \uC775\uC2A4\uD150\uC158\uC774\uB77C
+        \uBD88\uB9AC\uB294 \uCD94\uAC00 \uAE30\uB2A5\uC744 \uC7A5\uCC29\uD560 \uC218
+        \uC788\uB098\uBD10."
+      tipEvent: []
+      dialogAnimations: []
+      active: 1
+      invisible: 0
+      owner: A
+    eventList: []
+    optionList: []
+    dialogPopup:
+      name: VSCode
+      pos:
+        x: -200
+        y: 140
+      pivot:
+        x: 0.5
+        y: 0.5
+      scale:
+        x: 800px
+        y: 
+    characters:
+    - name: A
+      clothes: Default
+      face: Default
+      pos: 1
+      size: 3
+      dark: 0
+    animationLists: []
+  - bgm: School
+    dialogBackground:
+      name: Class_Morning
+      effect: 0
+      title: 
+      description: 
+      effectDuration: 1
+      scale: 1
+    dialogText:
+      name: "\uC5D0\uC774"
+      text: "\uB9C8\uC9C0\uB9C9, <#FFEE00><link=Rider>Rider</color></link>\uC57C,
+        \uB0B4\uAC00 \uC4F0\uACE0 \uC788\uACE0, \uC7A5\uC810\uC744 \uB9D0\uD558\uC790\uBA74
+        \uB05D\uC774 \uC5C6\uC9C0!"
+      tipEvent:
+      - eventName: Rider
+        skipText: 
+        dialogName: 
+        dialogs: []
+        dialogEventType: 1
+      dialogAnimations: []
+      active: 1
+      invisible: 0
+      owner: A
+    eventList: []
+    optionList: []
+    dialogPopup:
+      name: Rider
+      pos:
+        x: -200
+        y: 140
+      pivot:
+        x: 0.5
+        y: 0.5
+      scale:
+        x: 800px
+        y: 
+    characters:
+    - name: A
+      clothes: Default
+      face: Smile
+      pos: 1
+      size: 3
+      dark: 0
+    animationLists: []
+  - bgm: School
+    dialogBackground:
+      name: Class_Morning
+      effect: 0
+      title: 
+      description: 
+      effectDuration: 1
+      scale: 1
+    dialogText:
+      name: "\uC5D0\uC774"
+      text: "\uC720\uB2C8\uD2F0\uC640 \uB2E4\uB978 \uC5D0\uB514\uD130\uBCF4\uB2E4
+        \uC5F0\uB3D9\uC774 \uC798\uB418\uC788\uC5B4 \uD574\uB2F9 \uC2A4\uD06C\uB9BD\uD2B8\uB97C
+        \uC0AC\uC6A9\uD558\uB294 \uC624\uBE0C\uC81D\uD2B8\uB97C \uD0D0\uC0C9\uD558\uAC70\uB098
+        \uD544\uB4DC, \uC624\uBE0C\uC81D\uD2B8 \uC774\uB984\uC744 \uC27D\uAC8C \uAC80\uC0C9\uD558\uB294
+        \uAE30\uB2A5\uB3C4 \uC788\uACE0 \uAE43\uACFC\uC758 \uC5F0\uB3D9\uB3C4 \uC27D\uAC8C
+        \uB418\uC5B4\uC11C \uAC04\uB2E8\uD558\uAC8C \uAE43 \uB0B4\uC6A9\uB3C4 \uD655\uC778\uD560
+        \uC218 \uC788\uC73C\uBA70"
+      tipEvent: []
+      dialogAnimations:
+      - startIndex: 112
+        type: 2
+        parameter: 0
+      active: 1
+      invisible: 0
+      owner: A
+    eventList: []
+    optionList: []
+    dialogPopup:
+      name: Rider
+      pos:
+        x: -200
+        y: 140
+      pivot:
+        x: 0.5
+        y: 0.5
+      scale:
+        x: 800px
+        y: 
+    characters:
+    - name: A
+      clothes: Default
+      face: Smile
+      pos: 1
+      size: 3
+      dark: 0
+    animationLists: []
+  - bgm: School
+    dialogBackground:
+      name: Class_Morning
+      effect: 0
+      title: 
+      description: 
+      effectDuration: 1
+      scale: 1
+    dialogText:
+      name: "\uC5D0\uC774"
+      text: "\uC5EC\uB7EC\uAC00\uC9C0 \uC4F8\uBAA8\uAC00 \uB9CE\uC740 \uAE30\uB2A5\uC774
+        \uB9CE\uC740 \uB300\uC2E0, \uBA54\uBAA8\uB9AC\uB97C \uB9CE\uC774 \uBA39\uB294
+        \uB2E8\uC810\uC774 \uC788\uC9C0."
+      tipEvent: []
+      dialogAnimations: []
+      active: 0
+      invisible: 0
+      owner: A
+    eventList: []
+    optionList: []
+    dialogPopup:
+      name: Rider
+      pos:
+        x: -200
+        y: 140
+      pivot:
+        x: 0.5
+        y: 0.5
+      scale:
+        x: 800px
+        y: 
+    characters:
+    - name: A
+      clothes: Default
+      face: Smile
+      pos: 1
+      size: 3
+      dark: 0
+    animationLists:
+    - index: 0
+      animations:
+      - type: 0
+        effect: Bounce
+        name: A
+        parameter: 1
+        duration: 0.2
+      - type: 1
+        effect: Wait
+        name: 
+        parameter: 
+        duration: 1
+      - type: 0
+        effect: Emotion
+        name: A
+        parameter: Sweat
+        duration: 0.4
+      - type: 0
+        effect: Face
+        name: A
+        parameter: SideFlush
+        duration: 0.4
+      - type: 1
+        effect: Wait
+        name: 
+        parameter: 
+        duration: 1
+      - type: 2
+        effect: On
+        name: 
+        parameter: 
+        duration: -1
+  - bgm: School
+    dialogBackground:
+      name: Class_Morning
+      effect: 0
+      title: 
+      description: 
+      effectDuration: 1
+      scale: 1
+    dialogText:
+      name: "\uC5D0\uC774"
+      text: "\uC5EC\uB7EC\uAC00\uC9C0 \uC5D0\uB514\uD130\uC5D0 \uB300\uD574 \uB4E4\uC5B4\uBD24\uB294\uB370,
+        \uC5B4\uB5A4\uAC8C \uC81C\uC77C \uC88B\uB2E4 \uC0DD\uAC01\uD574?"
+      tipEvent: []
+      dialogAnimations: []
+      active: 1
+      invisible: 0
+      owner: A
+    eventList: []
+    optionList:
+    - script: Visual Studio
+      skipText: 
+      dialog: 
+      dialogEventType: 0
+      special: 0
+      dialogs: []
+      eventList: []
+    - script: Visual Studio Code
+      skipText: 
+      dialog: 
+      dialogEventType: 0
+      special: 0
+      dialogs: []
+      eventList: []
+    - script: Rider
+      skipText: 
+      dialog: 
+      dialogEventType: 0
+      special: 0
+      dialogs: []
+      eventList: []
+    dialogPopup:
+      name: 
+      pos:
+        x: 0
+        y: 100
+      pivot:
+        x: 0.5
+        y: 0.5
+      scale:
+        x: 
+        y: 
+    characters:
+    - name: A
+      clothes: Default
+      face: Default
+      pos: 1
+      size: 3
+      dark: 0
+    animationLists:
+    - index: 0
+      animations:
+      - type: 0
+        effect: Move
+        name: A
+        parameter: C
+        duration: 1
+  - bgm: School
+    dialogBackground:
+      name: Class_Morning
+      effect: 0
+      title: 
+      description: 
+      effectDuration: 1
+      scale: 1
+    dialogText:
+      name: "\uC5D0\uC774"
+      text: "\uD655\uC2E4\uD788 \uADF8\uAC70\uB3C4 \uC88B\uAE34\uD55C\uB370, \uB2E4\uB978
+        \uC5D0\uB514\uD130\uB4E4\uC758 \uC7A5\uC810\uB3C4 \uBB34\uC2DC\uD558\uAE34
+        \uD798\uB4E4\uB2E4\uACE0 \uC0DD\uAC01\uD574."
+      tipEvent: []
+      dialogAnimations: []
+      active: 1
+      invisible: 0
+      owner: A
+    eventList: []
+    optionList: []
+    dialogPopup:
+      name: 
+      pos:
+        x: 0
+        y: 100
+      pivot:
+        x: 0.5
+        y: 0.5
+      scale:
+        x: 
+        y: 
+    characters:
+    - name: A
+      clothes: Default
+      face: Default
+      pos: 5
+      size: 3
+      dark: 0
+    animationLists: []
+  - bgm: School
+    dialogBackground:
+      name: Class_Morning
+      effect: 0
+      title: 
+      description: 
+      effectDuration: 1
+      scale: 1
+    dialogText:
+      name: "\uC5D0\uC774"
+      text: "\uC911\uC694\uD55C\uAC74! \uC0C1\uD669\uC774\uB791 \uC790\uC2E0\uC5D0
+        \uB9DE\uB294 \uC5D0\uB514\uD130\uB97C \uC4F0\uB294\uAC8C \uC911\uC694\uD558\uB2E4\uB294
+        \uAC83!"
+      tipEvent: []
+      dialogAnimations: []
+      active: 1
+      invisible: 0
+      owner: A
+    eventList: []
+    optionList: []
+    dialogPopup:
+      name: 
+      pos:
+        x: 0
+        y: 100
+      pivot:
+        x: 0.5
+        y: 0.5
+      scale:
+        x: 
+        y: 
+    characters:
+    - name: A
+      clothes: Default
+      face: Default
+      pos: 5
+      size: 3
+      dark: 0
+    animationLists: []

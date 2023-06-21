@@ -22,6 +22,21 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels:
     - popup
+  - m_GUID: 7562bd9c98b18f240b8ef549fceb0026
+    m_Address: Assets/A/Addressable/Popup/Rider.jpg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - popup
+  - m_GUID: 7bca42a5462b2df43ba89386ee166ab2
+    m_Address: Assets/A/Addressable/Popup/VS.jpg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - popup
+  - m_GUID: d612cad5ddebd4e4eb6bae181da52a07
+    m_Address: Assets/A/Addressable/Popup/VSCode.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - popup
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 09f2a6625245fee47a2f1a97f32f2b44, type: 2}
   m_SchemaSet:

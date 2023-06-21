@@ -94,7 +94,7 @@ namespace Ingame
             if (!string.IsNullOrEmpty(GameManager.Instance.saveManager.GameData.name))
             {
                 StartFadeOut();
-                GameManager.Instance.dialogManager.AddDialog("new");
+                GameManager.Instance.dialogManager.AddDialog("editor");
                 return;
             }
 

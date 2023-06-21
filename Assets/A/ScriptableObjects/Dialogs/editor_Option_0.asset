@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0ea4cc8aacb5484389845b651f03202d, type: 3}
-  m_Name: new_TipEvent_0
+  m_Name: editor_Option_0
   m_EditorClassIdentifier: 
   cgTitle: 
   skipText: 
@@ -25,7 +25,7 @@ MonoBehaviour:
       scale: 1
     dialogText:
       name: "\uC5D0\uC774"
-      text: "\uC568\uB9AC\uC2A4 \uC544\uC2DC\uB294\uAD6C\uB098!"
+      text: "\uC544 \u314B\u314B \uC774\uAC74 \uC54C\uC544\uC57C\uC9C0"
       tipEvent: []
       dialogAnimations: []
       active: 0
@@ -85,11 +85,6 @@ MonoBehaviour:
         name: A
         parameter: SmileFlush
         duration: -1
-      - type: 0
-        effect: Scale
-        name: A
-        parameter: L
-        duration: 1
       - type: 1
         effect: Wait
         name: 
@@ -150,7 +145,7 @@ MonoBehaviour:
       clothes: Default
       face: SmileFlush
       pos: 6
-      size: 3
+      size: 2
       dark: 1
     animationLists: []
   - bgm: School
@@ -187,7 +182,7 @@ MonoBehaviour:
       clothes: Default
       face: SmileFlush
       pos: 6
-      size: 3
+      size: 2
       dark: 1
     - name: Loli
       clothes: Default

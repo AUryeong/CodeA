@@ -37,6 +37,16 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels:
     - talk
+  - m_GUID: a1a43af091f223f4d8f771477e79b806
+    m_Address: Assets/A/ScriptableObjects/Dialogs/editor.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - talk
+  - m_GUID: d1d04feb2fc633c499a2c0d3d0888365
+    m_Address: Assets/A/ScriptableObjects/Dialogs/editor_Option_0.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - talk
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 09f2a6625245fee47a2f1a97f32f2b44, type: 2}
   m_SchemaSet:
