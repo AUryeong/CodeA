@@ -131,6 +131,11 @@ MonoBehaviour:
         name: A
         parameter: R2
         duration: 2
+      - type: 0
+        effect: Bounce
+        name: A
+        parameter: 2
+        duration: 0.5
       - type: 1
         effect: Wait
         name: 
@@ -161,11 +166,6 @@ MonoBehaviour:
         name: A
         parameter: L
         duration: 1
-      - type: 0
-        effect: Face
-        name: A
-        parameter: SmileFlush
-        duration: -1
       - type: 2
         effect: On
         name: 
@@ -203,7 +203,7 @@ MonoBehaviour:
     characters:
     - name: A
       clothes: Default
-      face: SmileFlush
+      face: Default
       pos: 3
       size: 3
       dark: 1
@@ -244,7 +244,14 @@ MonoBehaviour:
       pos: 3
       size: 3
       dark: 0
-    animationLists: []
+    animationLists:
+    - index: 0
+      animations:
+      - type: 0
+        effect: Emotion
+        name: A
+        parameter: Question
+        duration: 1
   - bgm: School
     dialogBackground:
       name: Class_Morning
@@ -438,9 +445,7 @@ MonoBehaviour:
     dialogText:
       name: "\uC5D0\uC774"
       text: "\uAE30\uBCF8\uC801\uC778 \uC5D0\uB514\uD130\uC778 <#FFEE00><link=Visual
-        Studio>Visual Studio</color></link>, \uAE30\uBCF8\uC801\uC778 \uB9CC\uD07C
-        \uD2B9\uBCC4\uD55C \uC694\uC18C \uC5C6\uC774 \uD3C9\uBC94\uD55C\uAC8C \uD2B9\uC9D5\uC774\uB77C\uACE0
-        \uC0DD\uAC01\uD574."
+        Studio>Visual Studio</color></link>"
       tipEvent:
       - eventName: Visual Studio
         skipText: 
@@ -489,6 +494,45 @@ MonoBehaviour:
       scale: 1
     dialogText:
       name: "\uC5D0\uC774"
+      text: "\uAE30\uBCF8\uC801\uC778 \uB9CC\uD07C \uB2E4\uB978 \uC5D0\uB514\uD130\uC5D0
+        \uBE44\uD574 \uD2B9\uCD9C\uB09C \uC810\uC740 \uC5C6\uC9C0\uB9CC, \uAE30\uBCF8\uC801\uC778
+        \uB9CC\uD07C \uC131\uB2A5\uC740 \uBCF4\uC7A5\uB418\uC788\uC9C0."
+      tipEvent: []
+      dialogAnimations: []
+      active: 1
+      invisible: 0
+      owner: A
+    eventList: []
+    optionList: []
+    dialogPopup:
+      name: 
+      pos:
+        x: 0
+        y: 100
+      pivot:
+        x: 0.5
+        y: 0.5
+      scale:
+        x: 
+        y: 
+    characters:
+    - name: A
+      clothes: Default
+      face: Default
+      pos: 1
+      size: 3
+      dark: 0
+    animationLists: []
+  - bgm: School
+    dialogBackground:
+      name: Class_Morning
+      effect: 0
+      title: 
+      description: 
+      effectDuration: 1
+      scale: 1
+    dialogText:
+      name: "\uC5D0\uC774"
       text: "\uB2E4\uC74C, <#FFEE00><link=Visual Studio Code>Visual Studio Code</color></link>"
       tipEvent:
       - eventName: Visual Studio Code
@@ -520,7 +564,14 @@ MonoBehaviour:
       pos: 1
       size: 3
       dark: 0
-    animationLists: []
+    animationLists:
+    - index: 0
+      animations:
+      - type: 0
+        effect: Bounce
+        name: A
+        parameter: 2
+        duration: 0.2
   - bgm: School
     dialogBackground:
       name: Class_Morning
@@ -543,15 +594,15 @@ MonoBehaviour:
     eventList: []
     optionList: []
     dialogPopup:
-      name: VSCode
+      name: 
       pos:
-        x: -200
-        y: 140
+        x: 0
+        y: 100
       pivot:
         x: 0.5
         y: 0.5
       scale:
-        x: 800px
+        x: 
         y: 
     characters:
     - name: A
@@ -604,7 +655,14 @@ MonoBehaviour:
       pos: 1
       size: 3
       dark: 0
-    animationLists: []
+    animationLists:
+    - index: 0
+      animations:
+      - type: 0
+        effect: Bounce
+        name: A
+        parameter: 2
+        duration: 0.2
   - bgm: School
     dialogBackground:
       name: Class_Morning
@@ -672,20 +730,20 @@ MonoBehaviour:
     eventList: []
     optionList: []
     dialogPopup:
-      name: Rider
+      name: 
       pos:
-        x: -200
-        y: 140
+        x: 0
+        y: 100
       pivot:
         x: 0.5
         y: 0.5
       scale:
-        x: 800px
+        x: 
         y: 
     characters:
     - name: A
       clothes: Default
-      face: Smile
+      face: SmileFlush
       pos: 1
       size: 3
       dark: 0
@@ -705,7 +763,12 @@ MonoBehaviour:
       - type: 0
         effect: Emotion
         name: A
-        parameter: Sweat
+        parameter: Flush
+        duration: 1
+      - type: 0
+        effect: Shake
+        name: A
+        parameter: -1
         duration: 0.4
       - type: 0
         effect: Face
@@ -736,7 +799,7 @@ MonoBehaviour:
         \uC5B4\uB5A4\uAC8C \uC81C\uC77C \uC88B\uB2E4 \uC0DD\uAC01\uD574?"
       tipEvent: []
       dialogAnimations: []
-      active: 1
+      active: 0
       invisible: 0
       owner: A
     eventList: []
@@ -788,6 +851,16 @@ MonoBehaviour:
         name: A
         parameter: C
         duration: 1
+      - type: 1
+        effect: Wait
+        name: 
+        parameter: 
+        duration: 1
+      - type: 2
+        effect: On
+        name: 
+        parameter: 
+        duration: -1
   - bgm: School
     dialogBackground:
       name: Class_Morning
@@ -803,7 +876,7 @@ MonoBehaviour:
         \uD798\uB4E4\uB2E4\uACE0 \uC0DD\uAC01\uD574."
       tipEvent: []
       dialogAnimations: []
-      active: 1
+      active: 0
       invisible: 0
       owner: A
     eventList: []
@@ -826,7 +899,19 @@ MonoBehaviour:
       pos: 5
       size: 3
       dark: 0
-    animationLists: []
+    animationLists:
+    - index: 0
+      animations:
+      - type: 1
+        effect: Wait
+        name: 
+        parameter: 
+        duration: 1
+      - type: 2
+        effect: On
+        name: 
+        parameter: 
+        duration: -1
   - bgm: School
     dialogBackground:
       name: Class_Morning
@@ -861,7 +946,7 @@ MonoBehaviour:
     characters:
     - name: A
       clothes: Default
-      face: Default
+      face: SmileFlush
       pos: 5
       size: 3
       dark: 0

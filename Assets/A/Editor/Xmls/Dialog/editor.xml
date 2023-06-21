@@ -29,13 +29,13 @@
         </Characters>
         <Animations>
             <Animation Type="CHAR" Name="A" Effect="Move" Parameter="R2" Duration="2"/>
+            <Animation Type="CHAR" Name="A" Effect="Bounce" Parameter="2" Duration="0.5"/>
             <Animation Type="UTIL" Effect="Wait" Duration="2"/>
             <Animation Type="CHAR" Name="A" Effect="Emotion" Parameter="Surprise" Duration="0.4"/>
             <Animation Type="CHAR" Name="A" Effect="Bounce" Parameter="1" Duration="0.2"/>
             <Animation Type="UTIL" Effect="Wait" Duration="1"/>
             <Animation Type="CHAR" Name="A" Effect="Move" Parameter="R1" Duration="1"/>
             <Animation Type="CHAR" Name="A" Effect="Scale" Parameter="L" Duration="1"/>
-            <Animation Type="CHAR" Name="A" Effect="Face" Parameter="SmileFlush"/>
             <Animation Type="DIAL" Effect="On"/>
         </Animations>
     </Dialog>
@@ -56,6 +56,9 @@
         <Characters>
             <Character Name="A" Face="Default"/>
         </Characters>
+        <Animations>
+            <Animation Type="CHAR" Name="A" Effect="Emotion" Parameter="Question" Duration="1"/>
+        </Animations>
     </Dialog>
     <Dialog>
         <Text>
@@ -103,7 +106,7 @@
     <Dialog>
         <Text>
             <Name>에이</Name>
-            <Text>기본적인 에디터인 {Tip:Visual Studio}, 기본적인 만큼 특별한 요소 없이 평범한게 특징이라고 생각해.</Text>
+            <Text>기본적인 에디터인 {Tip:Visual Studio}</Text>
         </Text>
         <Popup Name="VS">
             <Scale X="800px"/>
@@ -119,6 +122,15 @@
     <Dialog>
         <Text>
             <Name>에이</Name>
+            <Text>기본적인 만큼 다른 에디터에 비해 특출난 점은 없지만, 기본적인 만큼 성능은 보장되있지.</Text>
+        </Text>
+        <Characters>
+            <Character Name="A" />
+        </Characters>
+    </Dialog>
+    <Dialog>
+        <Text>
+            <Name>에이</Name>
             <Text>다음, {Tip:Visual Studio Code}</Text>
         </Text>
         <Popup Name="VSCode">
@@ -128,16 +140,15 @@
         <Characters>
             <Character Name="A" />
         </Characters>
+        <Animations>
+            <Animation Type="CHAR" Name="A" Effect="Bounce" Parameter="2" Duration="0.2"/>
+        </Animations>
     </Dialog>
     <Dialog>
         <Text>
             <Name>에이</Name>
             <Text>나도 잘 안 써봐서 잘 모르겠는데, 다른 에디터보다 빠르고, 익스텐션이라 불리는 추가 기능을 장착할 수 있나봐.</Text>
         </Text>
-        <Popup Name="VSCode">
-            <Scale X="800px"/>
-            <Pos X="-200" Y="140" />
-        </Popup>
         <Characters>
             <Character Name="A" />
         </Characters>
@@ -154,6 +165,9 @@
         <Characters>
             <Character Name="A" Face="Smile"/>
         </Characters>
+        <Animations>
+            <Animation Type="CHAR" Name="A" Effect="Bounce" Parameter="2" Duration="0.2"/>
+        </Animations>
     </Dialog>
     <Dialog>
         <Text>
@@ -173,24 +187,21 @@
             <Name>에이</Name>
             <Text>여러가지 쓸모가 많은 기능이 많은 대신, 메모리를 많이 먹는 단점이 있지.</Text>
         </Text>
-        <Popup Name="Rider">
-            <Scale X="800px"/>
-            <Pos X="-200" Y="140" />
-        </Popup>
         <Characters>
-            <Character Name="A" Dark="false"/>
+            <Character Name="A" Face="SmileFlush" Dark="false"/>
         </Characters>
         <Animations>
             <Animation Type="CHAR" Name="A" Effect="Bounce" Parameter="1" Duration="0.2"/>
             <Animation Type="UTIL" Effect="Wait" Duration="1"/>
-            <Animation Type="CHAR" Name="A" Effect="Emotion" Parameter="Sweat" Duration="0.4"/>
+            <Animation Type="CHAR" Name="A" Effect="Emotion" Parameter="Flush" Duration="1"/>
+            <Animation Type="CHAR" Name="A" Effect="Shake" Parameter="-1" Duration="0.4"/>
             <Animation Type="CHAR" Name="A" Effect="Face" Parameter="SideFlush" Duration="0.4"/>
             <Animation Type="UTIL" Effect="Wait" Duration="1"/>
             <Animation Type="DIAL" Effect="On"/>
         </Animations>
     </Dialog>
     <Dialog>
-        <Text>
+        <Text Active="false">
             <Name>에이</Name>
             <Text>여러가지 에디터에 대해 들어봤는데, 어떤게 제일 좋다 생각해?</Text>
         </Text>
@@ -202,16 +213,22 @@
         </Characters>
         <Animations>
             <Animation Type="CHAR" Name="A" Effect="Move" Parameter="C" Duration="1"/>
+            <Animation Type="UTIL" Effect="Wait" Duration="1"/>
+            <Animation Type="DIAL" Effect="On"/>
         </Animations>
     </Dialog>
     <Dialog>
-        <Text>
+        <Text Active="false">
             <Name>에이</Name>
             <Text>확실히 그거도 좋긴한데, 다른 에디터들의 장점도 무시하긴 힘들다고 생각해.</Text>
         </Text>
         <Characters>
-            <Character Name="A" />
+            <Character Name="A" Dark="false"/>
         </Characters>
+        <Animations>
+            <Animation Type="UTIL" Effect="Wait" Duration="1"/>
+            <Animation Type="DIAL" Effect="On"/>
+        </Animations>
     </Dialog>
     <Dialog>
         <Text>
@@ -219,7 +236,7 @@
             <Text>중요한건! 상황이랑 자신에 맞는 에디터를 쓰는게 중요하다는 것!</Text>
         </Text>
         <Characters>
-            <Character Name="A" />
+            <Character Name="A" Face="SmileFlush"/>
         </Characters>
     </Dialog>
 </XMLDialogs>

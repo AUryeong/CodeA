@@ -731,8 +731,11 @@ public class DialogManager : Manager
                     return;
                 }
 
-                DialogAdd(dialog.optionList[0].dialogEventType,
-                    GameManager.Instance.resourcesManager.GetDialog(dialog.optionList[0].dialog).dialogs);
+                if (!string.IsNullOrEmpty(dialog.optionList[0].dialog))
+                {
+                    DialogAdd(dialog.optionList[0].dialogEventType,
+                        GameManager.Instance.resourcesManager.GetDialog(dialog.optionList[0].dialog).dialogs);
+                }
             }
 
             if (dialog.eventList != null && dialog.eventList.Count > 0)
