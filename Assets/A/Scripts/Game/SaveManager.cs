@@ -41,6 +41,7 @@ public class GameData
 {
     public bool isDownloadFile;
 
+    public string lastName = string.Empty;
     public string name = string.Empty;
     
     public float sfxSoundMultiplier = 1;

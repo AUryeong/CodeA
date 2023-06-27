@@ -77,8 +77,8 @@ public class ResourcesManager : Manager
         loadingWindow.gameObject.SetActive(false);
         Time.timeScale = 1;
 
-        if (GameManager.Instance.sceneManager.NowScene == Scene.LOADING)
-            GameManager.Instance.sceneManager.SceneLoad(Scene.TITLE);
+        if (GameManager.Instance.sceneManager.NowSceneType == SceneType.LOADING)
+            GameManager.Instance.sceneManager.SceneLoad(SceneType.TITLE);
     }
 
     private void CheckDownload()

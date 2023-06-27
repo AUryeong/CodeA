@@ -830,7 +830,7 @@ public class DialogManager : Manager
     private void EventSetting()
     {
         if (nowDialog.eventList == null || nowDialog.eventList.Count <= 0) return;
-        if (GameManager.Instance.sceneManager.NowScene == Scene.TITLE) return;
+        if (GameManager.Instance.sceneManager.NowSceneType == SceneType.TITLE) return;
 
         foreach (var getEvent in nowDialog.eventList)
             EventInteract(getEvent);
@@ -838,7 +838,7 @@ public class DialogManager : Manager
 
     private void EventInteract(DialogEvent getDialogEvent)
     {
-        if (GameManager.Instance.sceneManager.NowScene == Scene.TITLE) return;
+        if (GameManager.Instance.sceneManager.NowSceneType == SceneType.TITLE) return;
 
         switch (getDialogEvent.type)
         {
