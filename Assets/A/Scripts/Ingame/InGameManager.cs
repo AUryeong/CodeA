@@ -9,8 +9,8 @@ namespace Ingame
     public class InGameManager : Singleton<InGameManager>
     {
         [Header("이름 설정")] [SerializeField] private Canvas namingCanvas;
-        [SerializeField] private TMP_InputField namingInput;
         [SerializeField] private TMP_InputField lastNamingInput;
+        [SerializeField] private TMP_InputField namingInput;
         [SerializeField] private Button enterButton;
 
         [SerializeField] private Image warningWindow;
@@ -122,7 +122,9 @@ namespace Ingame
         private void EnterName()
         {
             //TODO SOUND
-            GameManager.Instance.saveManager.GameData.name = string.IsNullOrEmpty(lastNamingInput.text) ? "김" : lastNamingInput.text) + (string.IsNullOrEmpty(namingInput.text) ? "준우" : namingInput.text);
+            GameManager.Instance.saveManager.GameData.lastName = string.IsNullOrEmpty(lastNamingInput.text) ? "김" : lastNamingInput.text;
+            GameManager.Instance.saveManager.GameData.name = string.IsNullOrEmpty(namingInput.text) ? "준우" : namingInput.text;
+            
             fadeInBlack.gameObject.SetActive(true);
             fadeInBlack.color = Utility.GetFadeColor(Color.black, 0);
             fadeInBlack.DOFade(1, 1).OnComplete(() =>

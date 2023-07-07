@@ -2,7 +2,6 @@ using Ingame;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using static TimeType;
 
 public enum LoveLevelType
 {
@@ -16,8 +15,10 @@ public enum StatType
     NON_MAJOR,
     PROGRAMMING,
     GRAPHIC,
-    DIRECTOR,
-    COMMUNICATION
+    DIRECTING,
+    COMMUNICATION,
+    INFORMATION,
+    PLAY
 }
 
 public enum SkillType
@@ -98,7 +99,7 @@ public class SubGameData
     public int year = 1;
     public int month = 3;
     public int week = 1;
-    public TimeType time = MORNING;
+    public TimeType time = TimeType.MORNING;
 
     public List<int> loveLevels = new List<int>();
     public List<int> statLevels = new List<int>();
