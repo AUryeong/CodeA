@@ -9,6 +9,7 @@ namespace Ingame
     public class InGameManager : Singleton<InGameManager>
     {
         [Header("이름 설정")] [SerializeField] private Canvas namingCanvas;
+        [SerializeField] private TMP_InputField lastNamingInput;
         [SerializeField] private TMP_InputField namingInput;
         [SerializeField] private Button enterButton;
 
@@ -104,10 +105,9 @@ namespace Ingame
             enterButton.onClick.AddListener(() =>
             {
                 warningWindow.gameObject.SetActive(true);
-                warningText.text = "당신의 이름을 " + (string.IsNullOrEmpty(namingInput.text) ? "김준우" : namingInput.text) + "(으)로 확정하시겠습니까?";
+                warningText.text = "당신의 이름을 " + (string.IsNullOrEmpty(lastNamingInput.text) ? "김" : lastNamingInput.text) + (string.IsNullOrEmpty(namingInput.text) ? "준우" : namingInput.text) + "(으)로 확정하시겠습니까?";
                 //TODO SOUND
             });
-
             warningOkay.onClick.RemoveAllListeners();
             warningOkay.onClick.AddListener(EnterName);
 
@@ -122,7 +122,9 @@ namespace Ingame
         private void EnterName()
         {
             //TODO SOUND
-            GameManager.Instance.saveManager.GameData.name = string.IsNullOrEmpty(namingInput.text) ? "김준우" : namingInput.text;
+            GameManager.Instance.saveManager.GameData.lastName = string.IsNullOrEmpty(lastNamingInput.text) ? "김" : lastNamingInput.text;
+            GameManager.Instance.saveManager.GameData.name = string.IsNullOrEmpty(namingInput.text) ? "준우" : namingInput.text;
+            
             fadeInBlack.gameObject.SetActive(true);
             fadeInBlack.color = Utility.GetFadeColor(Color.black, 0);
             fadeInBlack.DOFade(1, 1).OnComplete(() =>

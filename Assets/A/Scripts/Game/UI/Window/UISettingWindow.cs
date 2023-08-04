@@ -13,7 +13,9 @@ namespace UI
         [SerializeField] private Slider sfxSlider;
         [SerializeField] private Slider bgmSlider;
 
-        [Header("이름 설정")] [SerializeField] private TMP_InputField namingInput;
+        [Header("이름 설정")] 
+        [SerializeField] private TMP_InputField lastNamingInput;
+        [SerializeField] private TMP_InputField namingInput;
 
         [SerializeField] private Image warningWindow;
         [SerializeField] private TextMeshProUGUI warningText;
@@ -67,12 +69,23 @@ namespace UI
                 if (text == GameManager.Instance.saveManager.GameData.name) return;
 
                 warningWindow.gameObject.SetActive(true);
-                warningText.text = "당신의 이름을 " + (string.IsNullOrEmpty(text) ? "김준우" : text) + "(으)로 확정하시겠습니까?";
+                warningText.text = "당신의 이름을 " + (string.IsNullOrEmpty(text) ? "준우" : text) + "(으)로 확정하시겠습니까?";
                 //TODO SOUND
+                
+                warningOkay.onClick.RemoveAllListeners();
+                warningOkay.onClick.AddListener(EnterName);
             });
+            lastNamingInput.onEndEdit.AddListener((text) =>
+                {
+                    if (text == GameManager.Instance.saveManager.GameData.lastName) return;
 
-            warningOkay.onClick.RemoveAllListeners();
-            warningOkay.onClick.AddListener(EnterName);
+                    warningWindow.gameObject.SetActive(true);
+                    warningText.text = "당신의 성을 " + (string.IsNullOrEmpty(text) ? "김" : text) + "(으)로 확정하시겠습니까?";
+                    //TODO SOUND
+                    
+                    warningOkay.onClick.RemoveAllListeners();
+                    warningOkay.onClick.AddListener(EnterLastName);
+                });
 
             warningCancel.onClick.RemoveAllListeners();
             warningCancel.onClick.AddListener(() =>
@@ -199,14 +212,22 @@ namespace UI
         }
 
         private void NamingSetting()
-        {
+        {   
             namingInput.text = GameManager.Instance.saveManager.GameData.name;
+            lastNamingInput.text = GameManager.Instance.saveManager.GameData.lastName;
         }
 
         private void EnterName()
         {
             //TODO SOUND
-            GameManager.Instance.saveManager.GameData.name = string.IsNullOrEmpty(namingInput.text) ? "김준우" : namingInput.text;
+            GameManager.Instance.saveManager.GameData.name = string.IsNullOrEmpty(namingInput.text) ? "준우" : namingInput.text;
+            warningWindow.gameObject.SetActive(false);
+        }
+        
+        private void EnterLastName()
+        {
+            //TODO SOUND
+            GameManager.Instance.saveManager.GameData.lastName = string.IsNullOrEmpty(lastNamingInput.text) ? "김" : lastNamingInput.text;
             warningWindow.gameObject.SetActive(false);
         }
     }

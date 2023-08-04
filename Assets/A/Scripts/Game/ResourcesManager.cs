@@ -20,13 +20,12 @@ public class ResourcesManager : Manager
 
     #region 서버
 
-    [Header("어드레서블용")] 
-    [SerializeField] private AssetLabelReference backgroundLabel;
+    [Header("어드레서블용")] [SerializeField] private AssetLabelReference backgroundLabel;
     [SerializeField] private AssetLabelReference dialogLabel;
     [SerializeField] private AssetLabelReference tipLabel;
     [SerializeField] private AssetLabelReference popupLabel;
-    
-    
+
+
     [Space(20)] [SerializeField] private Canvas downloadWindow;
     [SerializeField] private TextMeshProUGUI downloadingText;
 
@@ -128,7 +127,6 @@ public class ResourcesManager : Manager
         }
         else
         {
-            if (!GameManager.Instance.saveManager.GameData.isDownloadFile) GameManager.Instance.saveManager.GameData.isDownloadFile = true;
             LoadAddressable();
         }
 
@@ -216,11 +214,11 @@ public class ResourcesManager : Manager
     private IEnumerator LoadAddressableCoroutine()
     {
         LoadCharacter();
-        
+
         var backgroundAsync = Addressables.LoadAssetsAsync<Sprite>(backgroundLabel, sprite => { backgroundSprites.Add(sprite.name, sprite); });
         if (!backgroundAsync.IsDone)
             yield return null;
-        
+
         var dialogAsync = Addressables.LoadAssetsAsync<Dialogs>(dialogLabel, dialog => { dialogs.Add(dialog.name, dialog); });
         if (!dialogAsync.IsDone)
             yield return null;
@@ -232,12 +230,13 @@ public class ResourcesManager : Manager
         });
         if (!tipAsync.IsDone)
             yield return null;
-        
+
         var popupAsync = Addressables.LoadAssetsAsync<Sprite>(popupLabel, sprite => { popupSprites.Add(sprite.name, sprite); });
         if (!popupAsync.IsDone)
             yield return null;
 
         IsLoading = false;
+        GameManager.Instance.saveManager.GameData.isDownloadFile = true;
         Debug.Log("로딩 완료!");
     }
 
