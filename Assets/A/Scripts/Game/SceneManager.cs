@@ -1,7 +1,5 @@
 using DG.Tweening;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class SceneManager : Manager
@@ -17,7 +15,7 @@ public class SceneManager : Manager
     }
     public override void OnReset()
     {
-        if (NowScene == Scene.LOADING) return;
+        if (NowScene == Scene.Loading) return;
 
         SetResolution(Camera.main);
         foreach (var canvas in FindObjectsOfType<Canvas>())

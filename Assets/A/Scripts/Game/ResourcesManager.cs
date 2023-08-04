@@ -50,19 +50,21 @@ public class ResourcesManager : Manager
         StartCoroutine(WaitDownload());
     }
 
-    IEnumerator WaitDownload()
+    private IEnumerator WaitDownload()
     {
         CheckDownload();
 
-        float loadingCooltime = 1f;
+        const float loadingCoolTime = 1f;
+        
         float loadingDuration = 0;
         float loadingIdx = 0;
+        
         while (IsLoading)
         {
             loadingDuration += Time.unscaledDeltaTime;
-            if (loadingDuration >= loadingCooltime)
+            if (loadingDuration >= loadingCoolTime)
             {
-                loadingDuration -= loadingCooltime;
+                loadingDuration -= loadingCoolTime;
                 loadingIdx = (loadingIdx + 1) % 3;
 
                 if (loadingIdx == 0)
@@ -77,8 +79,8 @@ public class ResourcesManager : Manager
         loadingWindow.gameObject.SetActive(false);
         Time.timeScale = 1;
 
-        if (GameManager.Instance.sceneManager.NowScene == Scene.LOADING)
-            GameManager.Instance.sceneManager.SceneLoad(Scene.TITLE);
+        if (GameManager.Instance.sceneManager.NowScene == Scene.Loading)
+            GameManager.Instance.sceneManager.SceneLoad(Scene.Title);
     }
 
     private void CheckDownload()
@@ -113,7 +115,7 @@ public class ResourcesManager : Manager
 
             if (Application.internetReachability != NetworkReachability.NotReachable)
             {
-                downloadingText.text = string.Format("{0:##.##} {1}", sizeHandle.Result / (Math.Pow(1024, 2)), " MB") + "만큼의 파일을\n다운로드 해야합니다.";
+                downloadingText.text = $"{sizeHandle.Result / Math.Pow(1024, 2):##.##} MB만큼의 파일을\n다운로드 해야합니다.";
                 downloadButton.gameObject.SetActive(true);
 
                 downloadButton.onClick.RemoveAllListeners();
@@ -211,7 +213,7 @@ public class ResourcesManager : Manager
         StartCoroutine(LoadAddressableCoroutine());
     }
 
-    IEnumerator LoadAddressableCoroutine()
+    private IEnumerator LoadAddressableCoroutine()
     {
         LoadCharacter();
         

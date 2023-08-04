@@ -105,7 +105,7 @@ namespace UI
         private void Load(int idx)
         {
             GameManager.Instance.saveManager.nowGameData = GameManager.Instance.saveManager.GameData.GetSaveData(idx).Copy();
-            GameManager.Instance.sceneManager.SceneLoad(Scene.INGAME);
+            GameManager.Instance.sceneManager.SceneLoad(Scene.InGame);
             ReloadSaves();
         }
 

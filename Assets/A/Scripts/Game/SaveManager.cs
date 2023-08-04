@@ -1,23 +1,23 @@
 using Ingame;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
-using static TimeType;
 
 public enum LoveLevelType
 {
     A,
-    LOLI,
-    SISTER
+    Loli,
+    Sister
 }
 
 public enum StatType
 {
-    NON_MAJOR,
-    PROGRAMMING,
-    GRAPHIC,
-    DIRECTOR,
-    COMMUNICATION
+    NonMajor,
+    Programming,
+    Graphic,
+    Director,
+    Communication
 }
 
 public enum SkillType
@@ -30,10 +30,10 @@ public enum Item
 
 public enum TimeType
 {
-    MORNING,
-    AFTERNOON,
-    NIGHT,
-    DAWN
+    Morning,
+    Afternoon,
+    Night,
+    Dawn
 }
 
 [Serializable]
@@ -42,7 +42,7 @@ public class GameData
     public bool isDownloadFile;
 
     public string name = string.Empty;
-    
+
     public float sfxSoundMultiplier = 1;
     public float bgmSoundMultiplier = 1;
 
@@ -97,10 +97,23 @@ public class SubGameData
     public int year = 1;
     public int month = 3;
     public int week = 1;
-    public TimeType time = MORNING;
+    public TimeType time = TimeType.Morning;
 
-    public List<int> loveLevels = new List<int>();
-    public List<int> statLevels = new List<int>();
+    public Dictionary<LoveLevelType, int> loveLevels = new Dictionary<LoveLevelType, int>()
+    {
+        { LoveLevelType.A, 0 },
+        { LoveLevelType.Loli, 0 },
+        { LoveLevelType.Sister, 0 }
+    };
+
+    public Dictionary<StatType, int> statLevels = new Dictionary<StatType, int>()
+    {
+        { StatType.NonMajor, 0 },
+        { StatType.Programming, 0 },
+        { StatType.Graphic, 0 },
+        { StatType.Director, 0 },
+        { StatType.Communication, 0 }
+    };
 
     public List<SkillType> hasSkills = new List<SkillType>();
     public List<Item> hasItems = new List<Item>();
@@ -117,11 +130,11 @@ public class SubGameData
             month = month,
             week = week,
             time = time,
-            loveLevels = loveLevels,
-            statLevels = statLevels,
-            hasSkills = hasSkills,
-            hasItems = hasItems,
-            leftDialogList = leftDialogList,
+            loveLevels = loveLevels.ToDictionary(enter => enter.Key, enter => enter.Value),
+            statLevels = statLevels.ToDictionary(enter => enter.Key, enter => enter.Value),
+            hasSkills = hasSkills.ToList(),
+            hasItems = hasItems.ToList(),
+            leftDialogList = leftDialogList.ToList(),
             leftDialogSkipText = leftDialogSkipText,
             saveTime = saveTime
         };
@@ -132,7 +145,7 @@ public class SaveManager : Manager
 {
     public string prefsName = "CodeA";
 
-    [SerializeField] private GameData gameData;
+    [SerializeField] private GameData gameData; // 게임 데이터 확인용
 
     public GameData GameData
     {
@@ -161,7 +174,7 @@ public class SaveManager : Manager
 
     public void AddCgData(string cgName)
     {
-       GameData.lastCg = cgName;
+        GameData.lastCg = cgName;
 
         if (GameData.getCg.Contains(cgName)) return;
 
@@ -182,7 +195,7 @@ public class SaveManager : Manager
         nowGameData.week = InGameManager.Instance.week;
         nowGameData.time = InGameManager.Instance.time;
 
-        nowGameData.loveLevels = InGameManager.Instance.loveLevel;
+        nowGameData.loveLevels = InGameManager.Instance.loveLevels;
         nowGameData.statLevels = InGameManager.Instance.statLevels;
         nowGameData.hasSkills = InGameManager.Instance.hasSkills;
         nowGameData.hasItems = InGameManager.Instance.hasItems;

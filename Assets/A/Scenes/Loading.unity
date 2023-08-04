@@ -1934,8 +1934,6 @@ MonoBehaviour:
     month: 3
     week: 1
     time: 0
-    loveLevels: 
-    statLevels: 
     hasSkills: 
     hasItems: 
     leftDialogSkipText: 
@@ -5626,7 +5624,7 @@ GameObject:
   - component: {fileID: 1097073857}
   - component: {fileID: 1097073856}
   m_Layer: 5
-  m_Name: =====Loading Window=====
+  m_Name: Loading Window
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

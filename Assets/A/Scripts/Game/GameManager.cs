@@ -1,15 +1,11 @@
-using System;
-using DG.Tweening;
-using Ingame;
 using UI;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public enum Scene
 {
-    LOADING,
-    TITLE,
-    INGAME
+    Loading,
+    Title,
+    InGame
 }
 
 public class GameManager : Singleton<GameManager>

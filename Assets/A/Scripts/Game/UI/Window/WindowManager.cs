@@ -40,7 +40,7 @@ namespace UI
                 return;
             }
 
-            if (selectType == WindowType.NONE)
+            if (selectType == WindowType.None)
                 WindowScroll();
             else
                 CloseAllWindow();
@@ -101,7 +101,7 @@ namespace UI
 
         public void CloseAllWindow()
         {
-            if (selectType.Equals(WindowType.NONE)) return;
+            if (selectType.Equals(WindowType.None)) return;
 
             var prevButton = windowButtons[(int)selectType - 1];
             if (prevButton != null)
@@ -111,7 +111,7 @@ namespace UI
             if (prevWindow != null)
                 prevWindow.Disable();
 
-            selectType = WindowType.NONE;
+            selectType = WindowType.None;
         }
 
         public void ClickWindow(WindowType type, Vector3 pos = default)
@@ -122,7 +122,7 @@ namespace UI
                 return;
             }
 
-            if (!selectType.Equals(WindowType.NONE))
+            if (!selectType.Equals(WindowType.None))
             {
                 var prevButton = windowButtons[(int)selectType - 1];
                 if (prevButton != null)

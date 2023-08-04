@@ -39,7 +39,7 @@ namespace UI
             {
                 warningDescription.text = "정말로 타이틀로\n돌아가시겠습니까?";
                 warningDescription2.gameObject.SetActive(true);
-                warningOkayButton.onClick.AddListener(() => GameManager.Instance.sceneManager.SceneLoad(Scene.TITLE));
+                warningOkayButton.onClick.AddListener(() => GameManager.Instance.sceneManager.SceneLoad(Scene.Title));
             }
         }
     }

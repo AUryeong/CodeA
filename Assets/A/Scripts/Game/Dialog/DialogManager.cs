@@ -90,12 +90,12 @@ public class DialogManager : Manager
 
 
     public DialogLogDetail LogDetail { get; private set; }
-    public DialogEventDetail EventDetail { get; private set; }
+    private DialogEventDetail eventDetail;
 
     public override void OnCreated()
     {
         LogDetail = GetComponent<DialogLogDetail>();
-        EventDetail = GetComponent<DialogEventDetail>();
+        eventDetail = GetComponent<DialogEventDetail>();
 
         subBackgroundEffect = subBackgroundImage.GetComponent<UITransitionEffect>();
         skipOkayButtonText = skipOkayButton.GetComponent<TextMeshProUGUI>();
@@ -127,7 +127,7 @@ public class DialogManager : Manager
         
         dialogWindow.gameObject.SetActive(false);
         
-        EventDetail.OnCreated();
+        eventDetail.OnCreated();
         
         SkipInit();
         AnimationInit();
@@ -156,7 +156,7 @@ public class DialogManager : Manager
         dialogSkipText = string.Empty;
         isEnding = false;
 
-        EventDetail.OnReset();
+        eventDetail.OnReset();
         SkipReset();
         OptionReset();
 
@@ -195,7 +195,7 @@ public class DialogManager : Manager
         });
     }
 
-    public void PointerDown(BaseEventData data)
+    private void PointerDown(BaseEventData data)
     {
         if (isEnding) return;
         dragStartPos = (data as PointerEventData).position;
@@ -205,7 +205,7 @@ public class DialogManager : Manager
         skipButtonClicking = true;
     }
 
-    public void PointerUp(BaseEventData data)
+    private void PointerUp(BaseEventData data)
     {
         if (isEnding) return;
 
@@ -237,7 +237,7 @@ public class DialogManager : Manager
 
             if (subVector.y < -dragMinPower)
             {
-                GameManager.Instance.windowManager.ClickWindow(WindowType.LOG);
+                GameManager.Instance.windowManager.ClickWindow(WindowType.Log);
                 return;
             }
 
@@ -268,9 +268,9 @@ public class DialogManager : Manager
             
             foreach (var dialogTextAnimation in dialogTextAnimations)
             {
-                if (dialogTextAnimation.type == DialogTextAnimationType.ANIM)
+                if (dialogTextAnimation.type == DialogTextAnimationType.Anim)
                     EffectSetting(Mathf.RoundToInt(dialogTextAnimation.parameter));
-                if (dialogTextAnimation.type == DialogTextAnimationType.SKIP)
+                if (dialogTextAnimation.type == DialogTextAnimationType.Skip)
                     NewDialog();
             }
         }
@@ -282,7 +282,7 @@ public class DialogManager : Manager
             if (linkIndex != -1)
             {
                 var linkInfo = descriptionText.textInfo.linkInfo[linkIndex];
-                EventDetail.EventOpen(linkInfo.GetLinkID(), (data as PointerEventData).position, isHasOption);
+                eventDetail.EventOpen(linkInfo.GetLinkID(), (data as PointerEventData).position, isHasOption);
             }
             else if (nowDialog.optionList == null || nowDialog.optionList.Count <= 0)
                 NewDialog();
@@ -325,7 +325,7 @@ public class DialogManager : Manager
             return;
         }
 
-        if (EventDetail.IsActivating()) return;
+        if (eventDetail.IsActivating()) return;
 
         SkipUpdate();
 
@@ -344,13 +344,13 @@ public class DialogManager : Manager
                     {
                         switch (dialogAnimation.type)
                         {
-                            case DialogTextAnimationType.WAIT:
+                            case DialogTextAnimationType.Wait:
                                 dialogDuration -= dialogAnimation.parameter;
                                 break;
-                            case DialogTextAnimationType.ANIM:
+                            case DialogTextAnimationType.Anim:
                                 EffectSetting(Mathf.RoundToInt(dialogAnimation.parameter));
                                 break;
-                            case DialogTextAnimationType.SKIP:
+                            case DialogTextAnimationType.Skip:
                                 NewDialog();
                                 break;
                         }
@@ -393,7 +393,7 @@ public class DialogManager : Manager
                 return;
             }
 
-            if (GameManager.Instance.saveManager.GameData.textAuto && !EventDetail.IsHasEvent)
+            if (GameManager.Instance.saveManager.GameData.textAuto && !eventDetail.IsHasEvent)
             {
                 autoDuration += Time.deltaTime;
                 if (autoDuration >= autoWaitTime)
@@ -420,7 +420,7 @@ public class DialogManager : Manager
             prevDialog = null;
             nowDialog = null;
 
-            EventDetail.EventExit();
+            eventDetail.EventExit();
             SkipReset();
             OptionReset();
 
@@ -446,7 +446,7 @@ public class DialogManager : Manager
         isHasOption = nowDialog.optionList.Count > 0;
         optionActive = false;
 
-        EventDetail.NewDialog(nowDialog.dialogText);
+        eventDetail.NewDialog(nowDialog.dialogText);
 
         if (nowDialog.dialogText != null)
         {
@@ -492,19 +492,19 @@ public class DialogManager : Manager
                     switch (nowDialog.dialogBackground.effect)
                     {
                         default:
-                        case DialogBackgroundEffect.NONE:
+                        case DialogBackgroundEffect.None:
                             backgroundImage.sprite = background;
                             backgroundImage.rectTransform.localScale = Vector3.one * nowDialog.dialogBackground.scale;
                             subBackgroundImage.gameObject.SetActive(false);
                             break;
-                        case DialogBackgroundEffect.TRANS:
+                        case DialogBackgroundEffect.Trans:
                             subBackgroundImage.gameObject.SetActive(true);
                             subBackgroundImage.sprite = background;
                             backgroundImage.rectTransform.localScale = Vector3.one * prevDialog.dialogBackground.scale;
                             subBackgroundImage.rectTransform.localScale = Vector3.one * nowDialog.dialogBackground.scale;
                             subBackgroundEffect.effectFactor = 0;
                             break;
-                        case DialogBackgroundEffect.FADE:
+                        case DialogBackgroundEffect.Fade:
                             subBackgroundEffect.effectFactor = 1;
 
                             backgroundImage.rectTransform.localScale = Vector3.one * prevDialog.dialogBackground.scale;
@@ -585,7 +585,7 @@ public class DialogManager : Manager
         }
         else
         {
-            if (prevDialog != null && prevDialog.dialogPopup != null && !string.IsNullOrEmpty(prevDialog.dialogPopup.name))
+            if (!string.IsNullOrEmpty(prevDialog?.dialogPopup?.name))
             {
                 popupImage.rectTransform.DOKill();
                 popupImage.rectTransform.localScale = Vector3.one;
@@ -833,7 +833,7 @@ public class DialogManager : Manager
     private void EventSetting()
     {
         if (nowDialog.eventList == null || nowDialog.eventList.Count <= 0) return;
-        if (GameManager.Instance.sceneManager.NowScene == Scene.TITLE) return;
+        if (GameManager.Instance.sceneManager.NowScene == Scene.Title) return;
 
         foreach (var getEvent in nowDialog.eventList)
             EventInteract(getEvent);
@@ -841,11 +841,11 @@ public class DialogManager : Manager
 
     private void EventInteract(DialogEvent getDialogEvent)
     {
-        if (GameManager.Instance.sceneManager.NowScene == Scene.TITLE) return;
+        if (GameManager.Instance.sceneManager.NowScene == Scene.Title) return;
 
         switch (getDialogEvent.type)
         {
-            case DialogEvent.Type.ADD_TIP:
+            case DialogEvent.Type.AddTip:
             {
                 GameManager.Instance.saveManager.AddTip(getDialogEvent.name);
                 break;
@@ -908,7 +908,7 @@ public class DialogManager : Manager
 
         switch (dialogEventType)
         {
-            case DialogEventType.BEFORE:
+            case DialogEventType.Before:
             {
                 var leftDialogs = dialogQueue.ToList();
                 dialogQueue.Clear();
@@ -923,7 +923,7 @@ public class DialogManager : Manager
                     NewDialog();
                 break;
             }
-            case DialogEventType.AFTER:
+            case DialogEventType.After:
             {
                 bool flag = dialogQueue.Count <= 0;
 
@@ -933,7 +933,7 @@ public class DialogManager : Manager
                 break;
             }
             default:
-            case DialogEventType.CHANGE:
+            case DialogEventType.Change:
             {
                 dialogQueue.Clear();
                 AddDialog(dialogs);
@@ -1022,7 +1022,7 @@ public class DialogManager : Manager
 
     private void AnimationWait()
     {
-        if (animationWaitTime > 0 && !EventDetail.IsActivating())
+        if (animationWaitTime > 0 && !eventDetail.IsActivating())
         {
             animationWaitTime -= Time.deltaTime;
             if (animationWaitTime <= 0)
@@ -1039,7 +1039,7 @@ public class DialogManager : Manager
         var anim = animations.Dequeue();
         switch (anim.type)
         {
-            case DialogAnimationType.CHAR:
+            case DialogAnimationType.Char:
                 var findStanding = uiStandings.Find((standing) =>
                     standing.gameObject.activeSelf && standing.NowStanding != null &&
                     standing.NowStanding.name == anim.name);
@@ -1047,14 +1047,14 @@ public class DialogManager : Manager
 
                 charAnimationPairs[anim.effect]?.Invoke(findStanding, anim);
                 break;
-            case DialogAnimationType.DIAL:
+            case DialogAnimationType.Dial:
                 dialAnimationPairs[anim.effect]?.Invoke(anim);
                 break;
-            case DialogAnimationType.CAM:
+            case DialogAnimationType.Cam:
                 camAnimationPairs[anim.effect]?.Invoke(anim);
                 break;
             default:
-            case DialogAnimationType.UTIL:
+            case DialogAnimationType.Util:
                 utilAnimationPairs[anim.effect]?.Invoke(anim);
                 return;
         }

@@ -34,29 +34,29 @@ public static class Utility
 
                 case "Before":
                 case "BEFORE":
-                    return DialogEventType.BEFORE;
+                    return DialogEventType.Before;
                 case "Change":
                 case "CHANGE":
-                    return DialogEventType.CHANGE;
+                    return DialogEventType.Change;
                 case "After":
                 case "AFTER":
-                    return DialogEventType.AFTER;
+                    return DialogEventType.After;
             }
         }
-        return DialogEventType.CHANGE;
+        return DialogEventType.Change;
     }
 
     public static string GetTimeToString(TimeType timeType)
     {
         switch (timeType)
         {
-            case TimeType.MORNING:
+            case TimeType.Morning:
                 return "아침";
-            case TimeType.AFTERNOON:
+            case TimeType.Afternoon:
                 return "오후";
-            case TimeType.NIGHT:
+            case TimeType.Night:
                 return "밤";
-            case TimeType.DAWN:
+            case TimeType.Dawn:
                 return "새벽";
             default:
                 return "아침";
@@ -67,7 +67,7 @@ public static class Utility
     {
         switch (pos)
         {
-            case "REND":
+            case "REnd":
                 return 1580;
             case "R3":
                 return 540f;
@@ -83,7 +83,7 @@ public static class Utility
                 return -360;
             case "L3":
                 return -540;
-            case "LEND":
+            case "LEnd":
                 return -1580;
             default:
                 return 0;
@@ -94,7 +94,7 @@ public static class Utility
     {
         switch (pos)
         {
-            case DialogCharacterPos.LEND:
+            case DialogCharacterPos.Lend:
                 return -1580;
             case DialogCharacterPos.L3:
                 return -540f;
@@ -110,7 +110,7 @@ public static class Utility
                 return 360;
             case DialogCharacterPos.R3:
                 return 540;
-            case DialogCharacterPos.REND:
+            case DialogCharacterPos.Rend:
                 return 1580;
             default:
                 return 0;
@@ -148,7 +148,7 @@ public static class Utility
         }
     }
 
-    public static T SelectOne<T>(List<T> tList)
+    public static T SelectOne<T>(this List<T> tList)
     {
         return tList[UnityEngine.Random.Range(0, tList.Count)];
     }
@@ -158,6 +158,6 @@ public static class Utility
         return tList[UnityEngine.Random.Range(0, tList.Length)];
     }
     
-    public static Color fadeBlackColor = new Color(0.16f, 0.16f, 0.16f, 0);
-    public static Color darkColor = new Color(0.75f, 0.75f, 0.75f, 1);
+    public static readonly Color fadeBlackColor = new Color(0.16f, 0.16f, 0.16f, 0);
+    public static readonly Color darkColor = new Color(0.75f, 0.75f, 0.75f, 1);
 }

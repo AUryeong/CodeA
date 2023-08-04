@@ -24,9 +24,9 @@ namespace Ingame
         public int week;
         public TimeType time;
 
-        public List<int> loveLevel = new List<int>();
-        public List<int> statLevels = new List<int>();
-        public List<SkillType> hasSkills = new List<SkillType>();
+        public Dictionary<LoveLevelType, int> loveLevels;
+        public Dictionary<StatType, int> statLevels;
+        public List<SkillType> hasSkills;
         public List<Item> hasItems = new List<Item>();
 
 
@@ -52,7 +52,7 @@ namespace Ingame
             week = gameData.week;
             time = gameData.time;
 
-            loveLevel = gameData.loveLevels;
+            loveLevels = gameData.loveLevels;
             statLevels = gameData.statLevels;
             hasSkills = gameData.hasSkills;
             hasItems = gameData.hasItems;

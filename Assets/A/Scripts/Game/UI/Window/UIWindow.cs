@@ -5,12 +5,12 @@ namespace UI
 {
     public enum WindowType
     {
-        NONE,
-        TITLE,
-        SETTING,
-        LOAD,
-        SAVE,
-        LOG
+        None,
+        Title,
+        Setting,
+        Load,
+        Save,
+        Log
     }
 
     public class UIWindow : MonoBehaviour

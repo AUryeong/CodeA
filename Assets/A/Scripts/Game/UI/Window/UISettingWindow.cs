@@ -156,13 +156,13 @@ namespace UI
         private void ChangeSfxSlider(float value)
         {
             GameManager.Instance.saveManager.GameData.sfxSoundMultiplier = value;
-            GameManager.Instance.soundManager.UpdateVolume(ESoundType.SFX, value);
+            GameManager.Instance.soundManager.UpdateVolume(ESoundType.Sfx, value);
         }
 
         private void ChangeBgmSlider(float value)
         {
             GameManager.Instance.saveManager.GameData.bgmSoundMultiplier = value;
-            GameManager.Instance.soundManager.UpdateVolume(ESoundType.BGM, value);
+            GameManager.Instance.soundManager.UpdateVolume(ESoundType.Bgm, value);
         }
 
         private void ChangeTextSpeedSlider(float value)

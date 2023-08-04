@@ -32,11 +32,11 @@ public class TitleManager : Singleton<TitleManager>
 
         gameLoadButton.onClick.RemoveAllListeners();
         gameLoadButton.onClick.AddListener(() =>
-            GameManager.Instance.windowManager.ClickWindow(WindowType.LOAD, gameLoadButton.transform.position));
+            GameManager.Instance.windowManager.ClickWindow(WindowType.Load, gameLoadButton.transform.position));
 
         settingButton.onClick.RemoveAllListeners();
         settingButton.onClick.AddListener(() =>
-            GameManager.Instance.windowManager.ClickWindow(WindowType.SETTING, settingButton.transform.position));
+            GameManager.Instance.windowManager.ClickWindow(WindowType.Setting, settingButton.transform.position));
 
         explorerButton.onClick.RemoveAllListeners();
         explorerButton.onClick.AddListener(() => extraWindow.Init(explorerButton.transform.position));
@@ -45,7 +45,7 @@ public class TitleManager : Singleton<TitleManager>
         sideTextButton.onClick.AddListener(GameManager.Instance.windowManager.WindowOpen);
 
         warningOkayButton.onClick.RemoveAllListeners();
-        warningOkayButton.onClick.AddListener(() => GameManager.Instance.sceneManager.SceneLoad(Scene.INGAME));
+        warningOkayButton.onClick.AddListener(() => GameManager.Instance.sceneManager.SceneLoad(Scene.InGame));
 
         warningCancelButton.onClick.RemoveAllListeners();
         warningCancelButton.onClick.AddListener(() => warningWindow.gameObject.SetActive(false));
@@ -105,7 +105,7 @@ public class TitleManager : Singleton<TitleManager>
     {
         if (GameManager.Instance.saveManager.GameData.savedGameDatas.Count <= 0)
         {
-            GameManager.Instance.sceneManager.SceneLoad(Scene.INGAME);
+            GameManager.Instance.sceneManager.SceneLoad(Scene.InGame);
             return;
         }
 

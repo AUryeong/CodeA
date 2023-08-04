@@ -44,10 +44,10 @@ public class Dialog
 public class DialogTextAnimation
 {
     [XmlAttribute("Index")]
-    public int startIndex = 0;
+    public int startIndex;
 
     [XmlAttribute("Type")] 
-    public DialogTextAnimationType type = DialogTextAnimationType.ANIM;
+    public DialogTextAnimationType type = DialogTextAnimationType.Anim;
     
     [XmlAttribute("Parameter")]
     public float parameter;
@@ -57,7 +57,7 @@ public class DialogTextAnimation
 public class DialogAnimationList
 {
     [XmlAttribute("Index")]
-    public int index = 0;
+    public int index;
     
     [XmlElement("Animation")]
     public List<DialogAnimation> animations = new List<DialogAnimation>();
@@ -109,7 +109,7 @@ public class DialogTipEvent
     public List<Dialog> dialogs;
 
     [FormerlySerializedAs("eventType")] [XmlAttribute("Type")]
-    public DialogEventType dialogEventType = DialogEventType.CHANGE;
+    public DialogEventType dialogEventType = DialogEventType.Change;
 }
 
 [System.Serializable]
@@ -148,7 +148,7 @@ public class DialogEvent
     public Type type;
     public enum Type
     {
-        ADD_TIP,
+        AddTip,
     }
 }
 
@@ -246,7 +246,7 @@ public class DialogBackground
     public string name;
     
     [XmlAttribute("Effect")]
-    public DialogBackgroundEffect effect = DialogBackgroundEffect.NONE;
+    public DialogBackgroundEffect effect = DialogBackgroundEffect.None;
 
     [XmlAttribute("Title")]
     public string title;
@@ -265,7 +265,7 @@ public class DialogBackground
 public class DialogAnimation
 {
     [XmlAttribute("Type")] 
-    public DialogAnimationType type = DialogAnimationType.UTIL;
+    public DialogAnimationType type = DialogAnimationType.Util;
 
     [XmlAttribute("Effect")] 
     public string effect;
@@ -304,31 +304,31 @@ public class DialogCharacter
 
 public enum DialogBackgroundEffect
 {
-    NONE,
-    TRANS,
-    FADE
+    None,
+    Trans,
+    Fade
 }
 
 public enum DialogEventType
 {
-    BEFORE,
-    CHANGE,
-    AFTER
+    Before,
+    Change,
+    After
 }
 
 public enum DialogAnimationType
 {
-    CHAR,
-    UTIL,
-    DIAL,
-    CAM
+    Char,
+    Util,
+    Dial,
+    Cam
 }
 
 public enum DialogTextAnimationType
 {
-    WAIT,
-    ANIM,
-    SKIP
+    Wait,
+    Anim,
+    Skip
 }
 public enum DialogCharacterPos
 {
@@ -336,12 +336,12 @@ public enum DialogCharacterPos
     R3,
     R2,
     R1,
-    REND,
+    Rend,
     C,
     L1,
     L2,
     L3,
-    LEND
+    Lend
 }
 
 public enum DialogCharacterSize

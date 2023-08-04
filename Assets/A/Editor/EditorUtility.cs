@@ -203,10 +203,10 @@ public class EditorUtility
                                 {
                                     switch (dialogTextAnimation.type)
                                     {
-                                        case DialogTextAnimationType.WAIT:
+                                        case DialogTextAnimationType.Wait:
                                             dialogTextAnimation.parameter = 0.5f;
                                             break;
-                                        case DialogTextAnimationType.ANIM:
+                                        case DialogTextAnimationType.Anim:
                                             dialogTextAnimation.parameter = 1;
                                             break;
                                     }
@@ -232,7 +232,7 @@ public class EditorUtility
                                     {
                                         eventName = eventName,
                                         dialogName = (commands.Length >= 4) ? commands[3] : null,
-                                        dialogEventType = (commands.Length >= 5) ? Utility.GetStringToEventType(commands[4]) : DialogEventType.CHANGE
+                                        dialogEventType = (commands.Length >= 5) ? Utility.GetStringToEventType(commands[4]) : DialogEventType.Change
                                     });
                                 }
                                 else
@@ -354,7 +354,7 @@ public class EditorUtility
 
                     foreach (var anim in firstAnimation.animations)
                     {
-                        if (anim.type != DialogAnimationType.CHAR) continue;
+                        if (anim.type != DialogAnimationType.Char) continue;
 
                         if (anim.name == character.name)
                         {
@@ -377,12 +377,12 @@ public class EditorUtility
                     {
                         foreach (var dialogAnimation in dialog.dialogText.dialogAnimations)
                         {
-                            if (dialogAnimation.type != DialogTextAnimationType.ANIM) continue;
+                            if (dialogAnimation.type != DialogTextAnimationType.Anim) continue;
 
                             var animation = dialog.animationLists.Find(animation => animation.index == Mathf.RoundToInt(dialogAnimation.parameter));
                             foreach (var anim in animation.animations)
                             {
-                                if (anim.type != DialogAnimationType.CHAR) continue;
+                                if (anim.type != DialogAnimationType.Char) continue;
 
                                 if (anim.name == character.name)
                                 {
