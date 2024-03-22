@@ -10,13 +10,13 @@
     </Dialog>
     <Dialog>
         <Bgm>School</Bgm>
-        <BG Name="Class_Morning" Title="학교" Description="아침" Effect="FADE" Duration="2"/>
+        <BG Name="Class_Morning" Title="학교" Description="아침" Effect="Fade" Duration="2"/>
         <Text>
             <Name>{0}</Name>
             <Text>고민이네...</Text>
         </Text>
         <Characters>
-            <Character Name="A" Clothes="Default" Face="Default" Pos="REND" Size="M" Dark="false"/>
+            <Character Name="A" Clothes="Default" Face="Default" Pos="Rend" Size="M" Dark="false"/>
         </Characters>
     </Dialog>
     <Dialog>
@@ -25,18 +25,18 @@
             <Text>뭐하고 있어?</Text>
         </Text>
         <Characters>
-            <Character Name="A" Face="Default" Dark="false"/>
+            <Character Name="A" Face="Default" />
         </Characters>
         <Animations>
-            <Animation Type="CHAR" Name="A" Effect="Move" Parameter="R2" Duration="2"/>
-            <Animation Type="CHAR" Name="A" Effect="Bounce" Parameter="2" Duration="0.5"/>
-            <Animation Type="UTIL" Effect="Wait" Duration="2"/>
-            <Animation Type="CHAR" Name="A" Effect="Emotion" Parameter="Surprise" Duration="0.4"/>
-            <Animation Type="CHAR" Name="A" Effect="Bounce" Parameter="1" Duration="0.2"/>
-            <Animation Type="UTIL" Effect="Wait" Duration="1"/>
-            <Animation Type="CHAR" Name="A" Effect="Move" Parameter="R1" Duration="1"/>
-            <Animation Type="CHAR" Name="A" Effect="Scale" Parameter="L" Duration="1"/>
-            <Animation Type="DIAL" Effect="On"/>
+            <Animation Type="Char" Name="A" Effect="Move" Parameter="R2" Duration="2"/>
+            <Animation Type="Char" Name="A" Effect="Bounce" Parameter="2" Duration="0.5"/>
+            <Animation Type="Util" Effect="Wait" Duration="2"/>
+            <Animation Type="Char" Name="A" Effect="Emotion" Parameter="Surprise" Duration="0.4"/>
+            <Animation Type="Char" Name="A" Effect="Bounce" Parameter="1" Duration="0.2"/>
+            <Animation Type="Util" Effect="Wait" Duration="1"/>
+            <Animation Type="Char" Name="A" Effect="Move" Parameter="R1" Duration="1"/>
+            <Animation Type="Char" Name="A" Effect="Scale" Parameter="L" Duration="1"/>
+            <Animation Type="Dial" Effect="On"/>
         </Animations>
     </Dialog>
     <Dialog>
@@ -57,7 +57,7 @@
             <Character Name="A" Face="Default"/>
         </Characters>
         <Animations>
-            <Animation Type="CHAR" Name="A" Effect="Emotion" Parameter="Question" Duration="1"/>
+            <Animation Type="Char" Name="A" Effect="Emotion" Parameter="Question" Duration="1"/>
         </Animations>
     </Dialog>
     <Dialog>
@@ -78,8 +78,8 @@
             <Character Name="A" Face="Smile"/>
         </Characters>
         <Animations>
-            <Animation Type="CHAR" Name="A" Effect="Emotion" Parameter="Funny" Duration="1"/>
-            <Animation Type="CHAR" Name="A" Effect="Bounce" Parameter="1" Duration="0.2"/>
+            <Animation Type="Char" Name="A" Effect="Emotion" Parameter="Funny" Duration="1"/>
+            <Animation Type="Char" Name="A" Effect="Bounce" Parameter="1" Duration="0.2"/>
         </Animations>
     </Dialog>
     <Dialog>
@@ -100,7 +100,7 @@
             <Character Name="A" />
         </Characters>
         <Animations>
-            <Animation Type="CHAR" Name="A" Effect="Move" Parameter="R3" Duration="1"/>
+            <Animation Type="Char" Name="A" Effect="Move" Parameter="R3" Duration="1"/>
         </Animations>
     </Dialog>
     <Dialog>
@@ -116,7 +116,7 @@
             <Character Name="A" />
         </Characters>
         <Animations>
-            <Animation Type="CHAR" Name="A" Effect="Bounce" Parameter="2" Duration="0.2"/>
+            <Animation Type="Char" Name="A" Effect="Bounce" Parameter="2" Duration="0.2"/>
         </Animations>
     </Dialog>
     <Dialog>
@@ -141,7 +141,7 @@
             <Character Name="A" />
         </Characters>
         <Animations>
-            <Animation Type="CHAR" Name="A" Effect="Bounce" Parameter="2" Duration="0.2"/>
+            <Animation Type="Char" Name="A" Effect="Bounce" Parameter="2" Duration="0.2"/>
         </Animations>
     </Dialog>
     <Dialog>
@@ -166,13 +166,13 @@
             <Character Name="A" Face="Smile"/>
         </Characters>
         <Animations>
-            <Animation Type="CHAR" Name="A" Effect="Bounce" Parameter="2" Duration="0.2"/>
+            <Animation Type="Char" Name="A" Effect="Bounce" Parameter="2" Duration="0.2"/>
         </Animations>
     </Dialog>
     <Dialog>
         <Text>
             <Name>에이</Name>
-            <Text>유니티와 다른 에디터보다 연동이 잘되있어 해당 스크립트를 사용하는 오브젝트를 탐색하거나 필드, 오브젝트 이름을 쉽게 검색하는 기능도 있고 깃과의 연동도 쉽게 되어서 간단하게 깃 내용도 확인할 수 있으며{Anim:SKIP}</Text>
+            <Text>유니티와 다른 에디터보다 연동이 잘되있어 해당 스크립트를 사용하는 오브젝트를 탐색하거나 필드, 오브젝트 이름을 쉽게 검색하는 기능도 있고 깃과의 연동도 쉽게 되어서 간단하게 깃 내용도 확인할 수 있으며{Anim:Skip}</Text>
         </Text>
         <Popup Name="Rider">
             <Scale X="800px"/>
@@ -188,16 +188,16 @@
             <Text>여러가지 쓸모가 많은 기능이 많은 대신, 메모리를 많이 먹는 단점이 있지.</Text>
         </Text>
         <Characters>
-            <Character Name="A" Face="SmileFlush" Dark="false"/>
+            <Character Name="A" Face="SmileFlush" />
         </Characters>
         <Animations>
-            <Animation Type="CHAR" Name="A" Effect="Bounce" Parameter="1" Duration="0.2"/>
-            <Animation Type="UTIL" Effect="Wait" Duration="1"/>
-            <Animation Type="CHAR" Name="A" Effect="Emotion" Parameter="Flush" Duration="1"/>
-            <Animation Type="CHAR" Name="A" Effect="Shake" Parameter="-1" Duration="0.4"/>
-            <Animation Type="CHAR" Name="A" Effect="Face" Parameter="SideFlush" Duration="0.4"/>
-            <Animation Type="UTIL" Effect="Wait" Duration="1"/>
-            <Animation Type="DIAL" Effect="On"/>
+            <Animation Type="Char" Name="A" Effect="Bounce" Parameter="1" Duration="0.2"/>
+            <Animation Type="Util" Effect="Wait" Duration="1"/>
+            <Animation Type="Char" Name="A" Effect="Emotion" Parameter="Flush" Duration="1"/>
+            <Animation Type="Char" Name="A" Effect="Shake" Parameter="-1" Duration="0.4"/>
+            <Animation Type="Char" Name="A" Effect="Face" Parameter="SideFlush" Duration="0.4"/>
+            <Animation Type="Util" Effect="Wait" Duration="1"/>
+            <Animation Type="Dial" Effect="On"/>
         </Animations>
     </Dialog>
     <Dialog>
@@ -209,12 +209,12 @@
         <Option Script="Visual Studio Code" />
         <Option Script="Rider" />
         <Characters>
-            <Character Name="A" Face="Default" Dark="false"/>
+            <Character Name="A" Face="Default" />
         </Characters>
         <Animations>
-            <Animation Type="CHAR" Name="A" Effect="Move" Parameter="C" Duration="1"/>
-            <Animation Type="UTIL" Effect="Wait" Duration="1"/>
-            <Animation Type="DIAL" Effect="On"/>
+            <Animation Type="Char" Name="A" Effect="Move" Parameter="C" Duration="1"/>
+            <Animation Type="Util" Effect="Wait" Duration="1"/>
+            <Animation Type="Dial" Effect="On"/>
         </Animations>
     </Dialog>
     <Dialog>
@@ -223,11 +223,11 @@
             <Text>확실히 그거도 좋긴한데, 다른 에디터들의 장점도 무시하긴 힘들다고 생각해.</Text>
         </Text>
         <Characters>
-            <Character Name="A" Dark="false"/>
+            <Character Name="A" />
         </Characters>
         <Animations>
-            <Animation Type="UTIL" Effect="Wait" Duration="1"/>
-            <Animation Type="DIAL" Effect="On"/>
+            <Animation Type="Util" Effect="Wait" Duration="1"/>
+            <Animation Type="Dial" Effect="On"/>
         </Animations>
     </Dialog>
     <Dialog>

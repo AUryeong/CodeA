@@ -1,14 +1,54 @@
-using System.Collections.Generic;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Ingame
+namespace InGame
 {
+    public enum LoveLevelType
+    {
+        A,
+        Loli,
+        Sister
+    }
+
+    public enum StatType
+    {
+        NonMajor,
+        Programming,
+        Graphic,
+        Director,
+        Communication,
+        Play
+    }
+
+    public enum SkillType
+    {
+    }
+
+    public enum Item
+    {
+    }
+
+    public enum TimeType
+    {
+        Morning,
+        Afternoon,
+        Night,
+        Dawn
+    }
+
+    public struct InGameTime
+    {
+        public int year;
+        public int month;
+        public int week;
+        public TimeType time;
+    }
     public class InGameManager : Singleton<InGameManager>
     {
-        [Header("이름 설정")] [SerializeField] private Canvas namingCanvas;
+        [Header("이름 설정")] 
+        [SerializeField] private Canvas namingCanvas;
         [SerializeField] private TMP_InputField lastNamingInput;
         [SerializeField] private TMP_InputField namingInput;
         [SerializeField] private Button enterButton;
@@ -20,15 +60,7 @@ namespace Ingame
 
         [SerializeField] private Image fadeInBlack;
 
-        [Header("인게임 요소")] public int year;
-        public int month;
-        public int week;
-        public TimeType time;
-
-        public Dictionary<LoveLevelType, int> loveLevels;
-        public Dictionary<StatType, int> statLevels;
-        public List<SkillType> hasSkills;
-        public List<Item> hasItems = new List<Item>();
+        public SubGameData nowGameData;
 
 
         private void Start()
@@ -48,22 +80,14 @@ namespace Ingame
             var gameData = GameManager.Instance.saveManager.nowGameData;
             if (gameData == null) return;
 
-            year = gameData.year;
-            month = gameData.month;
-            week = gameData.week;
-            time = gameData.time;
-
-            loveLevels = gameData.loveLevels;
-            statLevels = gameData.statLevels;
-            hasSkills = gameData.hasSkills;
-            hasItems = gameData.hasItems;
+            nowGameData = gameData;
         }
 
         private void ContinueSaveData()
         {
-            StartFadeOut();
             ApplySaveData();
             AddLeftTalks();
+            StartFadeOut();
         }
 
         private void StartFadeOut()
@@ -75,11 +99,10 @@ namespace Ingame
 
         private void AddLeftTalks()
         {
-            if (GameManager.Instance.saveManager.nowGameData.leftDialogList.Count > 0)
-                GameManager.Instance.dialogManager.AddDialog(GameManager.Instance.saveManager.nowGameData.leftDialogList);
+            if (nowGameData.leftDialogList.Count > 0)
+                GameManager.Instance.dialogManager.AddDialog(nowGameData.leftDialogList);
 
-            
-            GameManager.Instance.dialogManager.dialogSkipText = GameManager.Instance.saveManager.nowGameData.leftDialogSkipText;
+            GameManager.Instance.dialogManager.dialogSkipText = nowGameData.leftDialogSkipText;
         }
 
         private void NewSaveData()

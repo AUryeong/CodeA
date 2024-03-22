@@ -45,7 +45,7 @@ public class TitleManager : Singleton<TitleManager>
         sideTextButton.onClick.AddListener(GameManager.Instance.windowManager.WindowOpen);
 
         warningOkayButton.onClick.RemoveAllListeners();
-        warningOkayButton.onClick.AddListener(() => GameManager.Instance.sceneManager.SceneLoad(Scene.InGame));
+        warningOkayButton.onClick.AddListener(() => GameManager.Instance.sceneManager.SceneLoad(SceneType.InGame));
 
         warningCancelButton.onClick.RemoveAllListeners();
         warningCancelButton.onClick.AddListener(() => warningWindow.gameObject.SetActive(false));
@@ -105,7 +105,7 @@ public class TitleManager : Singleton<TitleManager>
     {
         if (GameManager.Instance.saveManager.GameData.savedGameDatas.Count <= 0)
         {
-            GameManager.Instance.sceneManager.SceneLoad(Scene.InGame);
+            GameManager.Instance.sceneManager.SceneLoad(SceneType.InGame);
             return;
         }
 

@@ -4,13 +4,13 @@ using UnityEngine;
 
 public enum SceneType
 {
-    LOADING,
-    TITLE,
-    INGAME
+    Loading,
+    Title,
+    InGame
 }
 public class SceneManager : Manager
 {
-    public SceneType NowSceneType { get; private set; }
+    public SceneType NowScene { get; private set; }
 
     [SerializeField] private SpriteRenderer sceneTransitionBlack;
     [SerializeField] private MeshRenderer sceneTransitionSquare;
@@ -21,10 +21,9 @@ public class SceneManager : Manager
     }
     public override void OnReset()
     {
-        if (NowScene == Scene.Loading) return;
+        if (NowScene == SceneType.Loading) return;
 
         SetResolution(Camera.main);
-        if (NowSceneType == SceneType.LOADING) return;
 
         foreach (var canvas in FindObjectsOfType<Canvas>(true))
             canvas.worldCamera = GameManager.Instance.UICamera;
@@ -36,7 +35,7 @@ public class SceneManager : Manager
     {
         if (sceneLoading) return;
 
-        NowSceneType = sceneType;
+        NowScene = sceneType;
         SceneLoadFadeIn(() => UnityEngine.SceneManagement.SceneManager.LoadScene((int)sceneType));
     }
 

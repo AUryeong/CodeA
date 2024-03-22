@@ -1,40 +1,9 @@
-using Ingame;
+using InGame;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public enum LoveLevelType
-{
-    A,
-    Loli,
-    Sister
-}
-
-public enum StatType
-{
-    NonMajor,
-    Programming,
-    Graphic,
-    Director,
-    Communication
-}
-
-public enum SkillType
-{
-}
-
-public enum Item
-{
-}
-
-public enum TimeType
-{
-    Morning,
-    Afternoon,
-    Night,
-    Dawn
-}
 
 [Serializable]
 public class GameData
@@ -66,9 +35,7 @@ public class GameData
     {
         if (GameManager.Instance.saveManager.nowGameData == null) return;
 
-        GameManager.Instance.saveManager.UpdateGameData();
-
-        var data = GameManager.Instance.saveManager.nowGameData.Copy();
+        var data = GameManager.Instance.saveManager.nowGameData.GetSaveData();
         GameManager.Instance.saveManager.nowGameData = data;
         data.idx = idx;
 
@@ -95,10 +62,13 @@ public class SubGameData
 
     public string saveTime;
 
-    public int year = 1;
-    public int month = 3;
-    public int week = 1;
-    public TimeType time = TimeType.Morning;
+    public InGameTime time = new InGameTime()
+    {
+        year = 1,
+        month = 3,
+        week = 1,
+        time = TimeType.Morning,
+    };
 
     public Dictionary<LoveLevelType, int> loveLevels = new Dictionary<LoveLevelType, int>()
     {
@@ -122,14 +92,22 @@ public class SubGameData
     public string leftDialogSkipText = string.Empty;
     public List<Dialog> leftDialogList = new List<Dialog>();
 
+    public SubGameData GetSaveData()
+    {
+        var gameData = Copy();
+        
+        gameData.leftDialogList = GameManager.Instance.dialogManager.GetLeftDialogs();
+        gameData.leftDialogSkipText = GameManager.Instance.dialogManager.dialogSkipText;
+        gameData.saveTime = DateTime.Now.ToString("yyyy/MM/dd HH:mm");
+
+        return gameData;
+    }
+
     public SubGameData Copy()
     {
         return new SubGameData
         {
             idx = idx,
-            year = year,
-            month = month,
-            week = week,
             time = time,
             loveLevels = loveLevels.ToDictionary(enter => enter.Key, enter => enter.Value),
             statLevels = statLevels.ToDictionary(enter => enter.Key, enter => enter.Value),
@@ -181,25 +159,6 @@ public class SaveManager : Manager
 
         GameData.getCg.Add(cgName);
         GameData.getCg.Sort();
-    }
-
-    public void UpdateGameData()
-    {
-        if (nowGameData == null) return;
-
-        nowGameData.leftDialogList = GameManager.Instance.dialogManager.GetLeftDialogs();
-        nowGameData.leftDialogSkipText = GameManager.Instance.dialogManager.dialogSkipText;
-        nowGameData.saveTime = DateTime.Now.ToString("yyyy/MM/dd HH:mm");
-
-        nowGameData.year = InGameManager.Instance.year;
-        nowGameData.month = InGameManager.Instance.month;
-        nowGameData.week = InGameManager.Instance.week;
-        nowGameData.time = InGameManager.Instance.time;
-
-        nowGameData.loveLevels = InGameManager.Instance.loveLevels;
-        nowGameData.statLevels = InGameManager.Instance.statLevels;
-        nowGameData.hasSkills = InGameManager.Instance.hasSkills;
-        nowGameData.hasItems = InGameManager.Instance.hasItems;
     }
 
     public void ResetSaveFile()

@@ -1,12 +1,6 @@
 using UI;
 using UnityEngine;
 
-public enum Scene
-{
-    Loading,
-    Title,
-    InGame
-}
 
 public class GameManager : Singleton<GameManager>
 {

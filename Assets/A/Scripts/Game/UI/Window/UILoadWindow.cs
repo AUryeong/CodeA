@@ -75,7 +75,7 @@ namespace UI
                         saves[i].image.sprite = GameManager.Instance.resourcesManager.GetBackground(getSaveData.leftDialogList[0].dialogBackground.name);
 
                     saveTitles[i].gameObject.SetActive(true);
-                    saveTitles[i].text = $"{getSaveData.year}년 {getSaveData.month}월 {getSaveData.week}주 {Utility.GetTimeToString(getSaveData.time)}";
+                    saveTitles[i].text = getSaveData.time.GetTimeToString();
 
                     saveDates[i].gameObject.SetActive(true);
                     saveDates[i].text = getSaveData.saveTime;
@@ -105,7 +105,7 @@ namespace UI
         private void Load(int idx)
         {
             GameManager.Instance.saveManager.nowGameData = GameManager.Instance.saveManager.GameData.GetSaveData(idx).Copy();
-            GameManager.Instance.sceneManager.SceneLoad(Scene.InGame);
+            GameManager.Instance.sceneManager.SceneLoad(SceneType.InGame);
             ReloadSaves();
         }
 

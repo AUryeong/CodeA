@@ -75,7 +75,7 @@ namespace UI
                         saves[i].image.sprite = GameManager.Instance.resourcesManager.GetBackground(getSaveData.leftDialogList[0].dialogBackground.name);
 
                     saveTitles[i].gameObject.SetActive(true);
-                    saveTitles[i].text = $"{getSaveData.year}년 {getSaveData.month}월 {getSaveData.week}주 {Utility.GetTimeToString(getSaveData.time)}";
+                    saveTitles[i].text = getSaveData.time.GetTimeToString();
 
                     saveDates[i].gameObject.SetActive(true);
                     saveDates[i].text = getSaveData.saveTime;

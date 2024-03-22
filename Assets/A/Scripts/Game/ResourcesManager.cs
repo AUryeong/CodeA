@@ -20,7 +20,8 @@ public class ResourcesManager : Manager
 
     #region 서버
 
-    [Header("어드레서블용")] [SerializeField] private AssetLabelReference backgroundLabel;
+    [Header("어드레서블용")] 
+    [SerializeField] private AssetLabelReference backgroundLabel;
     [SerializeField] private AssetLabelReference dialogLabel;
     [SerializeField] private AssetLabelReference tipLabel;
     [SerializeField] private AssetLabelReference popupLabel;
@@ -78,8 +79,8 @@ public class ResourcesManager : Manager
         loadingWindow.gameObject.SetActive(false);
         Time.timeScale = 1;
 
-        if (GameManager.Instance.sceneManager.NowScene == Scene.Loading)
-            GameManager.Instance.sceneManager.SceneLoad(Scene.Title);
+        if (GameManager.Instance.sceneManager.NowScene == SceneType.Loading)
+            GameManager.Instance.sceneManager.SceneLoad(SceneType.Title);
     }
 
     private void CheckDownload()

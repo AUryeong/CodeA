@@ -75,7 +75,7 @@ public class DialogOption
     [XmlAttribute("Dialog")] 
     public string dialog;
 
-    [FormerlySerializedAs("eventType")] [XmlAttribute("DialogType")]
+    [FormerlySerializedAs("eventType")] [XmlAttribute("Type")]
     public DialogEventType dialogEventType;
     
     [XmlAttribute("Special")]

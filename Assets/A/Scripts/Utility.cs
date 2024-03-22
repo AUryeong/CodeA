@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using InGame;
 using UnityEngine;
 
 public static class Utility
@@ -11,7 +12,10 @@ public static class Utility
 
     public static string GetDialogName(string talkerName)
     {
-        return string.Format(talkerName, GameManager.Instance.saveManager.GameData.name);
+        string lastName = GameManager.Instance.saveManager.GameData.lastName;
+        string name = GameManager.Instance.saveManager.GameData.name;
+        string fullName = lastName + name;
+        return string.Format(talkerName, fullName, lastName, name);
     }
 
     public static Vector3 GetVector3Aver(Vector3 vector, Vector3 vector2)
@@ -19,7 +23,7 @@ public static class Utility
         return (vector + vector2) / 2;
     }
 
-    public static Color GetFadeColor(Color color, float fade)
+    public static Color GetFadeColor(this Color color, float fade)
     {
         color.a = fade;
         return color;
@@ -46,7 +50,11 @@ public static class Utility
         return DialogEventType.Change;
     }
 
-    public static string GetTimeToString(TimeType timeType)
+    public static string GetTimeToString(this InGameTime time)
+    {
+        return $"{time.year}년 {time.month}월 {time.week}주 {GetTimeToString(time.time)}";;
+    }
+    public static string GetTimeToString(this TimeType timeType)
     {
         switch (timeType)
         {
